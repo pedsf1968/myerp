@@ -53,12 +53,14 @@
         <application.name>MyERP</application.name>
 
         <!-- ===== Version properties ===== -->
+        <assertj-core.VERSION>3.16.1</assertj-core.VERSION>
         <build-helper-maven-plugin.version>3.1.0</build-helper-maven-plugin.version><!-- OLD 1.10 -->
         <commons-collections4.version>4.4</commons-collections4.version><!-- OLD 4.1 -->
         <commons-lang3.version>3.10</commons-lang3.version><!-- OLD 3.5 -->
         <commons-dbcp2.version>2.7.0</commons-dbcp2.version><!-- OLD 2.1.1 -->
         <hibernate-validator.version>6.1.5.Final</hibernate-validator.version><!-- OLD 4.2.0.Final -->
-        <junit.version>4.12</junit.version><!-- OLD  -->
+        <junit.version>4.12</junit.version><!-- OLD 4.12 -->
+        <junit-jupiter.version>5.6.2</junit-jupiter.version>
         <log4j.version>2.13.3</log4j.version><!-- OLD 2.8.1 -->
         <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version><!-- OLD 3.0.0 -->
         <maven-checkstyle-plugin.version>3.1.1</maven-checkstyle-plugin.version><!-- OLD 2.17 -->
@@ -272,6 +274,7 @@
                 <version>${junit.version}</version>
                 <scope>test</scope>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
 

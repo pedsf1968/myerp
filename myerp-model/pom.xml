@@ -59,7 +59,13 @@
             <scope>test</scope>
         </dependency>
 
+
         <!-- ===== JSR 303 - Bean validation ===== -->
+        <!-- interface -->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+        </dependency>
         <!-- implementation -->
         <dependency>
             <groupId>org.hibernate</groupId>

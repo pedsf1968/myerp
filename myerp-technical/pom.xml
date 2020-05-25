@@ -101,11 +101,13 @@
 
         <!-- ========== Test Dependencies ========== -->
         <!-- ===== Tests ===== -->
+        <!-- ===== Tests ===== -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
+
 
         <!-- ===== JSR 303 - Bean validation ===== -->
         <!-- implementation -->

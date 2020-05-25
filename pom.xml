@@ -53,28 +53,28 @@
         <application.name>MyERP</application.name>
 
         <!-- ===== Version properties ===== -->
-        <validation-api.version>1.1.0.Final</validation-api.version>
-        <hibernate-validator.version>4.2.0.Final</hibernate-validator.version>
-        <commons-collections4.version>4.1</commons-collections4.version>
-        <commons-lang3.version>3.5</commons-lang3.version>
-        <commons-dbcp2.version>2.1.1</commons-dbcp2.version>
-        <postgresql.version>9.4.1212</postgresql.version>
-        <junit.version>4.12</junit.version>
-        <maven-compiler-plugin.version>3.6.1</maven-compiler-plugin.version>
-        <maven-resources-plugin.version>3.0.2</maven-resources-plugin.version>
-        <maven-dependency-plugin.version>3.0</maven-dependency-plugin.version>
-        <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
-        <maven-war-plugin.version>3.0.0</maven-war-plugin.version>
-        <maven-assembly-plugin.version>3.0.0</maven-assembly-plugin.version>
+        <build-helper-maven-plugin.version>3.1.0</build-helper-maven-plugin.version><!-- OLD 1.10 -->
+        <commons-collections4.version>4.4</commons-collections4.version><!-- OLD 4.1 -->
+        <commons-lang3.version>3.10</commons-lang3.version><!-- OLD 3.5 -->
+        <commons-dbcp2.version>2.7.0</commons-dbcp2.version><!-- OLD 2.1.1 -->
+        <hibernate-validator.version>6.1.5.Final</hibernate-validator.version><!-- OLD 4.2.0.Final -->
+        <junit.version>4.12</junit.version><!-- OLD  -->
+        <log4j.version>2.13.3</log4j.version><!-- OLD 2.8.1 -->
+        <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version><!-- OLD 3.0.0 -->
+        <maven-checkstyle-plugin.version>3.1.1</maven-checkstyle-plugin.version><!-- OLD 2.17 -->
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version><!-- OLD 3.6.1 -->
+        <maven-dependency-plugin.version>3.1.2</maven-dependency-plugin.version><!-- OLD 3.0 -->
         <maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
-        <maven-surefire-plugin.version>2.20</maven-surefire-plugin.version>
-        <maven-checkstyle-plugin.version>2.17</maven-checkstyle-plugin.version>
-        <maven-site-plugin.version>3.6</maven-site-plugin.version>
+        <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version><!-- OLD 3.0.2 -->
+        <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version><!-- OLD 2.10.4 -->
         <maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
-        <maven-javadoc-plugin.version>2.10.4</maven-javadoc-plugin.version>
-        <build-helper-maven-plugin.version>1.10</build-helper-maven-plugin.version>
-        <log4j.version>2.8.1</log4j.version>
-        <spring.version>4.3.7.RELEASE</spring.version>
+        <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version><!-- OLD 3.0.2 -->
+        <maven-site-plugin.version>3.9.0</maven-site-plugin.version><!-- OLD 3.6 -->
+        <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version><!-- OLD 2.20 -->
+        <maven-war-plugin.version>3.2.3</maven-war-plugin.version><!-- OLD 3.0.0 -->
+        <postgresql.version>9.4.1212</postgresql.version><!-- OLD  -->
+        <spring.version>4.3.7.RELEASE</spring.version><!-- OLD  -->
+        <validation-api.version>2.0.1.Final</validation-api.version><!-- OLD 1.1.0.Final -->
     </properties>
 
 
@@ -195,6 +195,7 @@
                 <version>${validation-api.version}</version>
             </dependency>
             <!-- implementation -->
+
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-validator</artifactId>
@@ -474,7 +475,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>${maven-javadoc-plugin.version}</version>
                 <configuration>
                     <!-- Définition de l'exécutable de javadoc à utiliser si on ne prend pas celui par défaut -->
                     <!--javadocExecutable>/opt/java/jdk8/bin/javadoc</javadocExecutable -->
@@ -511,7 +511,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>${maven-checkstyle-plugin.version}</version>
                 <configuration>
                     <configLocation>src/build/checkstyle.xml</configLocation>
                     <linkXRef>false</linkXRef>

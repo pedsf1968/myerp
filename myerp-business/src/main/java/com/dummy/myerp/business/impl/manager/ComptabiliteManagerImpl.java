@@ -5,9 +5,12 @@ import java.util.List;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.TransactionStatus;
 import com.dummy.myerp.business.contrat.manager.ComptabiliteManager;
 import com.dummy.myerp.business.impl.AbstractBusinessManager;
@@ -23,6 +26,7 @@ import com.dummy.myerp.technical.exception.NotFoundException;
  * Comptabilite manager implementation.
  */
 public class ComptabiliteManagerImpl extends AbstractBusinessManager implements ComptabiliteManager {
+    private Logger logger = LoggerFactory.getLogger(ComptabiliteManagerImpl.class);
 
     // ==================== Attributs ====================
 
@@ -74,6 +78,15 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
                 4.  Enregistrer (insert/update) la valeur de la séquence en persitance
                     (table sequence_ecriture_comptable)
          */
+
+        List<EcritureComptable> ecritureComptables = getDaoProxy().getComptabiliteDao().getListEcritureComptable();
+        int size = ecritureComptables.size();
+        EcritureComptable ecritureComptable = ecritureComptables.get(size);
+        for (EcritureComptable e: ecritureComptables) {
+            System.out.println(e.toString());
+        }
+        System.out.println(ecritureComptable.toString());
+
     }
 
     /**
@@ -97,7 +110,19 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
     // TODO tests à compléter
     protected void checkEcritureComptableUnit(EcritureComptable pEcritureComptable) throws FunctionalException {
         // ===== Vérification des contraintes unitaires sur les attributs de l'écriture
-        Set<ConstraintViolation<EcritureComptable>> vViolations = getConstraintValidator().validate(pEcritureComptable);
+        Set<ConstraintViolation<EcritureComptable>> vViolations = null;
+
+        try {
+            logger.info("before getConstraintValidator");
+            vViolations = getConstraintValidator().validate(pEcritureComptable);
+        } catch (ValidationException ex) {
+            logger.info("in catch");
+            ex.printStackTrace();
+            System.out.println("vViolations : " + vViolations);
+            throw new FunctionalException("Validation exception");
+        }
+
+
         if (!vViolations.isEmpty()) {
             throw new FunctionalException("L'écriture comptable ne respecte pas les règles de gestion.",
                                           new ConstraintViolationException(

@@ -2,6 +2,7 @@ package com.dummy.myerp.business.impl.manager;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Test;
 import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
@@ -71,4 +72,17 @@ public class ComptabiliteManagerImplTest {
         manager.checkEcritureComptableUnit(vEcritureComptable);
     }
 
+    @Test
+    public void getListCompteComptable() {
+
+
+    }
+
+    @Test
+    public void getListJournalComptable() {
+    }
+
+    @Test
+    public void getListEcritureComptable() {
+    }
 }

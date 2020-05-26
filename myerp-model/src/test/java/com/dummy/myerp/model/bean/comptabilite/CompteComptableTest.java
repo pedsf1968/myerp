@@ -26,7 +26,7 @@ public class CompteComptableTest {
    }
 
    @Test
-   public void givenCompteComptableList_whenAskAnExistingNumber_ThenReturnTheRightCompteCompable() {
+   public void getByNumero_returnsTheRightCompteComptable_ofListAndCompteComptableNumberExisting() {
       Assert.assertEquals(compte1,CompteComptable.getByNumero(compteComptables,2));
       Assert.assertEquals(compte2,CompteComptable.getByNumero(compteComptables,5));
       Assert.assertEquals(compte3,CompteComptable.getByNumero(compteComptables,25));
@@ -34,7 +34,7 @@ public class CompteComptableTest {
    }
 
    @Test
-   public void givenCompteComptableList_whenAskAnNoExistingNumber_ThenReturnNull() {
+   public void getByNumero_returnsNull_ofListAndCompteComptableNumberDoesntExisting() {
       Assert.assertNull(CompteComptable.getByNumero(compteComptables,3));
    }
 

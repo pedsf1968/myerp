@@ -24,7 +24,7 @@ public class EcritureComptableTest {
 
 
     @Test
-    public void givenLigneEcritureEquilibree_whenCalculate_ThenEcritureEquilibree() {
+    public void isEquilibree_returnsTrue_ofEcritureComptableEquilibree() {
         vEcriture = new EcritureComptable();
 
         vEcriture.setLibelle("Equilibrée");
@@ -36,7 +36,7 @@ public class EcritureComptableTest {
     }
 
     @Test
-    public void givenLigneEcritureNotEquilibree_whenCalculate_ThenEcritureNotEquilibree() {
+    public void isEquilibree_returnsFalse_ofEcritureComptableNotEquilibree() {
         vEcriture = new EcritureComptable();
 
         vEcriture.getListLigneEcriture().clear();
@@ -48,8 +48,9 @@ public class EcritureComptableTest {
         Assert.assertFalse(vEcriture.toString(), vEcriture.isEquilibree());
     }
 
+
     @Test
-    public void givenEcritureComptable_whenCalculate_thenGetTheRightDebitAndCredit() {
+    public void getTotalDebit_returnsTotalDebit_ofEcritureComptable(){
         vEcriture = new EcritureComptable();
         BigDecimal[] debits = { new BigDecimal("200.50"), new BigDecimal("100.50"), null, new BigDecimal("40")};
         BigDecimal[] credits = { null, new BigDecimal("33"), new BigDecimal("301"), new BigDecimal("7")};
@@ -65,9 +66,30 @@ public class EcritureComptableTest {
         }
 
         BigDecimal debitSum = debits[0].add(debits[1]).add(debits[3]);
-        BigDecimal creditSum = credits[1].add(credits[2]).add(credits[3]);
 
         Assert.assertEquals(debitSum,vEcriture.getTotalDebit());
+    }
+
+    @Test
+    public void getTotalDebit_returnsTotalCredit_ofEcritureComptable(){
+        vEcriture = new EcritureComptable();
+        BigDecimal[] debits = { new BigDecimal("200.50"), new BigDecimal("100.50"), null, new BigDecimal("40")};
+        BigDecimal[] credits = { null, new BigDecimal("33"), new BigDecimal("301"), new BigDecimal("7")};
+
+
+        vEcriture.setLibelle("Equilibrée");
+
+        String debitValue, creditValue;
+        for(int i=0; i<4; i++) {
+            debitValue = debits[i]!=null?debits[i].toString():null;
+            creditValue = credits[i]!=null?credits[i].toString():null;
+            vEcriture.getListLigneEcriture().add(this.createLigne(i<2?1:2,debitValue,creditValue));
+        }
+
+
+        BigDecimal creditSum = credits[1].add(credits[2]).add(credits[3]);
+
+
         Assert.assertEquals(creditSum,vEcriture.getTotalCredit());
     }
 

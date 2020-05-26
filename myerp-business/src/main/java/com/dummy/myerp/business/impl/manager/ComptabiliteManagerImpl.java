@@ -74,6 +74,15 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
                 4.  Enregistrer (insert/update) la valeur de la séquence en persitance
                     (table sequence_ecriture_comptable)
          */
+
+        List<EcritureComptable> ecritureComptables = getDaoProxy().getComptabiliteDao().getListEcritureComptable();
+        int size = ecritureComptables.size();
+        EcritureComptable ecritureComptable = ecritureComptables.get(size);
+        for (EcritureComptable e: ecritureComptables) {
+            System.out.println(e.toString());
+        }
+        System.out.println(ecritureComptable.toString());
+
     }
 
     /**

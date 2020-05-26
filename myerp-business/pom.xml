@@ -62,15 +62,15 @@
         </dependency>
 
         <!-- ===== OLD JSR 303 - Bean validation ===== -->
-        <!--dependency>
+        <!-- ===== NEW JSR 380 - Bean validation ===== -->
+        <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
-        </dependency-->
+        </dependency>
 
-        <!-- ===== NEW JSR 380 - Bean validation ===== -->
         <!-- implementation -->
         <dependency>
-            <groupId>org.hibernate</groupId>
+            <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
         </dependency>
         <dependency>

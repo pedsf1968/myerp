@@ -91,22 +91,6 @@
         </dependency>
 
 
-        <!-- ===== OLD JSR 303 - Bean validation ===== -->
-        <!--dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-        </dependency-->
-
-        <!-- ===== NEW JSR 380 - Bean validation ===== -->
-        <!-- implementation -->
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate.validator</groupId>
-            <artifactId>hibernate-validator-annotation-processor</artifactId>
-        </dependency>
 
 
         <!-- ========== Test Dependencies ========== -->
@@ -119,12 +103,21 @@
         </dependency>
 
 
-        <!-- ===== JSR 303 - Bean validation ===== -->
+        <!-- ===== OLD JSR 303 - Bean validation ===== -->
+        <!-- ===== NEW JSR 380 - Bean validation ===== -->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+        </dependency>
+
         <!-- implementation -->
         <dependency>
-            <groupId>org.hibernate</groupId>
+            <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator-annotation-processor</artifactId>
         </dependency>
 </dependencies>
 

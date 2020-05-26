@@ -75,7 +75,7 @@
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version><!-- OLD 2.20 -->
         <maven-war-plugin.version>3.2.3</maven-war-plugin.version><!-- OLD 3.0.0 -->
         <postgresql.version>9.4.1212</postgresql.version><!-- OLD  -->
-        <spring.version>4.3.7.RELEASE</spring.version><!-- OLD  -->
+        <spring.version>5.2.6.RELEASE</spring.version><!-- OLD  -->
         <validation-api.version>2.0.1.Final</validation-api.version><!-- OLD 1.1.0.Final -->
     </properties>
 

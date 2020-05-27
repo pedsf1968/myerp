@@ -83,9 +83,9 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         int size = ecritureComptables.size();
         EcritureComptable ecritureComptable = ecritureComptables.get(size);
         for (EcritureComptable e: ecritureComptables) {
-            System.out.println(e.toString());
+            logger.info(e.toString());
         }
-        System.out.println(ecritureComptable.toString());
+        logger.info(ecritureComptable.toString());
 
     }
 
@@ -116,9 +116,8 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
             logger.info("before getConstraintValidator");
             vViolations = getConstraintValidator().validate(pEcritureComptable);
         } catch (ValidationException ex) {
-            logger.info("in catch");
-            ex.printStackTrace();
-            System.out.println("vViolations : " + vViolations);
+            logger.error(ex.toString());
+            logger.info("vViolations : {} ",  vViolations);
             throw new FunctionalException("Validation exception");
         }
 

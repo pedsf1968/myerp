@@ -1,12 +1,13 @@
 package com.dummy.myerp.model.bean.comptabilite;
 
 import org.apache.commons.lang3.ObjectUtils;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
-
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class EcritureComptableTest {
     private EcritureComptable vEcriture;
@@ -24,6 +25,8 @@ public class EcritureComptableTest {
 
 
     @Test
+    @Tag("isEquilibree")
+    @DisplayName("If the EcritureComptable is balanced than return true")
     public void isEquilibree_returnsTrue_ofEcritureComptableEquilibree() {
         vEcriture = new EcritureComptable();
 
@@ -32,10 +35,12 @@ public class EcritureComptableTest {
         vEcriture.getListLigneEcriture().add(this.createLigne(1, "100.50", "33"));
         vEcriture.getListLigneEcriture().add(this.createLigne(2, null, "301"));
         vEcriture.getListLigneEcriture().add(this.createLigne(2, "40", "7"));
-        Assert.assertTrue(vEcriture.toString(), vEcriture.isEquilibree());
+        assertThat(vEcriture.isEquilibree()).isTrue();
     }
 
     @Test
+    @Tag("isEquilibree")
+    @DisplayName("If the EcritureComptable is not balanced than return false")
     public void isEquilibree_returnsFalse_ofEcritureComptableNotEquilibree() {
         vEcriture = new EcritureComptable();
 
@@ -45,11 +50,13 @@ public class EcritureComptableTest {
         vEcriture.getListLigneEcriture().add(this.createLigne(1, "20", "1"));
         vEcriture.getListLigneEcriture().add(this.createLigne(2, null, "30"));
         vEcriture.getListLigneEcriture().add(this.createLigne(2, "1", "2"));
-        Assert.assertFalse(vEcriture.toString(), vEcriture.isEquilibree());
+        assertThat(vEcriture.isEquilibree()).isFalse();
     }
 
 
     @Test
+    @Tag("getTotalDebit")
+    @DisplayName("Return the right total Debit of the EcritureComptable")
     public void getTotalDebit_returnsTotalDebit_ofEcritureComptable(){
         vEcriture = new EcritureComptable();
         BigDecimal[] debits = { new BigDecimal("200.50"), new BigDecimal("100.50"), null, new BigDecimal("40")};
@@ -67,10 +74,12 @@ public class EcritureComptableTest {
 
         BigDecimal debitSum = debits[0].add(debits[1]).add(debits[3]);
 
-        Assert.assertEquals(debitSum,vEcriture.getTotalDebit());
+        assertThat(vEcriture.getTotalDebit()).isEqualTo(debitSum);
     }
 
     @Test
+    @Tag("getTotalDebit")
+    @DisplayName("Return the right total Credit of the EcritureComptable")
     public void getTotalDebit_returnsTotalCredit_ofEcritureComptable(){
         vEcriture = new EcritureComptable();
         BigDecimal[] debits = { new BigDecimal("200.50"), new BigDecimal("100.50"), null, new BigDecimal("40")};
@@ -90,7 +99,7 @@ public class EcritureComptableTest {
         BigDecimal creditSum = credits[1].add(credits[2]).add(credits[3]);
 
 
-        Assert.assertEquals(creditSum,vEcriture.getTotalCredit());
+        assertThat(vEcriture.getTotalCredit()).isEqualTo(creditSum);
     }
 
 }

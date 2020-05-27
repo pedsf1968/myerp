@@ -13,6 +13,10 @@ public abstract class ConsumerHelper {
 
 
     // ==================== Constructeurs ====================
+    private ConsumerHelper() {
+        throw new IllegalStateException("Utility class");
+    }
+
     /**
      * Méthode de configuration de la classe
      *

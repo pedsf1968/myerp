@@ -1,23 +1,26 @@
 package com.dummy.myerp.model.bean.comptabilite;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 public class JournalComptableTest {
-   private List<JournalComptable> journalComptables = new ArrayList<>();
-   private JournalComptable journalComptable1;
-   private JournalComptable journalComptable2;
-   private JournalComptable journalComptable3;
-   private JournalComptable journalComptable4;
+   private static List<JournalComptable> journalComptables = new ArrayList<>();
+   private static JournalComptable journalComptable1;
+   private static JournalComptable journalComptable2;
+   private static JournalComptable journalComptable3;
+   private static JournalComptable journalComptable4;
 
-   @Before
-   public void init() {
+   @BeforeAll
+   public static void beforeAll() {
       journalComptable1 = new JournalComptable("1","first Journal Comptable");
       journalComptable2 = new JournalComptable("45","Journal Comptable 45");
       journalComptable3 = new JournalComptable("13","Journal Comptable 13");
@@ -30,17 +33,21 @@ public class JournalComptableTest {
    }
 
    @Test
+   @Tag("getByCode")
+   @DisplayName("In a JournalComptable list we can retreive one by his Code")
    public void getByCode_returnsTheRightJournalComptable_ofListAndAxistingCode() {
-      Assert.assertEquals(journalComptable1, JournalComptable.getByCode(journalComptables,journalComptable1.getCode()));
-      Assert.assertEquals(journalComptable2, JournalComptable.getByCode(journalComptables,journalComptable2.getCode()));
-      Assert.assertEquals(journalComptable3, JournalComptable.getByCode(journalComptables,journalComptable3.getCode()));
-      Assert.assertEquals(journalComptable4, JournalComptable.getByCode(journalComptables,journalComptable4.getCode()));
+      assertThat(JournalComptable.getByCode(journalComptables,journalComptable1.getCode())).isEqualTo(journalComptable1);
+      assertThat(JournalComptable.getByCode(journalComptables,journalComptable2.getCode())).isEqualTo(journalComptable2);
+      assertThat(JournalComptable.getByCode(journalComptables,journalComptable3.getCode())).isEqualTo(journalComptable3);
+      assertThat(JournalComptable.getByCode(journalComptables,journalComptable4.getCode())).isEqualTo(journalComptable4);
    }
 
    @Test
+   @Tag("getByCode")
+   @DisplayName("In a JournalComptable list we get null if Code doesn't exist")
    public void getByCode_returnsNull_ofListAndNonExistingCode() {
-      Assert.assertNull(JournalComptable.getByCode(journalComptables,"4"));
-      Assert.assertNull(JournalComptable.getByCode(journalComptables,"-4"));
-      Assert.assertNull(JournalComptable.getByCode(journalComptables,"zer"));
+      assertThat(JournalComptable.getByCode(journalComptables,"4")).isNull();
+      assertThat(JournalComptable.getByCode(journalComptables,"-4")).isNull();
+      assertThat(JournalComptable.getByCode(journalComptables,"sdfsd")).isNull();
    }
 }

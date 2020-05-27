@@ -2,14 +2,17 @@ package com.dummy.myerp.business.impl.manager;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
-import org.junit.Test;
 import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
 import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
 import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
 import com.dummy.myerp.model.bean.comptabilite.LigneEcritureComptable;
 import com.dummy.myerp.technical.exception.FunctionalException;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 public class ComptabiliteManagerImplTest {
@@ -18,7 +21,8 @@ public class ComptabiliteManagerImplTest {
 
 
     @Test
-    public void checkEcritureComptableUnit() throws Exception {
+    @Tag("checkEcritureComptableUnit")
+    public void checkEcritureComptableUnit() throws FunctionalException {
         EcritureComptable vEcritureComptable;
         vEcritureComptable = new EcritureComptable();
         vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
@@ -30,17 +34,24 @@ public class ComptabiliteManagerImplTest {
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
                                                                                  null, null,
                                                                                  new BigDecimal(123)));
-        manager.checkEcritureComptableUnit(vEcritureComptable);
+        Assertions.assertThatCode( () -> manager.checkEcritureComptableUnit(vEcritureComptable))
+              .doesNotThrowAnyException();
+
     }
 
-    @Test(expected = FunctionalException.class)
-    public void checkEcritureComptableUnitViolation() throws Exception {
+    @Test
+    @Tag("checkEcritureComptableUnitViolation")
+    public void checkEcritureComptableUnitViolation()  {
         EcritureComptable vEcritureComptable;
         vEcritureComptable = new EcritureComptable();
-        manager.checkEcritureComptableUnit(vEcritureComptable);
+
+        assertThrows(FunctionalException.class, () -> {
+            manager.checkEcritureComptableUnit(vEcritureComptable);
+        });
     }
 
-    @Test(expected = FunctionalException.class)
+    @Test
+    @Tag("checkEcritureComptableUnitRG2")
     public void checkEcritureComptableUnitRG2() throws Exception {
         EcritureComptable vEcritureComptable;
         vEcritureComptable = new EcritureComptable();
@@ -53,10 +64,15 @@ public class ComptabiliteManagerImplTest {
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
                                                                                  null, null,
                                                                                  new BigDecimal(1234)));
-        manager.checkEcritureComptableUnit(vEcritureComptable);
+
+        assertThrows(FunctionalException.class, () -> {
+            manager.checkEcritureComptableUnit(vEcritureComptable);
+        });
+
     }
 
-    @Test(expected = FunctionalException.class)
+    @Test
+    @Tag("checkEcritureComptableUnitRG3")
     public void checkEcritureComptableUnitRG3() throws Exception {
         EcritureComptable vEcritureComptable;
         vEcritureComptable = new EcritureComptable();
@@ -69,20 +85,9 @@ public class ComptabiliteManagerImplTest {
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
                                                                                  null, new BigDecimal(123),
                                                                                  null));
-        manager.checkEcritureComptableUnit(vEcritureComptable);
+        assertThrows(FunctionalException.class, () -> {
+            manager.checkEcritureComptableUnit(vEcritureComptable);
+        });
     }
 
-    @Test
-    public void getListCompteComptable() {
-
-
-    }
-
-    @Test
-    public void getListJournalComptable() {
-    }
-
-    @Test
-    public void getListEcritureComptable() {
-    }
 }

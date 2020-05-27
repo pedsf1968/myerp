@@ -83,7 +83,7 @@
         <sonar.projectKey>pedsf1968_myerp</sonar.projectKey>
         <sonar.organization>pedsf1968</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-        <sonar.login>089e3bbdd5a0265f5c216ceb27c3911231a112d0</sonar.login>
+        <sonar.login>9e78c9485e384e93f7bf7a2f68c024a6c15c6576</sonar.login>
     </properties>
 
 

@@ -81,6 +81,7 @@
         <validation-api.version>2.0.1.Final</validation-api.version><!-- OLD 1.1.0.Final -->
         <!-- ===== Sonar Cloud ====== -->
         <sonar.projectKey>pedsf1968_myerp</sonar.projectKey>
+        <sonar.moduleKey>${artifactId}</sonar.moduleKey>
         <sonar.organization>pedsf1968</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.login>9e78c9485e384e93f7bf7a2f68c024a6c15c6576</sonar.login>

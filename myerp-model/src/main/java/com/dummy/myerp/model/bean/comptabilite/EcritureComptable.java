@@ -17,6 +17,10 @@ import org.apache.commons.lang3.StringUtils;
  * Bean représentant une Écriture Comptable
  */
 public class EcritureComptable {
+    private static final String REFERENCE_PATTERN = "\\d{1,5}-\\d{4}/\\d{5}";
+    private static final int LIBELLE_MIN = 1;
+    private static final int LIBELLE_MAX = 200;
+    private static final int LIST_LIGNE_ECRITURE_MIN = 1;
 
     // ==================== Attributs ====================
     /** The Id. */
@@ -24,19 +28,19 @@ public class EcritureComptable {
     /** Journal comptable */
     @NotNull private JournalComptable journal;
     /** The Reference. */
-    @Pattern(regexp = "\\d{1,5}-\\d{4}/\\d{5}")
+    @Pattern(regexp = REFERENCE_PATTERN)
     private String reference;
     /** The Date. */
     @NotNull private Date date;
 
     /** The Libelle. */
     @NotNull
-    @Size(min = 1, max = 200)
+    @Size(min = LIBELLE_MIN, max = LIBELLE_MAX)
     private String libelle;
 
     /** La liste des lignes d'écriture comptable. */
     @Valid
-    @Size(min = 2)
+    @Size(min = LIST_LIGNE_ECRITURE_MIN)
     private final List<LigneEcritureComptable> listLigneEcriture = new ArrayList<>();
 
 

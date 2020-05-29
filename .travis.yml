@@ -5,7 +5,7 @@ dist: trusty
 # use Java 8
 jdk: openjdk8
 
-script: mvn -DskipTests=true -Dmaven.test.skip=true clean install
+script: ./mvnw -DskipTests=true -Dmaven.test.skip=true clean install
 
 before_install:
   - chmod +x mvnw

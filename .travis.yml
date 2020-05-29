@@ -1,5 +1,4 @@
 language: java
-sudo: true
 dist: trusty
 
 # use Java 8
@@ -7,6 +6,9 @@ jdk: openjdk8
 
 before_install:
   - chmod +x mvnw
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
 
 jobs:
   include:
@@ -16,6 +18,8 @@ jobs:
       script: ./mvnw clean install
     - stage: SonarCloud
       script: ./mvnw sonar:sonar
+    - stage: Cobertura
+      script: ./mvnw cobertura:cobertura
 
 cache:
   directories:

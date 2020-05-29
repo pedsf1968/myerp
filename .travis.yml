@@ -13,7 +13,7 @@ before_install:
 jobs:
   include:
     - stage: Install
-      script: ./mvnw -DskipTests=true -Dmaven.test.skip=true clean install
+      script: ./mvnw clean install
 
 cache:
   directories:

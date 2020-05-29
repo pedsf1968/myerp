@@ -11,7 +11,7 @@ before_install:
 jobs:
   include:
     - stage: Install
-      script: ./mvnw clean install sonar:sonar
+      script: ./mvnw clean verify install
 
 cache:
   directories:

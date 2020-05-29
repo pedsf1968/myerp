@@ -1,5 +1,4 @@
 language: java
-sudo: true
 dist: trusty
 
 # use Java 8
@@ -8,7 +7,6 @@ jdk: openjdk8
 script: ./mvnw -DskipTests=true clean install
 
 before_install:
-  - chmod +x mvnw
 
 jobs:
   include:

@@ -1,5 +1,6 @@
 package com.dummy.myerp.model.bean.comptabilite;
 
+import com.dummy.myerp.technical.exception.FunctionalException;
 import org.apache.commons.lang3.ObjectUtils;
 import org.junit.jupiter.api.*;
 
@@ -11,8 +12,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class EcritureComptableTest {
     private static EcritureComptable ecritureComptable;
@@ -27,6 +28,12 @@ public class EcritureComptableTest {
     private static BigDecimal creditSum;
 
 
+   /**
+    * removeNull : remove null item in BigDecimal list
+    *
+    * @param bigDecimals list of BigDecimal numbers
+    * @return list of BigDecimal numbers without null
+    */
     private List<BigDecimal> removeNull(List<BigDecimal> bigDecimals){
         List<BigDecimal> result = new ArrayList<>();
 
@@ -39,12 +46,21 @@ public class EcritureComptableTest {
         return result;
     }
 
-    private BigDecimal sum(List<BigDecimal> bigDecimals) {
+   /**
+    * sumBigDecimalList : sum all BigDecimal numbers
+    *
+    * @param bigDecimals list of BigDecimal numbers
+    * @return  BigDecimal sum
+    */
+    private BigDecimal sumBigDecimalList(List<BigDecimal> bigDecimals) {
 
         bigDecimals = removeNull(bigDecimals);
         return bigDecimals.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
+    private String getCodeJournalFromReference(String reference) {
+       return reference.split("-")[0];
+    }
 
     private LigneEcritureComptable createLigne(Integer pCompteComptableNumero, String pDebit, String pCredit) {
         BigDecimal vDebit = pDebit == null ? null : new BigDecimal(pDebit);
@@ -58,7 +74,7 @@ public class EcritureComptableTest {
 
     @BeforeAll
     private static void beforeAll() {
-      journalComptable = new JournalComptable("11","Journal comptable 11");
+      journalComptable = new JournalComptable("BQ","Journal comptable 11");
     }
 
     @BeforeEach
@@ -67,6 +83,7 @@ public class EcritureComptableTest {
 
        ecritureComptable.setId(id);
        ecritureComptable.setJournal(journalComptable);
+       ecritureComptable.setReference(reference);
        ecritureComptable.setDate(date);
        ecritureComptable.setLibelle(libelle);
        String debitValue, creditValue;
@@ -77,8 +94,8 @@ public class EcritureComptableTest {
            ecritureComptable.getListLigneEcriture().add(this.createLigne(i<2?1:2,debitValue,creditValue));
         }
 
-        debitSum = sum(Arrays.asList(debits));
-        creditSum = sum(Arrays.asList(credits));
+        debitSum = sumBigDecimalList(Arrays.asList(debits));
+        creditSum = sumBigDecimalList(Arrays.asList(credits));
 
     }
 
@@ -157,21 +174,21 @@ public class EcritureComptableTest {
    @Test
    @Tag("getReference")
    @DisplayName("Return the right Reference of EcritureComptable")
-   @Disabled
    void getReference() {
       assertThat(ecritureComptable.getReference()).isEqualTo(reference);
    }
 
    @Test
    @Tag("setReference")
-   @DisplayName("Change the Reference of EcritureComptable")
-   void setReference() {
+   @DisplayName("Change the Reference of EcritureComptable with good regex")
+   void setReference_changeReference_ofEcritureComptableWithGoodRegex() {
        String newReference = "BQ-2016/00001";
 
        ecritureComptable.setReference(newReference);
 
       assertThat(ecritureComptable.getReference()).isEqualTo(newReference);
    }
+
 
    @Test
    @Tag("getDate")

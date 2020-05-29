@@ -82,9 +82,6 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         List<EcritureComptable> ecritureComptables = getDaoProxy().getComptabiliteDao().getListEcritureComptable();
         int size = ecritureComptables.size();
         EcritureComptable ecritureComptable = ecritureComptables.get(size);
-        for (EcritureComptable e: ecritureComptables) {
-            logger.info(e.toString());
-        }
         logger.info(ecritureComptable.toString());
 
     }

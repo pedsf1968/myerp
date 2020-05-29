@@ -81,10 +81,17 @@
         <validation-api.version>2.0.1.Final</validation-api.version><!-- OLD 1.1.0.Final -->
         <!-- ===== Sonar Cloud ====== -->
         <sonar.projectKey>pedsf1968_myerp</sonar.projectKey>
-        <sonar.moduleKey>${artifactId}</sonar.moduleKey>
+        <sonar.moduleKey>${project.artifactId}</sonar.moduleKey>
         <sonar.organization>pedsf1968</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.login>9e78c9485e384e93f7bf7a2f68c024a6c15c6576</sonar.login>
+        <!-- Tell sonar where to look for the coverage file. Property inherited by submodules -->
+        <jacoco.version>0.8.5</jacoco.version>
+        <sonar.jacoco.itReportPath>${project.basedir}/../target/jacoco-it.exec</sonar.jacoco.itReportPath>
+        <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
+        <sonar.language>java</sonar.language>
+        <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
     </properties>
 
 
@@ -443,29 +450,45 @@
                     <version>${build-helper-maven-plugin.version}</version>
                 </plugin>
 
-                <!-- ===== Rapport de couverture Jacoco ===== -->
-                <plugin>
-                    <groupId>org.jacoco</groupId>
-                    <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>0.8.5</version>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>prepare-agent</goal>
-                            </goals>
-                        </execution>
-                        <execution>
-                            <id>report</id>
-                            <phase>test</phase>
-                            <goals>
-                                <goal>report</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
+
 
             </plugins>
         </pluginManagement>
+
+        <plugins>
+            <!-- ===== Rapport de couverture Jacoco ===== -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
+                <configuration>
+                    <!--skip>${maven.test.skip}</skip-->
+                    <destFile>${basedir}/target/coverage-reports/jacoco-unit.exec</destFile>
+                    <dataFile>${basedir}/target/coverage-reports/jacoco-unit.exec</dataFile>
+                    <output>file</output>
+                    <append>true</append>
+                    <excludes>
+                        <exclude>*MethodAccess</exclude>
+                    </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>jacoco-initialize</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                        <phase>test-compile</phase>
+                    </execution>
+                    <execution>
+                        <id>jacoco-site</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 
 
@@ -489,14 +512,14 @@
                         <reports>
                             <report>index</report>
                             <report>summary</report>
-                            <report>license</report>
+                            <report>licenses</report>
                             <report>modules</report>
                             <report>dependencies</report>
                             <report>dependency-convergence</report>
                             <report>dependency-management</report>
                             <report>plugin-management</report>
                             <report>plugins</report>
-                            <report>project-team</report>
+                            <!--report>project-team</report-->
                             <report>scm</report>
                         </reports>
                     </reportSet>
@@ -603,7 +626,6 @@
                     </reportSet>
                 </reportSets>
             </plugin>
-
 
         </plugins>
     </reporting>

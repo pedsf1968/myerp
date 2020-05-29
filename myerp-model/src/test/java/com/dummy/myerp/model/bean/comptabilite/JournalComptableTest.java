@@ -1,45 +1,40 @@
 package com.dummy.myerp.model.bean.comptabilite;
 
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 
 public class JournalComptableTest {
-   private static List<JournalComptable> journalComptables = new ArrayList<>();
-   private static JournalComptable journalComptable1;
-   private static JournalComptable journalComptable2;
-   private static JournalComptable journalComptable3;
-   private static JournalComptable journalComptable4;
+   private static final List<JournalComptable> journalComptables = new ArrayList<>();
+   private static JournalComptable journalComptable;
+   private static final String[] code = {"1", "45", "13", "987"};
+   private static final String[] libelle = {"first Journal Comptable", "Journal Comptable 45", "Journal Comptable 13", "Journal Comptable 987"};
 
    @BeforeAll
-   public static void beforeAll() {
-      journalComptable1 = new JournalComptable("1","first Journal Comptable");
-      journalComptable2 = new JournalComptable("45","Journal Comptable 45");
-      journalComptable3 = new JournalComptable("13","Journal Comptable 13");
-      journalComptable4 = new JournalComptable("987","Journal Comptable 987");
+   private static void beforeAll() {
+      for (int i=0; i<4; i++) {
+         journalComptables.add(new JournalComptable(code[i], libelle[i]));
+      }
 
-      journalComptables.add(journalComptable1);
-      journalComptables.add(journalComptable2);
-      journalComptables.add(journalComptable3);
-      journalComptables.add(journalComptable4);
+   }
+
+   @BeforeEach
+   private void beforeEach() {
+      journalComptable = new JournalComptable(code[1], libelle[1]);
    }
 
    @Test
    @Tag("getByCode")
    @DisplayName("In a JournalComptable list we can retreive one by his Code")
    public void getByCode_returnsTheRightJournalComptable_ofListAndAxistingCode() {
-      assertThat(JournalComptable.getByCode(journalComptables,journalComptable1.getCode())).isEqualTo(journalComptable1);
-      assertThat(JournalComptable.getByCode(journalComptables,journalComptable2.getCode())).isEqualTo(journalComptable2);
-      assertThat(JournalComptable.getByCode(journalComptables,journalComptable3.getCode())).isEqualTo(journalComptable3);
-      assertThat(JournalComptable.getByCode(journalComptables,journalComptable4.getCode())).isEqualTo(journalComptable4);
+      for (int i=0; i<4; i++) {
+         assertThat(JournalComptable.getByCode(journalComptables, code[i])).isEqualTo(journalComptables.get(i));
+      }
    }
 
    @Test
@@ -47,7 +42,58 @@ public class JournalComptableTest {
    @DisplayName("In a JournalComptable list we get null if Code doesn't exist")
    public void getByCode_returnsNull_ofListAndNonExistingCode() {
       assertThat(JournalComptable.getByCode(journalComptables,"4")).isNull();
+   }
+
+   @Test
+   @Tag("getByCode")
+   @DisplayName("In a JournalComptable list we get null if Code is negative value")
+   public void getByCode_returnsNull_ofListAndNegativeCode() {
       assertThat(JournalComptable.getByCode(journalComptables,"-4")).isNull();
+   }
+
+   @Test
+   @Tag("getByCode")
+   @DisplayName("In a JournalComptable list we get null if Code format doesn't match")
+   public void getByCode_returnsNull_ofListAndBadFormatCode() {
       assertThat(JournalComptable.getByCode(journalComptables,"sdfsd")).isNull();
+   }
+
+   @Test
+   @Tag("getCode")
+   @DisplayName("Return the Code of a JournalComptable")
+   void getCode_returnCode_ofJournalComptable() {
+      assertThat(journalComptable.getCode()).isEqualTo(code[1]);
+   }
+
+   @Test
+   @Tag("setCode")
+   @DisplayName("We can change the Code of a JournalComptable")
+   void setCode_returnNewCode_ofJournalComptableCodeChanged() {
+      journalComptable.setCode(code[2]);
+      assertThat(journalComptable.getCode()).isEqualTo(code[2]);
+   }
+
+   @Test
+   @Tag("getLibelle")
+   @DisplayName("Return the Libelle of a JournalComptable")
+   void getLibelle_returnLibelle_ofJournalComptable() {
+      assertThat(journalComptable.getLibelle()).isEqualTo(libelle[1]);
+   }
+
+   @Test
+   @Tag("setLibelle")
+   @DisplayName("We can change the Libelle of a JournalComptable")
+   void setLibelle_returnNewLibelle_ofJournalComptableLibelleChanged() {
+      journalComptable.setLibelle(libelle[2]);
+      assertThat(journalComptable.getLibelle()).isEqualTo(libelle[2]);
+   }
+
+   @Test
+   @Tag("toString")
+   @DisplayName("testTostring")
+   void testToStringreturnTheString_ofJournalComptable() {
+      String journalComptableString = "JournalComptable{code='45', libelle='Journal Comptable 45'}";
+
+      assertThat(journalComptables.get(1).toString()).isEqualTo(journalComptableString);
    }
 }

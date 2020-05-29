@@ -77,7 +77,7 @@ public abstract class AbstractDbConsumer {
                                                     String pSeqName, Class<T> pSeqValueClass) {
 
         JdbcTemplate vJdbcTemplate = new JdbcTemplate(getDataSource(pDataSourcesId));
-        String vSeqSQL = "SELECT last_value FROM " + pSeqName;
+        String vSeqSQL = String.format("SELECT last_value FROM %s",  pSeqName);
         T vSeqValue = vJdbcTemplate.queryForObject(vSeqSQL, pSeqValueClass);
 
         return vSeqValue;

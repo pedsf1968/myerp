@@ -31,7 +31,7 @@ public class JournalComptableTest {
    @Test
    @Tag("getByCode")
    @DisplayName("In a JournalComptable list we can retreive one by his Code")
-   public void getByCode_returnsTheRightJournalComptable_ofListAndAxistingCode() {
+   void getByCode_returnsTheRightJournalComptable_ofListAndAxistingCode() {
       for (int i=0; i<4; i++) {
          assertThat(JournalComptable.getByCode(journalComptables, code[i])).isEqualTo(journalComptables.get(i));
       }
@@ -40,21 +40,21 @@ public class JournalComptableTest {
    @Test
    @Tag("getByCode")
    @DisplayName("In a JournalComptable list we get null if Code doesn't exist")
-   public void getByCode_returnsNull_ofListAndNonExistingCode() {
+   void getByCode_returnsNull_ofListAndNonExistingCode() {
       assertThat(JournalComptable.getByCode(journalComptables,"4")).isNull();
    }
 
    @Test
    @Tag("getByCode")
    @DisplayName("In a JournalComptable list we get null if Code is negative value")
-   public void getByCode_returnsNull_ofListAndNegativeCode() {
+   void getByCode_returnsNull_ofListAndNegativeCode() {
       assertThat(JournalComptable.getByCode(journalComptables,"-4")).isNull();
    }
 
    @Test
    @Tag("getByCode")
    @DisplayName("In a JournalComptable list we get null if Code format doesn't match")
-   public void getByCode_returnsNull_ofListAndBadFormatCode() {
+   void getByCode_returnsNull_ofListAndBadFormatCode() {
       assertThat(JournalComptable.getByCode(journalComptables,"sdfsd")).isNull();
    }
 

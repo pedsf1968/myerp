@@ -17,7 +17,8 @@ import org.apache.commons.lang3.StringUtils;
  * Bean représentant une Écriture Comptable
  */
 public class EcritureComptable {
-    private static final String REFERENCE_PATTERN = "\\d{1,5}-\\d{4}/\\d{5}";
+    // erreur regex le code journal n'est pas forcément un chiffre remplacé \d par \w
+    private static final String REFERENCE_PATTERN = "\\w{1,5}-\\d{4}/\\d{5}";
     private static final int LIBELLE_MIN = 1;
     private static final int LIBELLE_MAX = 200;
     private static final int LIST_LIGNE_ECRITURE_MIN = 1;

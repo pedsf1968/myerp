@@ -2,6 +2,7 @@ package com.dummy.myerp.business.impl.manager;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
 import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
@@ -11,6 +12,7 @@ import com.dummy.myerp.technical.exception.FunctionalException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
@@ -35,7 +37,7 @@ public class ComptabiliteManagerImplTest {
     @Test
     @Tag("checkEcritureComptableUnit")
     @DisplayName("Verify that no exception is thrown if the EcritureComptable is correct")
-    public void checkEcritureComptableUnit() throws FunctionalException {
+    void checkEcritureComptableUnit() throws FunctionalException {
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
                                                                                  null, new BigDecimal(123),
                                                                                  null));
@@ -51,7 +53,7 @@ public class ComptabiliteManagerImplTest {
     @Test
     @Tag("checkEcritureComptableUnitViolation")
     @DisplayName("Verify that null checkEcritureComptableUnit thrown FunctionalException")
-    public void checkEcritureComptableUnitViolation()  {
+    void checkEcritureComptableUnitViolation()  {
         assertThrows(FunctionalException.class, () -> {
             manager.checkEcritureComptableUnit(vEcritureComptable);
         });
@@ -59,9 +61,9 @@ public class ComptabiliteManagerImplTest {
 
 
     @Test
-    @Tag("checkEcritureComptableUnitRG2")
+    @Tag("checkEcritureComptableRG2")
     @DisplayName("When total Debit is greater than total Credit checkEcritureComptableUnit thrown FunctionalException")
-    public void checkEcritureComptableUnitRG2_throwFunctionalException_ofDebitGreaterThanCredit() throws Exception {
+    void checkEcritureComptableRG2_throwFunctionalException_ofDebitGreaterThanCredit() throws Exception {
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
                                                                                  null, new BigDecimal(1234),
                                                                                  null));
@@ -70,15 +72,15 @@ public class ComptabiliteManagerImplTest {
                                                                                  new BigDecimal(123)));
 
         assertThrows(FunctionalException.class, () -> {
-            manager.checkEcritureComptableUnit(vEcritureComptable);
+            manager.checkEcritureComptableRG2(vEcritureComptable);
         });
 
     }
 
     @Test
-    @Tag("checkEcritureComptableUnitRG2")
+    @Tag("checkEcritureComptableRG2")
     @DisplayName("When total Debit is less than total Credit checkEcritureComptableUnit thrown FunctionalException")
-    public void checkEcritureComptableUnitRG2_throwFunctionalException_ofDebitLessThanCredit() throws Exception {
+    void checkEcritureComptableRG2_throwFunctionalException_ofDebitLessThanCredit() throws Exception {
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
               null, new BigDecimal(123),
               null));
@@ -87,15 +89,15 @@ public class ComptabiliteManagerImplTest {
               new BigDecimal(1234)));
 
         assertThrows(FunctionalException.class, () -> {
-            manager.checkEcritureComptableUnit(vEcritureComptable);
+            manager.checkEcritureComptableRG2(vEcritureComptable);
         });
 
     }
 
     @Test
-    @Tag("checkEcritureComptableUnitRG3")
+    @Tag("checkEcritureComptableRG3")
     @DisplayName("When there are only one Debit LigneEcritureComptable checkEcritureComptableUnit thrown FunctionalException")
-    public void checkEcritureComptableUnitRG3_returnFunctionalException_ofOnlyOneDebitLigneEcritureComptable() throws Exception {
+    void checkEcritureComptableRG3_returnFunctionalException_ofOnlyOneDebitLigneEcritureComptable() throws Exception {
         vEcritureComptable.getListLigneEcriture().add(
               new LigneEcritureComptable(new CompteComptable(1),
                     null,
@@ -103,14 +105,14 @@ public class ComptabiliteManagerImplTest {
                     null));
 
         assertThrows(FunctionalException.class, () -> {
-            manager.checkEcritureComptableUnit(vEcritureComptable);
+            manager.checkEcritureComptableRG3(vEcritureComptable);
         });
     }
 
     @Test
-    @Tag("checkEcritureComptableUnitRG3")
-    @DisplayName("When there are only one Credit LigneEcritureComptable checkEcritureComptableUnit thrown FunctionalException")
-    public void checkEcritureComptableUnitRG3_returnFunctionalException_ofOnlyOneCrediLigneEcritureComptable() throws Exception {
+    @Tag("checkEcritureComptableRG3")
+    @DisplayName("When there are only one Credit LigneEcritureComptable checkEcritureComptableUnit throw FunctionalException")
+    void checkEcritureComptableRG3_returnFunctionalException_ofOnlyOneCrediLigneEcritureComptable() throws Exception {
         vEcritureComptable.getListLigneEcriture().add(
               new LigneEcritureComptable(new CompteComptable(1),
                     null,
@@ -118,14 +120,14 @@ public class ComptabiliteManagerImplTest {
                     new BigDecimal(123)));
 
         assertThrows(FunctionalException.class, () -> {
-            manager.checkEcritureComptableUnit(vEcritureComptable);
+            manager.checkEcritureComptableRG3(vEcritureComptable);
         });
     }
 
     @Test
-    @Tag("RG4")
+    @Tag("checkEcritureComptableUnitRG4")
     @DisplayName("Accept negative values")
-    public void RG4_returnNoException_ofSameCreditAndDebitNegativeValues() throws Exception {
+    void RG4_returnNoException_ofSameCreditAndDebitNegativeValues() throws Exception {
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
               null, new BigDecimal(-123),
               null));
@@ -139,5 +141,39 @@ public class ComptabiliteManagerImplTest {
     }
 
 
+    @Test
+    @Tag("checkEcritureComptableRG5")
+    @DisplayName("Bad Reference Journal Code throw FunctionalException")
+    void checkEcritureComptableRG5_throwFunctionalException_ofBadJournalCodeInReference() throws Exception {
+        vEcritureComptable.setReference("BQ-2016/00001");
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+              null, new BigDecimal(123),
+              null));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+              null, null,
+              new BigDecimal(123)));
+
+        assertThrows(FunctionalException.class, () -> {
+            manager.checkEcritureComptableRG5(vEcritureComptable);
+        });
+    }
+
+    @Test
+    @Tag("checkEcritureComptableRG5")
+    @DisplayName("Bad Reference Journal Year throw FunctionalException")
+    void checkEcritureComptableRG5_throwFunctionalException_ofBadJournalYearInReference() throws Exception {
+        vEcritureComptable.setReference("AC-2018/00001");
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+              null, new BigDecimal(123),
+              null));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+              null, null,
+              new BigDecimal(123)));
+
+        assertThrows(FunctionalException.class, () -> {
+            manager.checkEcritureComptableRG5(vEcritureComptable);
+        });
+
+    }
 
 }

@@ -25,6 +25,25 @@
         <url>http://www.dummy.com</url>
     </organization>
 
+    <!-- =========================================================== LICENCES -->
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+        <license>
+            <name>The MIT License</name>
+            <url>https://projectlombok.org/LICENSE</url>
+        </license>
+        <license>
+            <name>MPL 2.0 or EPL 1.0</name>
+            <url>https://h2database.com/html/license.html</url>
+        </license>
+        <license>
+            <name>BSD-2-Clause</name>
+            <url>https://jdbc.postgresql.org/about/license.html</url>
+        </license>
+    </licenses>
 
     <!-- =============================================================== -->
     <!-- Distribution management -->
@@ -44,8 +63,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.build.timestamp.format>dd/MM/yyyy</maven.build.timestamp.format>
         <buildTime>${maven.build.timestamp}</buildTime>
 
@@ -58,13 +77,14 @@
         <commons-collections4.version>4.4</commons-collections4.version><!-- OLD 4.1 -->
         <commons-lang3.version>3.10</commons-lang3.version><!-- OLD 3.5 -->
         <commons-dbcp2.version>2.7.0</commons-dbcp2.version><!-- OLD 2.1.1 -->
+        <h2.version>1.4.200</h2.version>
         <hibernate-validator.version>6.1.5.Final</hibernate-validator.version><!-- OLD 4.2.0.Final -->
         <javax.el.version>2.2.6</javax.el.version>
         <javax.el-api.version>3.0.0</javax.el-api.version>
         <junit.version>5.6.2</junit.version><!-- OLD 4.12 -->
         <log4j.version>2.13.3</log4j.version><!-- OLD 2.8.1 -->
         <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version><!-- OLD 3.0.0 -->
-        <maven-checkstyle-plugin.version>3.1.1</maven-checkstyle-plugin.version><!-- OLD 2.17 -->
+        <maven-checkstyle-plugin.version>3.1.1</maven-checkstyle-plugin.version><!-- OLD 2.17 NEW 3.1.1 -->
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version><!-- OLD 3.6.1 -->
         <maven-dependency-plugin.version>3.1.2</maven-dependency-plugin.version><!-- OLD 3.0 -->
         <maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
@@ -76,7 +96,7 @@
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version><!-- OLD 2.20 -->
         <maven-war-plugin.version>3.2.3</maven-war-plugin.version><!-- OLD 3.0.0 -->
         <mockito-junit-jupiter.version>3.3.3</mockito-junit-jupiter.version>
-        <postgresql.version>9.4.1212</postgresql.version><!-- OLD  -->
+        <postgresql.version>42.2.12</postgresql.version><!-- OLD 9.4.1212 -->
         <spring.version>5.2.6.RELEASE</spring.version><!-- OLD 4.3.7.RELEASE -->
         <validation-api.version>2.0.1.Final</validation-api.version><!-- OLD 1.1.0.Final -->
         <!-- ===== Sonar Cloud ====== -->
@@ -126,11 +146,35 @@
         <!-- Profile utilisé pour lancer les tests d'intégration de la couche Business -->
         <profile>
             <id>test-business</id>
+            <properties>
+                <activatedProperties>test-business</activatedProperties>
+            </properties>
+            <dependencies>
+                <!-- ================================================ H2DATABASE -->
+                <dependency>
+                    <groupId>com.h2database</groupId>
+                    <artifactId>h2</artifactId>
+                    <version>${h2.version}</version>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
         </profile>
 
         <!-- Profile utilisé pour lancer les tests d'intégration de la couche Consumer -->
         <profile>
             <id>test-consumer</id>
+            <properties>
+                <activatedProperties>test-consumer</activatedProperties>
+            </properties>
+            <dependencies>
+                <!-- ================================================ H2DATABASE -->
+                <dependency>
+                    <groupId>com.h2database</groupId>
+                    <artifactId>h2</artifactId>
+                    <version>${h2.version}</version>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
         </profile>
     </profiles>
 
@@ -411,6 +455,13 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-checkstyle-plugin</artifactId>
                     <version>${maven-checkstyle-plugin.version}</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.puppycrawl.tools</groupId>
+                            <artifactId>checkstyle</artifactId>
+                            <version>8.29</version>
+                        </dependency>
+                    </dependencies>
                     <configuration>
                         <configLocation>src/build/checkstyle.xml</configLocation>
                     </configuration>
@@ -542,7 +593,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-report-plugin</artifactId>
-                <version>2.20</version>
+                <version>3.0.0-M3</version>
                 <configuration>
                     <linkXRef>false</linkXRef>
                 </configuration>
@@ -614,6 +665,9 @@
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <configuration>
                     <configLocation>src/build/checkstyle.xml</configLocation>
+                    <encoding>UTF-8</encoding>
+                    <consoleOutput>true</consoleOutput>
+                    <failsOnError>true</failsOnError>
                     <linkXRef>false</linkXRef>
                 </configuration>
                 <reportSets>

@@ -86,6 +86,10 @@ public class JournalComptable {
      */
     public static JournalComptable getByCode(List<? extends JournalComptable> pList, String pCode) {
         JournalComptable vRetour = null;
+        if(pList == null || pList.isEmpty() || pCode == null){
+            return vRetour;
+        }
+
         for (JournalComptable vBean : pList) {
             if (vBean != null && Objects.equals(vBean.getCode(), pCode)) {
                 vRetour = vBean;

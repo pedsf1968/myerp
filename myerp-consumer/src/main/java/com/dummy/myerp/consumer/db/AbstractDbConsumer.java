@@ -55,6 +55,7 @@ public abstract class AbstractDbConsumer {
      */
     protected DataSource getDataSource(DataSourcesEnum pDataSourceId) {
         DataSource vRetour = this.mapDataSource.get(pDataSourceId);
+
         if (vRetour == null) {
             throw new UnsatisfiedLinkError("La DataSource suivante n'a pas été initialisée : " + pDataSourceId);
         }
@@ -78,9 +79,7 @@ public abstract class AbstractDbConsumer {
 
         JdbcTemplate vJdbcTemplate = new JdbcTemplate(getDataSource(pDataSourcesId));
         String vSeqSQL = String.format("SELECT last_value FROM %s",  pSeqName);
-        T vSeqValue = vJdbcTemplate.queryForObject(vSeqSQL, pSeqValueClass);
-
-        return vSeqValue;
+        return vJdbcTemplate.queryForObject(vSeqSQL, pSeqValueClass);
     }
 
 
@@ -95,6 +94,7 @@ public abstract class AbstractDbConsumer {
         //   ( pas de AbstractDbDao.mapDataSource.putAll(...) )
         Map<DataSourcesEnum, DataSource> vMapDataSource = new HashMap<>(DataSourcesEnum.values().length);
         DataSourcesEnum[] vDataSourceIds = DataSourcesEnum.values();
+
         for (DataSourcesEnum vDataSourceId : vDataSourceIds) {
             DataSource vDataSource = pMapDataSource.get(vDataSourceId);
             // On test si la DataSource est configurée

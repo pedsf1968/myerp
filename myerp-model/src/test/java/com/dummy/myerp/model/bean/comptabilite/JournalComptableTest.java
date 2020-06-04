@@ -9,7 +9,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 
 
-public class JournalComptableTest {
+class JournalComptableTest {
    private static final List<JournalComptable> journalComptables = new ArrayList<>();
    private static JournalComptable journalComptable;
    private static final String[] code = {"1", "45", "13", "987"};

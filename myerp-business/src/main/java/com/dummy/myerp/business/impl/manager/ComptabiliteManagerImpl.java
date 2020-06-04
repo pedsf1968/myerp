@@ -8,6 +8,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 
+import com.dummy.myerp.model.bean.comptabilite.*;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -15,10 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.TransactionStatus;
 import com.dummy.myerp.business.contrat.manager.ComptabiliteManager;
 import com.dummy.myerp.business.impl.AbstractBusinessManager;
-import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
-import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
-import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
-import com.dummy.myerp.model.bean.comptabilite.LigneEcritureComptable;
 import com.dummy.myerp.technical.exception.FunctionalException;
 import com.dummy.myerp.technical.exception.NotFoundException;
 
@@ -37,6 +34,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
      * Instantiates a new Comptabilite manager.
      */
     public ComptabiliteManagerImpl() {
+        // Nothing to do
     }
 
 
@@ -63,34 +61,52 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
     /**
      * {@inheritDoc}
      */
-    // TODO à tester
     @Override
-    public synchronized void addReference(EcritureComptable pEcritureComptable) {
-        // TODO à implémenter
-        // Bien se réferer à la JavaDoc de cette méthode !
-        /* Le principe :
-                1.  Remonter depuis la persitance la dernière valeur de la séquence du journal pour l'année de l'écriture
-                    (table sequence_ecriture_comptable)
-                2.  * S'il n'y a aucun enregistrement pour le journal pour l'année concernée :
-                        1. Utiliser le numéro 1.
-                    * Sinon :
-                        1. Utiliser la dernière valeur + 1
-                3.  Mettre à jour la référence de l'écriture avec la référence calculée (RG_Compta_5)
-                4.  Enregistrer (insert/update) la valeur de la séquence en persitance
-                    (table sequence_ecriture_comptable)
-         */
+    public synchronized void addReference(EcritureComptable pEcritureComptable) throws FunctionalException {
+        int numeroSequence = 1; // initialise with 1 to not increment
+        SequenceEcritureComptable vSEC = new SequenceEcritureComptable();
 
-        List<EcritureComptable> ecritureComptables = getDaoProxy().getComptabiliteDao().getListEcritureComptable();
-        int size = ecritureComptables.size();
-        EcritureComptable ecritureComptable = ecritureComptables.get(size);
-        logger.info(ecritureComptable.toString());
+        // Bien se réferer à la JavaDoc de cette méthode !
+        // Le principe :
+        // 1. Remonter depuis la persitance la dernière valeur de la séquence du journal pour l'année de l'écriture
+        //    (table sequence_ecriture_comptable)
+        String annee = new SimpleDateFormat ("yyyy").format(pEcritureComptable.getDate());
+        SequenceEcritureComptable vLastSEC = getDaoProxy().getComptabiliteDao().getLastSeqOfTheYear(annee, pEcritureComptable.getJournal().getCode());
+
+        // 2. S'il n'y a aucun enregistrement pour le journal pour l'année concernée :
+        //      Utiliser le numéro 1.
+        //    Sinon :
+        //      Utiliser la dernière valeur + 1
+        numeroSequence += (vLastSEC==null?0:vLastSEC.getDerniereValeur());
+        logger.info("Numero sequence : {}", numeroSequence);
+        vSEC.setAnnee(Integer.parseInt(annee));
+        vSEC.setDerniereValeur(numeroSequence);
+
+        // 3.  Mettre à jour la référence de l'écriture avec la référence calculée (RG_Compta_5)
+        String reference = String.format("%s-%s/%05d",
+              pEcritureComptable.getJournal().getCode(),
+              annee,
+              numeroSequence);
+        logger.info("Reference : {}",reference);
+        pEcritureComptable.setReference(reference);
+
+        // Enregistrer (insert/update) la valeur de la séquence en persitance
+        //            (table sequence_ecriture_comptable)
+
+        TransactionStatus vTS = getTransactionManager().beginTransactionMyERP();
+        this.updateEcritureComptable(pEcritureComptable);
+
+        if (numeroSequence == 1) {
+            this.insertEcritureComptable(pEcritureComptable);
+        } else {
+            this.updateEcritureComptable(pEcritureComptable);
+        }
 
     }
 
     /**
      * {@inheritDoc}
      */
-    // TODO à tester
     @Override
     public void checkEcritureComptable(EcritureComptable pEcritureComptable) throws FunctionalException {
         this.checkEcritureComptableUnit(pEcritureComptable);
@@ -108,19 +124,9 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
      * @param pEcritureComptable -
      * @throws FunctionalException Si l'Ecriture comptable ne respecte pas les règles de gestion
      */
-    // TODO tests à compléter
     protected void checkEcritureComptableUnit(EcritureComptable pEcritureComptable) throws FunctionalException {
         // ===== Vérification des contraintes unitaires sur les attributs de l'écriture
-        Set<ConstraintViolation<EcritureComptable>> vViolations = null;
-
-        try {
-            logger.info("before getConstraintValidator");
-            vViolations = getConstraintValidator().validate(pEcritureComptable);
-        } catch (ValidationException ex) {
-            logger.error(ex.toString());
-            logger.info("vViolations : {} ",  vViolations);
-            throw new FunctionalException("Validation exception");
-        }
+        Set<ConstraintViolation<EcritureComptable>> vViolations = getConstraintValidator().validate(pEcritureComptable);
 
         if (!vViolations.isEmpty()) {
             throw new FunctionalException("L'écriture comptable ne respecte pas les règles de gestion.",
@@ -157,23 +163,22 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
      */
     protected void checkEcritureComptableRG3(EcritureComptable pEcritureComptable) throws FunctionalException {
         // ===== RG_Compta_3 : une écriture comptable doit avoir au moins 2 lignes d'écriture (1 au débit, 1 au crédit)
-        int vNbrCredit = 0;
-        int vNbrDebit = 0;
+        Boolean hasCreditLine = Boolean.FALSE;
+        Boolean hasDebitLine = Boolean.FALSE;
+
         for (LigneEcritureComptable vLigneEcritureComptable : pEcritureComptable.getListLigneEcriture()) {
             if (BigDecimal.ZERO.compareTo(ObjectUtils.defaultIfNull(vLigneEcritureComptable.getCredit(),
                   BigDecimal.ZERO)) != 0) {
-                vNbrCredit++;
+                hasCreditLine = Boolean.TRUE;
             }
             if (BigDecimal.ZERO.compareTo(ObjectUtils.defaultIfNull(vLigneEcritureComptable.getDebit(),
                   BigDecimal.ZERO)) != 0) {
-                vNbrDebit++;
+                hasDebitLine = Boolean.TRUE;
             }
         }
         // On test le nombre de lignes car si l'écriture à une seule ligne
         //      avec un montant au débit et un montant au crédit ce n'est pas valable
-        if (pEcritureComptable.getListLigneEcriture().size() < 2
-              || vNbrCredit < 1
-              || vNbrDebit < 1) {
+        if (!hasCreditLine || !hasDebitLine) {
             throw new FunctionalException(
                   "L'écriture comptable doit avoir au moins deux lignes : une ligne au débit et une ligne au crédit.");
         }
@@ -278,6 +283,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
     @Override
     public void deleteEcritureComptable(Integer pId) {
         TransactionStatus vTS = getTransactionManager().beginTransactionMyERP();
+
         try {
             getDaoProxy().getComptabiliteDao().deleteEcritureComptable(pId);
             getTransactionManager().commitMyERP(vTS);

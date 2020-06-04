@@ -9,7 +9,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class CompteComptableTest {
+class CompteComptableTest {
    private static final List<CompteComptable> compteComptables = new ArrayList<>();
    private static final Integer numero1 = 2;
    private static final String libelle1 = "compte2";

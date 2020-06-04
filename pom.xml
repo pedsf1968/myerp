@@ -58,10 +58,11 @@
         <commons-collections4.version>4.4</commons-collections4.version><!-- OLD 4.1 -->
         <commons-lang3.version>3.10</commons-lang3.version><!-- OLD 3.5 -->
         <commons-dbcp2.version>2.7.0</commons-dbcp2.version><!-- OLD 2.1.1 -->
+        <h2.version>1.4.200</h2.version>
         <hibernate-validator.version>6.1.5.Final</hibernate-validator.version><!-- OLD 4.2.0.Final -->
         <javax.el.version>2.2.6</javax.el.version>
         <javax.el-api.version>3.0.0</javax.el-api.version>
-        <junit.version>5.6.2</junit.version><!-- OLD 4.12 -->
+        <junit-jupiter.version>5.6.2</junit-jupiter.version><!-- OLD 4.12 -->
         <log4j.version>2.13.3</log4j.version><!-- OLD 2.8.1 -->
         <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version><!-- OLD 3.0.0 -->
         <maven-checkstyle-plugin.version>3.1.1</maven-checkstyle-plugin.version><!-- OLD 2.17 -->
@@ -92,6 +93,7 @@
         <sonar.language>java</sonar.language>
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+        <sonar-maven-plugin.version>3.7.0.1746</sonar-maven-plugin.version>
     </properties>
 
 
@@ -131,6 +133,16 @@
         <!-- Profile utilisé pour lancer les tests d'intégration de la couche Consumer -->
         <profile>
             <id>test-consumer</id>
+        </profile>
+
+        <profile>
+            <id>test-report</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <sonar.url>http://localhost:9000</sonar.url>
+            </properties>
         </profile>
     </profiles>
 
@@ -300,12 +312,24 @@
                 <version>${postgresql.version}</version>
                 <scope>runtime</scope>
             </dependency>
+            <!-- JDBC Drivers : H2 DB -->
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>${h2.version}</version>
+            </dependency>
 
             <!-- ===== Test unitaires ===== -->
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>${junit-jupiter.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter</artifactId>
-                <version>${junit.version}</version>
+                <version>${junit-jupiter.version}</version>
                 <scope>test</scope>
             </dependency>
 
@@ -314,6 +338,11 @@
                 <artifactId>mockito-junit-jupiter</artifactId>
                 <version>${mockito-junit-jupiter.version}</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>javax.inject</groupId>
+                <artifactId>javax.inject</artifactId>
+                <version>1</version>
             </dependency>
 
             <dependency>
@@ -327,23 +356,23 @@
     </dependencyManagement>
 
 
-    <!-- =============================================================== -->
-    <!-- Dependencies -->
-    <!-- =============================================================== -->
+    <!-- =================================================================== -->
+    <!--                                                        Dependencies -->
+    <!-- =================================================================== -->
     <dependencies>
     </dependencies>
 
 
-    <!-- =============================================================== -->
-    <!-- Build -->
-    <!-- =============================================================== -->
+    <!-- =================================================================== -->
+    <!--                                                               Build -->
+    <!-- =================================================================== -->
     <build>
         <!-- =============================================================== -->
-        <!-- pluginManagement -->
+        <!--                                                pluginManagement -->
         <!-- =============================================================== -->
         <pluginManagement>
             <plugins>
-                <!-- ===== Java compilation ===== -->
+                <!-- ====================================== Java compilation -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
@@ -354,7 +383,7 @@
                     </configuration>
                 </plugin>
 
-                <!-- ===== "Filtrage/Parsing" des resources ===== -->
+                <!-- ====================== "Filtrage/Parsing" des resources -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-resources-plugin</artifactId>
@@ -442,6 +471,12 @@
                     <version>${maven-javadoc-plugin.version}</version>
                 </plugin>
 
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>${sonar-maven-plugin.version}</version>
+                </plugin>
+
                 <!-- ===== Aide au constructions particulières ===== -->
                 <!-- Ex : Ajout de répertoire de sources générées en tant que source d'un module -->
                 <plugin>
@@ -467,8 +502,11 @@
             </plugins>
         </pluginManagement>
 
+        <!-- =============================================================== -->
+        <!--                                                         plugins -->
+        <!-- =============================================================== -->
         <plugins>
-            <!-- ===== Rapport de couverture Jacoco ===== -->
+            <!-- ==================================================== Jacoco -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -495,6 +533,12 @@
                             <rules>
                                 <!--  implementation is needed only for Maven 2  -->
                                 <rule implementation="org.jacoco.maven.RuleConfiguration">
+                                    <excludes>
+                                        <exclude>com.dummy.myerp.business.contrat</exclude>
+                                        <exclude>com.dummy.myerp.consumer.dao.contrat</exclude>
+                                        <exclude>com.dummy.myerp.technical</exclude>
+                                        <exclude>com.dummy.myerp.consumer.dao.impl.db.rowmapper</exclude>
+                                    </excludes>
                                     <element>BUNDLE</element>
                                     <limits>
                                         <!--  implementation is needed only for Maven 2  -->
@@ -525,6 +569,11 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

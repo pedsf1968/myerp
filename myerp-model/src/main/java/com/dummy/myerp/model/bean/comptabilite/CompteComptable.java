@@ -91,7 +91,7 @@ public class CompteComptable {
      */
     public static CompteComptable getByNumero(List<? extends CompteComptable> pList, Integer pNumero) {
         CompteComptable vRetour = null;
-        if(pList == null || pNumero == null){
+        if(pList == null || pList.isEmpty() || pNumero == null){
             return vRetour;
         }
 

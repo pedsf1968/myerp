@@ -15,7 +15,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class EcritureComptableTest {
+class EcritureComptableTest {
     private static EcritureComptable ecritureComptable;
     private static Integer id = 123;
     private static JournalComptable journalComptable;

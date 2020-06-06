@@ -90,4 +90,21 @@ public interface ComptabiliteDao {
      * @return the last sequence found
      */
     SequenceEcritureComptable getLastSeqOfTheYear(String pAnneeJournal, String pCodeJournal);
+
+    /**
+     * Insert new sequence
+     *
+     * @param pSequenceEcritureComptable the sequence to insert
+     * @param codeJournal of the Journal
+     */
+    void insertSequenceEcritureComptable(SequenceEcritureComptable pSequenceEcritureComptable, String codeJournal);
+
+    /**
+     * Update a sequence
+     *
+     * @param pSequenceEcritureComptable the sequence to update
+     * @param codeJournal of the Journal
+     */
+    void updateSequenceEcritureComptable(SequenceEcritureComptable pSequenceEcritureComptable, String codeJournal);
+
 }

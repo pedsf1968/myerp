@@ -1,4 +1,4 @@
-package com.dummy.myerp.testconsumer.consumer;
+package com.dummy.myerp.consumer.impl.dao;
 
 
 import com.dummy.myerp.consumer.dao.contrat.DaoProxy;

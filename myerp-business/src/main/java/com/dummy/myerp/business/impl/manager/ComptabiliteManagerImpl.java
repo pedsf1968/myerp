@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import javax.validation.ValidationException;
 
 import com.dummy.myerp.model.bean.comptabilite.*;
 import org.apache.commons.lang3.ObjectUtils;
@@ -70,7 +69,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         // Le principe :
         // 1. Remonter depuis la persitance la dernière valeur de la séquence du journal pour l'année de l'écriture
         //    (table sequence_ecriture_comptable)
-        String annee = new SimpleDateFormat ("yyyy").format(pEcritureComptable.getDate());
+        String annee = new SimpleDateFormat("yyyy").format(pEcritureComptable.getDate());
         SequenceEcritureComptable vLastSEC = getDaoProxy().getComptabiliteDao().getLastSeqOfTheYear(annee, pEcritureComptable.getJournal().getCode());
 
         // 2. S'il n'y a aucun enregistrement pour le journal pour l'année concernée :

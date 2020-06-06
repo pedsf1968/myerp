@@ -1,4 +1,4 @@
-package com.dummy.myerp.testconsumer.consumer;
+package com.dummy.myerp.consumer.impl.dao;
 
 
 import org.junit.jupiter.api.Test;

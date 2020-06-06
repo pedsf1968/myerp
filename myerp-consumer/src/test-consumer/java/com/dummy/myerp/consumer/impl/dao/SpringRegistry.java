@@ -1,4 +1,4 @@
-package com.dummy.myerp.testconsumer.consumer;
+package com.dummy.myerp.consumer.impl.dao;
 
 import com.dummy.myerp.consumer.dao.contrat.DaoProxy;
 import org.apache.logging.log4j.LogManager;
@@ -22,7 +22,7 @@ public final class SpringRegistry {
 
     /** Nom des fichiers de contexte de l'application */
     private static final String CONTEXT_APPLI_LOCATION
-       = "classpath:/com/dummy/myerp/testbusiness/business/bootstrapContext.xml";
+          = "classpath:/com/dummy/myerp/testconsumer/consumer/bootstrapContext.xml";
 
 
     /** Le context spring de l'application */

@@ -5,6 +5,7 @@ package com.dummy.myerp.consumer.dao.impl.db;
  */
 public class DBN {
    public static final String ANNEE = "annee";
+   public static final String CODE = "code";
    public static final String COMPTE_COMPTABLE_NUMERO = "compte_comptable_numero";
    public static final String CREDIT = "credit";
    public static final String DATE = "date";
@@ -15,5 +16,6 @@ public class DBN {
    public static final String JOURNAL_CODE = "journal_code";
    public static final String LIBELLE = "libelle";
    public static final String LIGNE_ID = "ligne_id";
+   public static final String NUMERO = "numero";
    public static final String REFERENCE = "reference";
 }

@@ -25,7 +25,6 @@ public final class SpringRegistry {
     private static final String CONTEXT_APPLI_LOCATION
        = "classpath:/com/dummy/myerp/testbusiness/business/bootstrapContext.xml";
 
-
     /** Le context spring de l'application */
     private ApplicationContext contextAppli;
 

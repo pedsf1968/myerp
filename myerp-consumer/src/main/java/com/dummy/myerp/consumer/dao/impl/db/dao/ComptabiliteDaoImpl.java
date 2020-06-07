@@ -1,19 +1,20 @@
 package com.dummy.myerp.consumer.dao.impl.db.dao;
 
-import java.sql.Types;
-import java.util.List;
 
 import com.dummy.myerp.consumer.dao.impl.db.DBN;
 import com.dummy.myerp.consumer.dao.impl.db.rowmapper.comptabilite.*;
+import com.dummy.myerp.consumer.dao.contrat.ComptabiliteDao;
+import com.dummy.myerp.consumer.db.AbstractDbConsumer;
+import com.dummy.myerp.consumer.db.DataSourcesEnum;
 import com.dummy.myerp.model.bean.comptabilite.*;
+import com.dummy.myerp.technical.exception.NotFoundException;
+
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import com.dummy.myerp.consumer.dao.contrat.ComptabiliteDao;
-import com.dummy.myerp.consumer.db.AbstractDbConsumer;
-import com.dummy.myerp.consumer.db.DataSourcesEnum;
-import com.dummy.myerp.technical.exception.NotFoundException;
+import java.sql.Types;
+import java.util.List;
 
 
 /**
@@ -275,13 +276,13 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
      * @return the last sequence found
      */
     @Override
-    public SequenceEcritureComptable getLastSeqOfTheYear(String pAnneeJournal, String pCodeJournal) {
+    public SequenceEcritureComptable getLastSeqOfTheYear(Integer pAnneeJournal, String pCodeJournal) {
+        SequenceEcritureComptableRM vRM = new SequenceEcritureComptableRM();
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(DataSourcesEnum.MYERP));
         MapSqlParameterSource vSqlParams = new MapSqlParameterSource();
+
         vSqlParams.addValue(DBN.ANNEE, pAnneeJournal);
         vSqlParams.addValue(DBN.JOURNAL_CODE, pCodeJournal);
-
-        SequenceEcritureComptableRM vRM = new SequenceEcritureComptableRM();
 
         try {
             return vJdbcTemplate.queryForObject(SQLgetLastSeqOfTheYear, vSqlParams,vRM);

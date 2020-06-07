@@ -69,7 +69,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         // Le principe :
         // 1. Remonter depuis la persitance la dernière valeur de la séquence du journal pour l'année de l'écriture
         //    (table sequence_ecriture_comptable)
-        String annee = new SimpleDateFormat("yyyy").format(pEcritureComptable.getDate());
+        Integer annee = Integer.parseInt(new SimpleDateFormat("yyyy").format(pEcritureComptable.getDate()));
         SequenceEcritureComptable vLastSEC = getDaoProxy().getComptabiliteDao().getLastSeqOfTheYear(annee, pEcritureComptable.getJournal().getCode());
 
         // 2. S'il n'y a aucun enregistrement pour le journal pour l'année concernée :
@@ -78,7 +78,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         //      Utiliser la dernière valeur + 1
         numeroSequence += (vLastSEC==null?0:vLastSEC.getDerniereValeur());
         logger.info("Numero sequence : {}", numeroSequence);
-        vSEC.setAnnee(Integer.parseInt(annee));
+        vSEC.setAnnee(annee);
         vSEC.setDerniereValeur(numeroSequence);
 
         // 3.  Mettre à jour la référence de l'écriture avec la référence calculée (RG_Compta_5)

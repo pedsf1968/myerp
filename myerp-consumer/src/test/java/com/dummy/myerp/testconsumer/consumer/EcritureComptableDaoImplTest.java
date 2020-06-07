@@ -1,12 +1,11 @@
-package com.dummy.myerp.consumer.dao.impl.db.dao;
+package com.dummy.myerp.testconsumer.consumer;
 
-import com.dummy.myerp.consumer.impl.dao.ConsumerTestCase;
 import com.dummy.myerp.model.bean.comptabilite.*;
 import com.dummy.myerp.technical.exception.NotFoundException;
+
 import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.text.SimpleDateFormat;

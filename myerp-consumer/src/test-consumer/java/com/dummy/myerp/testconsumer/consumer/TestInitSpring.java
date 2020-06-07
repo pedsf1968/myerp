@@ -1,8 +1,10 @@
-package com.dummy.myerp.consumer.impl.dao;
+package com.dummy.myerp.testconsumer.consumer;
 
-
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * Classe de test de l'initialisation du contexte Spring
@@ -21,6 +23,8 @@ public class TestInitSpring extends ConsumerTestCase {
      * Teste l'initialisation du contexte Spring
      */
     @Test
+    @Tag("testInit")
+    @DisplayName("Verify the initialisation of the context")
     public void testInit() {
         SpringRegistry.init();
         assertThat(SpringRegistry.getDaoProxy()).isNotNull();

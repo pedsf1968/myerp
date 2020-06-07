@@ -1,4 +1,4 @@
-package com.dummy.myerp.testconsumer.consumer;
+package com.dummy.myerp.consumer.dao.impl.db.dao;
 
 import com.dummy.myerp.model.bean.comptabilite.SequenceEcritureComptable;
 import org.junit.jupiter.api.*;
@@ -34,7 +34,7 @@ class SequenceEcritureComptableDaoImplTest extends ConsumerTestCase {
             getLastSeqOfTheYear(2016, "OD");
 
       assertThat(vSEC).isNotNull();
-      assertThat(vSEC.getAnnee()).isEqualTo("2016");
+      assertThat(vSEC.getAnnee()).isEqualTo(2016);
       assertThat(vSEC.getDerniereValeur()).isEqualTo(88);
    }
 

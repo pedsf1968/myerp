@@ -263,9 +263,10 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
     }
 
     /** SQLgetLastSeqOfTheYear */
-    private static String SQLgetLastSeqOfTheYear;
-    public static void setSQLgetLastSeqOfTheYear(String pSQLgetLastSeqOfTheYear) {
-        SQLgetLastSeqOfTheYear = pSQLgetLastSeqOfTheYear;
+    private static String SQLgetLastSequenceEcritureComptable;
+    public void setSQLgetLastSequenceEcritureComptable(String pSQLgetLastSequenceEcritureComptable)
+    {
+        SQLgetLastSequenceEcritureComptable = pSQLgetLastSequenceEcritureComptable;
     }
 
     /**
@@ -285,7 +286,7 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
         vSqlParams.addValue(DBN.JOURNAL_CODE, pCodeJournal);
 
         try {
-            return vJdbcTemplate.queryForObject(SQLgetLastSeqOfTheYear, vSqlParams,vRM);
+            return vJdbcTemplate.queryForObject(SQLgetLastSequenceEcritureComptable, vSqlParams,vRM);
         } catch (EmptyResultDataAccessException ex) {
             return null;
         }

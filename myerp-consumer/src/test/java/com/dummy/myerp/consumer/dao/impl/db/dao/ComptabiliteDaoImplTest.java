@@ -1,4 +1,4 @@
-package com.dummy.myerp.testconsumer.consumer;
+package com.dummy.myerp.consumer.dao.impl.db.dao;
 
 import com.dummy.myerp.model.bean.comptabilite.*;
 import org.junit.jupiter.api.*;

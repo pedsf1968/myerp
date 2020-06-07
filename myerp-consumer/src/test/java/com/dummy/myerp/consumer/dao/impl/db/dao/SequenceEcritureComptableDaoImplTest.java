@@ -82,6 +82,12 @@ class SequenceEcritureComptableDaoImplTest extends ConsumerTestCase {
 
       assertThat(vSEC.getAnnee()).isEqualTo(annee);
       assertThat(vSEC.getDerniereValeur()).isEqualTo(derniereValeur);
+
+      getDaoProxy().getComptabiliteDao().deleteSequenceEcritureComptable(vSEC, codeJournal);
+
+      // remove inserted SequenceEcritureComptable
+      vSEC = getDaoProxy().getComptabiliteDao().getLastSeqOfTheYear(annee, codeJournal);
+      assertThat(vSEC).isNull();
    }
 
    @Test
@@ -112,14 +118,9 @@ class SequenceEcritureComptableDaoImplTest extends ConsumerTestCase {
 
          assertThat(vSEC.getAnnee()).isEqualTo(annee);
          assertThat(vSEC.getDerniereValeur()).isEqualTo(oldValue);
-
-
       }catch (Exception exception){
          logger.error("Update of SequenceEcritureComptable failed cause :", exception);
          fail();
       }
-
-
   }
-
 }

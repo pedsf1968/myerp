@@ -107,4 +107,11 @@ public interface ComptabiliteDao {
      */
     void updateSequenceEcritureComptable(SequenceEcritureComptable pSequenceEcritureComptable, String codeJournal);
 
+    /**
+     * Delete a sequence
+     *
+     * @param pSequenceEcritureComptable the sequence to deleted
+     * @param codeJournal of the Journal
+     */
+    void deleteSequenceEcritureComptable(SequenceEcritureComptable pSequenceEcritureComptable, String codeJournal);
 }

@@ -11,6 +11,9 @@ import javax.validation.constraints.Size;
  * Bean représentant un Compte Comptable
  */
 public class CompteComptable {
+    private static final int LIBELLE_MIN = 1;
+    private static final int LIBELLE_MAX = 150;
+
     // ==================== Attributs ====================
     /** The Numero. */
     @NotNull
@@ -18,7 +21,7 @@ public class CompteComptable {
 
     /** The Libelle. */
     @NotNull
-    @Size(min = 1, max = 150)
+    @Size(min = LIBELLE_MIN, max = LIBELLE_MAX)
     private String libelle;
 
 
@@ -88,7 +91,7 @@ public class CompteComptable {
      */
     public static CompteComptable getByNumero(List<? extends CompteComptable> pList, Integer pNumero) {
         CompteComptable vRetour = null;
-        if(pList == null || pNumero == null){
+        if(pList == null || pList.isEmpty() || pNumero == null){
             return vRetour;
         }
 

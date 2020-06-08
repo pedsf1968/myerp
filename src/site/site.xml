@@ -16,7 +16,7 @@
   </bannerLeft>
 
   <bannerRight>
-    <name>${project.organization.name}</name>
+    <name>${this.organization.name}</name>
     <src>img/logo-client.png</src>
     <href>${this.organization.url}</href>
   </bannerRight>

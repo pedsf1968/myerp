@@ -3,6 +3,7 @@ package com.dummy.myerp.consumer.dao.impl.db.rowmapper.comptabilite;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.dummy.myerp.consumer.dao.impl.db.DBN;
 import org.springframework.jdbc.core.RowMapper;
 import com.dummy.myerp.consumer.dao.impl.cache.CompteComptableDaoCache;
 import com.dummy.myerp.model.bean.comptabilite.LigneEcritureComptable;
@@ -20,11 +21,11 @@ public class LigneEcritureComptableRM implements RowMapper<LigneEcritureComptabl
     @Override
     public LigneEcritureComptable mapRow(ResultSet pRS, int pRowNum) throws SQLException {
         LigneEcritureComptable vBean = new LigneEcritureComptable();
-        vBean.setCompteComptable(compteComptableDaoCache.getByNumero(pRS.getObject("compte_comptable_numero",
+        vBean.setCompteComptable(compteComptableDaoCache.getByNumero(pRS.getObject(DBN.COMPTE_COMPTABLE_NUMERO,
                                                                                    Integer.class)));
-        vBean.setCredit(pRS.getBigDecimal("credit"));
-        vBean.setDebit(pRS.getBigDecimal("debit"));
-        vBean.setLibelle(pRS.getString("libelle"));
+        vBean.setCredit(pRS.getBigDecimal(DBN.CREDIT));
+        vBean.setDebit(pRS.getBigDecimal(DBN.DEBIT));
+        vBean.setLibelle(pRS.getString(DBN.LIBELLE));
 
         return vBean;
     }

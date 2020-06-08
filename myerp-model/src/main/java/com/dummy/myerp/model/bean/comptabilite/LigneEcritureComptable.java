@@ -11,6 +11,7 @@ import com.dummy.myerp.model.validation.constraint.MontantComptable;
  * Bean représentant une Ligne d'écriture comptable.
  */
 public class LigneEcritureComptable {
+    private static final int LIBELLE_MAX = 200;
 
     // ==================== Attributs ====================
     /** Compte Comptable */
@@ -18,7 +19,7 @@ public class LigneEcritureComptable {
     private CompteComptable compteComptable;
 
     /** The Libelle. */
-    @Size(max = 200)
+    @Size(max = LIBELLE_MAX)
     private String libelle;
 
     /** The Debit. */

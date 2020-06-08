@@ -9,7 +9,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class CompteComptableTest {
+class CompteComptableTest {
    private static final List<CompteComptable> compteComptables = new ArrayList<>();
    private static final Integer numero1 = 2;
    private static final String libelle1 = "compte2";
@@ -19,7 +19,7 @@ public class CompteComptableTest {
    private static final CompteComptable compte4 = new CompteComptable(48,"compte48");
 
    @BeforeAll
-   public static void beforeAll() {
+   private static void beforeAll() {
       compteComptables.add(compte1);
       compteComptables.add(compte2);
       compteComptables.add(compte3);
@@ -27,7 +27,7 @@ public class CompteComptableTest {
    }
 
    @AfterEach
-   public void afterEach() {
+   private void afterEach() {
       compte1.setNumero(numero1);
       assertThat(compte1.getNumero()).isEqualTo(numero1);
       compte1.setLibelle(libelle1);
@@ -37,7 +37,7 @@ public class CompteComptableTest {
    @Test
    @Tag("getByNumero")
    @DisplayName("In a CompteComptable list we can retreive one by his Numero")
-   public void getByNumero_returnsTheRightCompteComptable_ofListAndCompteComptableNumberExisting() {
+   void getByNumero_returnsTheRightCompteComptable_ofListAndCompteComptableNumberExisting() {
       assertThat(CompteComptable.getByNumero(compteComptables,numero1)).isEqualTo(compte1);
       assertThat(CompteComptable.getByNumero(compteComptables,compte2.getNumero())).isEqualTo(compte2);
       assertThat(CompteComptable.getByNumero(compteComptables,compte3.getNumero())).isEqualTo(compte3);
@@ -47,28 +47,28 @@ public class CompteComptableTest {
    @Test
    @Tag("getByNumero")
    @DisplayName("In a CompteComptable list get null if a CompteComptable Numero doesn't exist")
-   public void getByNumero_returnsNull_ofListAndCompteComptableNumberDoesntExist() {
+   void getByNumero_returnsNull_ofListAndCompteComptableNumberDoesntExist() {
       assertThat(CompteComptable.getByNumero(compteComptables,33)).isNull();
    }
 
    @Test
    @Tag("getByNumero")
    @DisplayName("In a CompteComptable list get null if a CompteComptable Numero is negative")
-   public void getByNumero_returnsNull_ofListAndCompteComptableNumberIsNegative() {
+   void getByNumero_returnsNull_ofListAndCompteComptableNumberIsNegative() {
       assertThat(CompteComptable.getByNumero(compteComptables,-33)).isNull();
    }
 
    @Test
    @Tag("getByNumero")
    @DisplayName("In a CompteComptable Null list get null for positive Numero")
-   public void getByNumero_returnsNull_ofNullListAndPositiveNumero() {
+   void getByNumero_returnsNull_ofNullListAndPositiveNumero() {
       assertThat(CompteComptable.getByNumero(null,numero1)).isNull();
    }
 
    @Test
    @Tag("getByNumero")
    @DisplayName("In a CompteComptable Null list get null for negative Numero")
-   public void getByNumero_returnsNull_ofNullListAndNegativeNumero() {
+   void getByNumero_returnsNull_ofNullListAndNegativeNumero() {
       assertThat(CompteComptable.getByNumero(null,-33)).isNull();
    }
 

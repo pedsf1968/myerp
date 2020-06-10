@@ -3,7 +3,6 @@ package com.dummy.myerp.business.impl.manager;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import com.dummy.myerp.business.contrat.manager.ComptabiliteManager;
 import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
 import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
 import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
@@ -183,7 +182,7 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
 
     }
 
-    @Test
+  /*  @Test
     @Tag("checkEcritureComptableRG6")
     @DisplayName("Reference duplication Year throw FunctionalException")
     @Disabled
@@ -206,17 +205,17 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
             manager.checkEcritureComptableRG6(vEcritureComptable);
         });
     }
-
+*/
+    /*
     @Test
     @Tag("checkEcritureComptableRG6")
     @DisplayName("Reference of closed Year throw FunctionalException")
-    @Disabled
     void checkEcritureComptableRG6_throwFunctionalException_ofReferenceYearClosed() throws Exception {
 
             assertThrows(FunctionalException.class, () -> {
                 manager.checkEcritureComptableRG6(vEcritureComptable);
             });
     }
-
+*/
 
 }

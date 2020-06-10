@@ -1,4 +1,4 @@
-package com.dummy.myerp.consumer.impl.dao;
+package com.dummy.myerp.consumer.dao.impl.db.dao;
 
 import com.dummy.myerp.consumer.dao.contrat.DaoProxy;
 import org.apache.logging.log4j.LogManager;

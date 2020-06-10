@@ -107,7 +107,7 @@
         <sonar.login>9e78c9485e384e93f7bf7a2f68c024a6c15c6576</sonar.login>
         <!-- Tell sonar where to look for the coverage file. Property inherited by submodules -->
         <jacoco.version>0.8.5</jacoco.version>
-        <sonar.coverage.jacoco.xmlReportPaths>../src/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.coverage.jacoco.xmlReportPaths>/dev/javaee/myerp/src/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
         <sonar.language>java</sonar.language>
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
@@ -154,7 +154,6 @@
                 <dependency>
                     <groupId>com.h2database</groupId>
                     <artifactId>h2</artifactId>
-                    <version>${h2.version}</version>
                     <scope>test</scope>
                 </dependency>
             </dependencies>
@@ -171,7 +170,6 @@
                 <dependency>
                     <groupId>com.h2database</groupId>
                     <artifactId>h2</artifactId>
-                    <version>${h2.version}</version>
                     <scope>test</scope>
                 </dependency>
             </dependencies>
@@ -179,7 +177,12 @@
 
         <profile>
             <id>sonar</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <properties>
+                <activatedProperties>test-business</activatedProperties>
+                <activatedProperties>test-consumer</activatedProperties>
                 <activatedProperties>sonar</activatedProperties>
             </properties>
             <build>

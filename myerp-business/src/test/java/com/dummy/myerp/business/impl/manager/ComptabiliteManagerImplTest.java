@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class ComptabiliteManagerImplTest extends BusinessTestCase {
     private Logger logger = LoggerFactory.getLogger(ComptabiliteManagerImplTest.class);
     private static ComptabiliteManagerImpl manager;
-    private static ComptabiliteManager comptabiliteManager;
     private  EcritureComptable vEcritureComptable;
     private static Date date;
 
@@ -28,7 +27,6 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
     @BeforeAll
     private static void beforeAll() {
         manager = new ComptabiliteManagerImpl();
-        comptabiliteManager = getBusinessProxy().getComptabiliteManager();
         date = new Date();
     }
 

@@ -1,4 +1,4 @@
-package com.dummy.myerp.consumer.dao.impl.db.dao;
+package com.dummy.myerp.consumer.impl.dao;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;

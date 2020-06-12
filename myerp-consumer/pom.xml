@@ -106,6 +106,7 @@
             <groupId>javax.inject</groupId>
             <artifactId>javax.inject</artifactId>
         </dependency>
+
     </dependencies>
 
 
@@ -131,6 +132,7 @@
                                 </goals>
                                 <configuration>
                                     <sources>
+                                       <source>src/test/java</source>
                                         <source>src/test-consumer/java</source>
                                     </sources>
                                 </configuration>
@@ -166,6 +168,7 @@
                                 </goals>
                                 <configuration>
                                     <sources>
+                                       <source>src/test/java</source>
                                         <source>src/test-consumer/java</source>
                                     </sources>
                                 </configuration>

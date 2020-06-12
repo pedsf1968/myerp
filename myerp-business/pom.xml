@@ -153,6 +153,7 @@
                                 </goals>
                                 <configuration>
                                     <sources>
+                                        <source>src/test/java</source>
                                         <source>src/test-business/java</source>
                                     </sources>
                                 </configuration>
@@ -175,7 +176,6 @@
             <id>sonar</id>
             <build>
                 <plugins>
-
                     <!-- Ajout du répertoire src/test-business/java en tant que source de test du module -->
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
@@ -189,6 +189,7 @@
                                 </goals>
                                 <configuration>
                                     <sources>
+                                        <source>src/test/java</source>
                                         <source>src/test-business/java</source>
                                     </sources>
                                 </configuration>

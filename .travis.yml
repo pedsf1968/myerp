@@ -17,7 +17,7 @@ jobs:
     - stage: Install
       script: ./mvnw clean install
     - stage: SonarCloud
-      script: ./mvnw sonar:sonar
+      script: ./mvnw verify sonar:sonar
     - stage: Cobertura
       script: ./mvnw cobertura:cobertura
 

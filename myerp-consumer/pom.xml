@@ -49,12 +49,20 @@
             <artifactId>myerp-model</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>myerp-technical</artifactId>
+        </dependency>
+
         <!-- spring-jdbc : commons-exceptions, datasource management -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+        </dependency>
 
         <!-- ========== Test Dependencies ========== -->
         <dependency>
@@ -88,6 +96,17 @@
             <artifactId>postgresql</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- Drivers JDBC H2 -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+        </dependency>
+
     </dependencies>
 
 
@@ -113,6 +132,43 @@
                                 </goals>
                                 <configuration>
                                     <sources>
+                                       <source>src/test/java</source>
+                                        <source>src/test-consumer/java</source>
+                                    </sources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+                <testResources>
+                    <testResource>
+                        <directory>src/test/resources</directory>
+                    </testResource>
+                    <testResource>
+                        <directory>src/test-consumer/resources</directory>
+                    </testResource>
+                </testResources>
+            </build>
+        </profile>
+
+        <profile>
+            <id>sonar</id>
+            <build>
+                <plugins>
+                    <!-- Ajout du répertoire src/test-consumer/java en tant que source de test du module -->
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>build-helper-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>add-test-source</id>
+                                <phase>generate-test-sources</phase>
+                                <goals>
+                                    <goal>add-test-source</goal>
+                                </goals>
+                                <configuration>
+                                    <sources>
+                                       <source>src/test/java</source>
                                         <source>src/test-consumer/java</source>
                                     </sources>
                                 </configuration>

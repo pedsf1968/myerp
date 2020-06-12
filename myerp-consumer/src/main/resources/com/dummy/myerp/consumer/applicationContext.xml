@@ -21,7 +21,6 @@
         </property>
     </bean>
 
-
     <!-- ==================== Consumer-Proxy ==================== -->
 
     <!-- ConsumerHelper -->
@@ -35,17 +34,21 @@
         </property>
     </bean>
 
-
     <!-- DaoProxy -->
     <bean id="DaoProxy" class="com.dummy.myerp.consumer.dao.impl.DaoProxyImpl" factory-method="getInstance">
         <property name="comptabiliteDao" ref="ComptabiliteDaoImpl"/>
     </bean>
 
-
     <!-- ==================== Databases ==================== -->
     <bean id="dataSourceMYERP" class="com.dummy.myerp.technical.util.spring.NullFactoryBean">
         <constructor-arg value="javax.sql.DataSource"/>
     </bean>
+
+    <!--bean id="consumerTestCase" class="com.dummy.myerp.consumer.dao.impl.db.dao.ConsumerTestCase" depends-on="springRegistry"/-->
+
+    <!--bean id="springRegistry" class="com.dummy.myerp.consumer.dao.impl.db.dao.SpringRegistry" factory-method="getInstance">
+        <property name="contextAppli" ref="ApplicationContext"/>
+    </bean-->
 
 
     <!-- ========== SQL ========== -->

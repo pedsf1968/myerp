@@ -15,7 +15,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class EcritureComptableTest {
+class EcritureComptableTest {
     private static EcritureComptable ecritureComptable;
     private static Integer id = 123;
     private static JournalComptable journalComptable;
@@ -102,7 +102,7 @@ public class EcritureComptableTest {
     @Test
     @Tag("isEquilibree")
     @DisplayName("If the EcritureComptable is balanced than return true")
-    public void isEquilibree_returnsTrue_ofEcritureComptableEquilibree() {
+    void isEquilibree_returnsTrue_ofEcritureComptableEquilibree() {
 
         assertThat(creditSum.byteValue()).isEqualTo(debitSum.byteValue());
         assertThat(ecritureComptable.isEquilibree()).isTrue();
@@ -111,7 +111,7 @@ public class EcritureComptableTest {
     @Test
     @Tag("isEquilibree")
     @DisplayName("If the EcritureComptable is not balanced than return false")
-    public void isEquilibree_returnsFalse_ofEcritureComptableNotEquilibree() {
+    void isEquilibree_returnsFalse_ofEcritureComptableNotEquilibree() {
        ecritureComptable.getListLigneEcriture().add(this.createLigne(3, null, "20"));
        ecritureComptable.getListLigneEcriture().add(this.createLigne(3, "21", "2"));
 
@@ -122,7 +122,7 @@ public class EcritureComptableTest {
     @Test
     @Tag("getTotalDebit")
     @DisplayName("Return the right total Debit of the EcritureComptable")
-    public void getTotalDebit_returnsTotalDebit_ofEcritureComptable(){
+    void getTotalDebit_returnsTotalDebit_ofEcritureComptable(){
 
         assertThat(ecritureComptable.getTotalDebit()).isEqualTo(debitSum);
     }
@@ -130,7 +130,7 @@ public class EcritureComptableTest {
     @Test
     @Tag("getTotalCredit")
     @DisplayName("Return the right total Credit of the EcritureComptable")
-    public void getTotalDebit_returnsTotalCredit_ofEcritureComptable(){
+    void getTotalDebit_returnsTotalCredit_ofEcritureComptable(){
 
         assertThat(ecritureComptable.getTotalCredit()).isEqualTo(creditSum);
     }

@@ -10,16 +10,21 @@ import javax.validation.constraints.Size;
  * Bean représentant un Journal Comptable
  */
 public class JournalComptable {
+    private static final int CODE_MIN = 1;
+    private static final int CODE_MAX = 5;
+    private static final int LIBELLE_MIN = 1;
+    private static final int LIBELLE_MAX = 150;
+
 
     // ==================== Attributs ====================
     /** code */
     @NotNull
-    @Size(min = 1, max = 5)
+    @Size(min = CODE_MIN, max = CODE_MAX)
     private String code;
 
     /** libelle */
     @NotNull
-    @Size(min = 1, max = 150)
+    @Size(min = LIBELLE_MIN, max = LIBELLE_MAX)
     private String libelle;
 
 
@@ -81,6 +86,10 @@ public class JournalComptable {
      */
     public static JournalComptable getByCode(List<? extends JournalComptable> pList, String pCode) {
         JournalComptable vRetour = null;
+        if(pList == null || pList.isEmpty() || pCode == null){
+            return vRetour;
+        }
+
         for (JournalComptable vBean : pList) {
             if (vBean != null && Objects.equals(vBean.getCode(), pCode)) {
                 vRetour = vBean;

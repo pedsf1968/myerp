@@ -82,11 +82,24 @@ public abstract class AbstractDbConsumer {
         return vJdbcTemplate.queryForObject(vSeqSQL, pSeqValueClass);
     }
 
+
+    /**
+     * Renvoie le dernière valeur utilisé d'une séquence
+     *
+     * <p><i><b>Attention : </b>Méthode spécifique au SGBD H2</i></p>
+     *
+     * @param <T> : La classe de la valeur de la séquence.
+     * @param pDataSourcesId : L'identifiant de la {@link DataSource} à utiliser
+     * @param pSeqName : Le nom de la séquence dont on veut récupérer la valeur
+     * @param pSeqValueClass : Classe de la valeur de la séquence
+     * @return la dernière valeur de la séquence
+     */
     protected <T> T queryGetSequenceValueH2(DataSourcesEnum pDataSourcesId,
                                                     String pSeqName, Class<T> pSeqValueClass) {
 
         JdbcTemplate vJdbcTemplate = new JdbcTemplate(getDataSource(pDataSourcesId));
         String vSeqSQL = String.format("SELECT %s.NEXTVAL-1 FROM DUAL",  pSeqName);
+
         return vJdbcTemplate.queryForObject(vSeqSQL, pSeqValueClass);
     }
 

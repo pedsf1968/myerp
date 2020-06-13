@@ -9,6 +9,7 @@ import com.dummy.myerp.consumer.db.DataSourcesEnum;
 import com.dummy.myerp.model.bean.comptabilite.*;
 import com.dummy.myerp.technical.exception.NotFoundException;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -36,7 +37,6 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
     private static String sqlInsertSequenceEcritureComptable;
     private static String sqlUpdateSequenceEcritureComptable;
     private static String sqlDeleteSequenceEcritureComptable;
-
 
     // ==================== Constructeurs ====================
     /** Instance unique de la classe (design pattern Singleton) */

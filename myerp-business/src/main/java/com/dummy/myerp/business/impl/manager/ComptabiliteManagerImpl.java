@@ -100,7 +100,6 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         } else {
             this.updateEcritureComptable(pEcritureComptable);
         }
-
     }
 
     /**
@@ -177,7 +176,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         }
         // On test le nombre de lignes car si l'écriture à une seule ligne
         //      avec un montant au débit et un montant au crédit ce n'est pas valable
-        if (!hasCreditLine || !hasDebitLine) {
+        if (!hasCreditLine.booleanValue() || !hasDebitLine.booleanValue()) {
             throw new FunctionalException(
                   "L'écriture comptable doit avoir au moins deux lignes : une ligne au débit et une ligne au crédit.");
         }

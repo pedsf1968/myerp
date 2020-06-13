@@ -211,7 +211,6 @@ class EcritureComptableDaoImplTest extends ConsumerTestCase {
       newEC.setId(null);
       getDaoProxy().getComptabiliteDao().insertEcritureComptable(newEC);
       Integer ecritureId = newEC.getId();
-
       getDaoProxy().getComptabiliteDao().deleteEcritureComptable(ecritureId);
 
       assertThrows(NotFoundException.class,() -> {

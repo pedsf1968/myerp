@@ -9,6 +9,7 @@ import com.dummy.myerp.consumer.db.DataSourcesEnum;
 import com.dummy.myerp.model.bean.comptabilite.*;
 import com.dummy.myerp.technical.exception.NotFoundException;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -37,7 +38,6 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
     private static String sqlUpdateSequenceEcritureComptable;
     private static String sqlDeleteSequenceEcritureComptable;
 
-
     // ==================== Constructeurs ====================
     /** Instance unique de la classe (design pattern Singleton) */
     private static final ComptabiliteDaoImpl INSTANCE = new ComptabiliteDaoImpl();
@@ -58,6 +58,7 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
         super();
     }
 
+    // ==================== SETTERS ====================
     public static void setSqlGetListCompteComptable(String sqlGetListCompteComptable) {
         ComptabiliteDaoImpl.sqlGetListCompteComptable = sqlGetListCompteComptable;
     }
@@ -209,9 +210,12 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
 
         vJdbcTemplate.update(sqlInsertEcritureComptable, vSqlParams);
 
-        // ----- Récupération de l'id
-        Integer vId = this.queryGetSequenceValuePostgreSQL(DataSourcesEnum.MYERP, "myerp.ecriture_comptable_id_seq",
-                                                           Integer.class);
+        // ----- Récupération de l'id POSTGRESQL
+        //Integer vId = this.queryGetSequenceValuePostgreSQL(DataSourcesEnum.MYERP, "myerp.ecriture_comptable_id_seq", Integer.class);
+
+        // ----- Récupération de l'id H2
+        Integer vId = this.queryGetSequenceValueH2(DataSourcesEnum.MYERP, "myerp.ecriture_comptable_id_seq", Integer.class);
+
         pEcritureComptable.setId(vId);
 
         // ===== Liste des lignes d'écriture

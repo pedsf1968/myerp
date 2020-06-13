@@ -44,13 +44,6 @@
         <constructor-arg value="javax.sql.DataSource"/>
     </bean>
 
-    <!--bean id="consumerTestCase" class="com.dummy.myerp.consumer.dao.impl.db.dao.ConsumerTestCase" depends-on="springRegistry"/-->
-
-    <!--bean id="springRegistry" class="com.dummy.myerp.consumer.dao.impl.db.dao.SpringRegistry" factory-method="getInstance">
-        <property name="contextAppli" ref="ApplicationContext"/>
-    </bean-->
-
-
     <!-- ========== SQL ========== -->
     <import resource="sqlContext.xml"/>
 </beans>

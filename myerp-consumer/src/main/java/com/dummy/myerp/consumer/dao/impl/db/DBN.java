@@ -4,6 +4,11 @@ package com.dummy.myerp.consumer.dao.impl.db;
  * Database Names matches
  */
 public class DBN {
+
+   DBN() {
+      throw new UnsupportedOperationException("Utility class");
+   }
+
    public static final String ANNEE = "annee";
    public static final String CODE = "code";
    public static final String COMPTE_COMPTABLE_NUMERO = "compte_comptable_numero";

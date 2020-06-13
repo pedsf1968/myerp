@@ -8,7 +8,9 @@
    <import resource="classpath:/com/dummy/myerp/business/applicationContext.xml"/>
    <import resource="classpath:/com/dummy/myerp/business/transactionContext.xml"/>
    <import resource="classpath:/com/dummy/myerp/consumer/applicationContext.xml"/>
+
    <!--import resource="classpath:/com/dummy/myerp/testbusiness/business/dataSourceContext.xml"/-->
-   <import resource="classpath:/com/dummy/myerp/testbusiness/business/dataSourceContextPostgresql.xml"/>
+   <!--import resource="classpath:/com/dummy/myerp/testbusiness/business/dataSourceContextPostgresql.xml"/-->
+   <import resource="classpath:/com/dummy/myerp/testbusiness/business/dataSourceContextH2.xml"/>
 
 </beans>

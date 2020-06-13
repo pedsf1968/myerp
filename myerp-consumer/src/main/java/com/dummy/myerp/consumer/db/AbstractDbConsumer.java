@@ -82,6 +82,16 @@ public abstract class AbstractDbConsumer {
         return vJdbcTemplate.queryForObject(vSeqSQL, pSeqValueClass);
     }
 
+    protected <T> T queryGetSequenceValueH2(DataSourcesEnum pDataSourcesId,
+                                                    String pSeqName, Class<T> pSeqValueClass) {
+
+        JdbcTemplate vJdbcTemplate = new JdbcTemplate(getDataSource(pDataSourcesId));
+        String vSeqSQL = String.format("SELECT %s.NEXTVAL-1 FROM DUAL",  pSeqName);
+        return vJdbcTemplate.queryForObject(vSeqSQL, pSeqValueClass);
+    }
+
+
+
 
     // ==================== Méthodes Static ====================
     /**

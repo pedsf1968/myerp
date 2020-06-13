@@ -16,7 +16,13 @@ CREATE TABLE MYERP.sequence_ecriture_comptable (
 );
 
 
-CREATE SEQUENCE MYERP.ecriture_comptable_id_seq;
+-- CREATE SEQUENCE MYERP.ecriture_comptable_id_seq;
+CREATE SEQUENCE MYERP.ecriture_comptable_id_seq
+                INCREMENT BY 1
+                START 1
+                MINVALUE 1
+                MAXVALUE 9223372036854775807
+                CACHE 1;
 
 CREATE TABLE MYERP.ecriture_comptable (
                 id INTEGER NOT NULL DEFAULT nextval('MYERP.ecriture_comptable_id_seq'),

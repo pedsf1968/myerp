@@ -10,41 +10,41 @@
     <!-- ========== ComptabiliteDaoImpl ========== -->
     <bean id="ComptabiliteDaoImpl" class="com.dummy.myerp.consumer.dao.impl.db.dao.ComptabiliteDaoImpl"
           factory-method="getInstance">
-        <property name="SQLgetListCompteComptable">
+        <property name="sqlGetListCompteComptable">
             <value>
                 SELECT * FROM myerp.compte_comptable
             </value>
         </property>
-        <property name="SQLgetListJournalComptable">
+        <property name="sqlGetListJournalComptable">
             <value>
                 SELECT * FROM myerp.journal_comptable
             </value>
         </property>
-        <property name="SQLgetListEcritureComptable">
+        <property name="sqlGetListEcritureComptable">
             <value>
                 SELECT * FROM myerp.ecriture_comptable
             </value>
         </property>
-        <property name="SQLgetEcritureComptable">
+        <property name="sqlGetEcritureComptable">
             <value>
                 SELECT * FROM myerp.ecriture_comptable
                 WHERE id = :id
             </value>
         </property>
-        <property name="SQLgetEcritureComptableByRef">
+        <property name="sqlGetEcritureComptableByRef">
             <value>
                 SELECT * FROM myerp.ecriture_comptable
                 WHERE reference = :reference
             </value>
         </property>
-        <property name="SQLloadListLigneEcriture">
+        <property name="sqlLoadListLigneEcriture">
             <value>
                 SELECT * FROM myerp.ligne_ecriture_comptable
                 WHERE ecriture_id = :ecriture_id
                 ORDER BY ligne_id
             </value>
         </property>
-        <property name="SQLinsertEcritureComptable">
+        <property name="sqlInsertEcritureComptable">
             <value>
                 INSERT INTO myerp.ecriture_comptable (
                     id,
@@ -55,7 +55,7 @@
                 )
             </value>
         </property>
-        <property name="SQLinsertListLigneEcritureComptable">
+        <property name="sqlInsertListLigneEcritureComptable">
             <value>
                 INSERT INTO myerp.ligne_ecriture_comptable (
                     ecriture_id, ligne_id, compte_comptable_numero, libelle, debit,
@@ -66,7 +66,7 @@
                 )
             </value>
         </property>
-        <property name="SQLupdateEcritureComptable">
+        <property name="sqlUpdateEcritureComptable">
             <value>
                 UPDATE myerp.ecriture_comptable SET
                     journal_code = :journal_code,
@@ -77,38 +77,38 @@
                     id = :id
             </value>
         </property>
-        <property name="SQLdeleteEcritureComptable">
+        <property name="sqlDeleteEcritureComptable">
             <value>
                 DELETE FROM myerp.ecriture_comptable
                 WHERE id = :id
             </value>
         </property>
-        <property name="SQLdeleteListLigneEcritureComptable">
+        <property name="sqlDeleteListLigneEcritureComptable">
             <value>
                 DELETE FROM myerp.ligne_ecriture_comptable
                 WHERE ecriture_id = :ecriture_id
             </value>
         </property>
-        <property name="SQLgetLastSequenceEcritureComptable">
+        <property name="sqlGetLastSequenceEcritureComptable">
             <value>
                 SELECT * FROM myerp.sequence_ecriture_comptable
                 where annee=:annee AND journal_code=:journal_code
             </value>
         </property>
-        <property name="SQLinsertSequenceEcritureComptable">
+        <property name="sqlInsertSequenceEcritureComptable">
             <value>
                 INSERT INTO myerp.sequence_ecriture_comptable
                 VALUES (:journal_code, :annee, :derniere_valeur)
             </value>
         </property>
-        <property name="SQLupdateSequenceEcritureComptable">
+        <property name="sqlUpdateSequenceEcritureComptable">
             <value>
                 UPDATE myerp.sequence_ecriture_comptable
                 SET derniere_valeur=:derniere_valeur
                 WHERE annee=:annee AND journal_code=:journal_code
             </value>
         </property>
-        <property name="SQLdeleteSequenceEcritureComptable">
+        <property name="sqlDeleteSequenceEcritureComptable">
             <value>
                 DELETE FROM myerp.sequence_ecriture_comptable
                 WHERE annee=:annee AND journal_code=:journal_code

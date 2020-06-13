@@ -5,8 +5,8 @@ package com.dummy.myerp.consumer.dao.impl.db;
  */
 public class DBN {
 
-   public DBN() {
-      throw new IllegalStateException("Utility class");
+   DBN() {
+      throw new UnsupportedOperationException("Utility class");
    }
 
    public static final String ANNEE = "annee";

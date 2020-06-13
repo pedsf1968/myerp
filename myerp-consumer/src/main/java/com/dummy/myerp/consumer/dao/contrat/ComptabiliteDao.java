@@ -83,6 +83,14 @@ public interface ComptabiliteDao {
     void deleteEcritureComptable(Integer pId);
 
     /**
+     * Supprime les lignes d'écriture de l'écriture comptable d'id {@code pEcritureId}
+     *
+     * @param pEcritureId id de l'écriture comptable
+     */
+    void deleteListLigneEcritureComptable(Integer pEcritureId);
+
+
+    /**
      * Get the last sequence in the Journal Comptable
      *
      * @param pAnneeJournal of the sequence

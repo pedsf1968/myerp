@@ -92,7 +92,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         // Enregistrer (insert/update) la valeur de la séquence en persitance
         //            (table sequence_ecriture_comptable)
 
-        TransactionStatus vTS = getTransactionManager().beginTransactionMyERP();
+        getTransactionManager().beginTransactionMyERP();
         this.updateEcritureComptable(pEcritureComptable);
 
         if (numeroSequence == 1) {

@@ -6,8 +6,9 @@
 
    <import resource="classpath:/com/dummy/myerp/consumer/applicationContext.xml"/>
 
-   <!--import resource="classpath:/com/dummy/myerp/testconsumer/consumer/dataSourceContext.xml"/-->
-   <!--import resource="classpath:/com/dummy/myerp/testconsumer/consumer/dataSourceContextPostgresql.xml"/-->
-   <import resource="classpath:/com/dummy/myerp/testconsumer/consumer/dataSourceContextH2.xml"/>
+      <!-- PRODUCTION DOCKER POSTGRES DATABASE -->
+   <import resource="classpath:/com/dummy/myerp/consumer/dataSourceContextPostgresql.xml"/>
+   <!-- TEST H2 DATABASE -->
+   <!--import resource="classpath:/com/dummy/myerp/testconsumer/consumer/dataSourceContextH2.xml"/-->
 
 </beans>

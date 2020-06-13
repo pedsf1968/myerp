@@ -28,7 +28,7 @@ CREATE TABLE MYERP.ecriture_comptable (
 );
 
 
-ALTER SEQUENCE MYERP.ecriture_comptable_id_seq OWNED BY MYERP.ecriture_comptable.id;
+-- ALTER SEQUENCE MYERP.ecriture_comptable_id_seq OWNED BY MYERP.ecriture_comptable.id;
 
 CREATE TABLE MYERP.compte_comptable (
                 numero INTEGER NOT NULL,

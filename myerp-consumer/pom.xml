@@ -117,6 +117,9 @@
         <!-- Profile utilisé pour lancer les tests d'intégration de la couche Consumer -->
         <profile>
             <id>test-consumer</id>
+            <properties>
+                <myerp.database>MYERP</myerp.database>
+            </properties>
             <build>
                 <plugins>
                     <!-- Ajout du répertoire src/test-consumer/java en tant que source de test du module -->
@@ -153,6 +156,9 @@
 
         <profile>
             <id>sonar</id>
+            <properties>
+                <myerp.database>MYERP</myerp.database>
+            </properties>
             <build>
                 <plugins>
                     <!-- Ajout du répertoire src/test-consumer/java en tant que source de test du module -->

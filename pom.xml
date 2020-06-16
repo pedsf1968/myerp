@@ -102,7 +102,9 @@
         <postgresql.version>42.2.12</postgresql.version><!-- OLD 9.4.1212 -->
         <spring.version>5.2.6.RELEASE</spring.version><!-- OLD 4.3.7.RELEASE -->
         <validation-api.version>2.0.1.Final</validation-api.version><!-- OLD 1.1.0.Final -->
-        <!-- ===== Sonar Cloud ====== -->
+        <!-- =================================================================== -->
+        <!--                                                           SONARQUBE -->
+        <!-- =================================================================== -->
         <sonar.projectKey>pedsf1968_myerp</sonar.projectKey>
         <sonar.moduleKey>${project.artifactId}</sonar.moduleKey>
         <sonar.organization>pedsf1968</sonar.organization>
@@ -113,6 +115,12 @@
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
         <sonar-maven-plugin.version>3.7.0.1746</sonar-maven-plugin.version>
         <sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml,../target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.coverage.exclusions>
+            myerp-technical/src/main/java/com/dummy/myerp/technical/exception/*.java,
+            myerp-technical/src/main/java/com/dummy/myerp/technical/util/spring/NullFactoryBean.java,
+            myerp-consumer/src/main/java/com/dummy/myerp/consumer/dao/impl/db/rowmapper/comptabilite/*.java,
+            myerp-consumer/src/main/java/com/dummy/myerp/consumer/dao/impl/db/DBN.java,
+        </sonar.coverage.exclusions>
     </properties>
 
 
@@ -146,12 +154,30 @@
 
         <!-- Profile utilisé pour lancer les tests d'intégration de la couche Business -->
         <profile>
+            <id>production</id>
+            <properties>
+                <activatedProperties>production</activatedProperties>
+                <myerp.database>MYERP</myerp.database>
+            </properties>
+            <dependencies>
+                <!-- ================================================ POSTGRESQL -->
+                <dependency>
+                    <groupId>org.postgresql</groupId>
+                    <artifactId>postgresql</artifactId>
+                    <scope>runtime</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+
+        <!-- Profile utilisé pour lancer les tests d'intégration de la couche Business -->
+        <profile>
             <id>test-business</id>
             <properties>
                 <activatedProperties>test-business</activatedProperties>
+                <myerp.database>TEST</myerp.database>
             </properties>
             <dependencies>
-                <!-- ================================================ H2DATABASE -->
+                <!-- ======================================================== H2 -->
                 <dependency>
                     <groupId>com.h2database</groupId>
                     <artifactId>h2</artifactId>
@@ -165,9 +191,10 @@
             <id>test-consumer</id>
             <properties>
                 <activatedProperties>test-consumer</activatedProperties>
+                <myerp.database>TEST</myerp.database>
             </properties>
             <dependencies>
-                <!-- ================================================ H2DATABASE -->
+                <!-- ======================================================== H2 -->
                 <dependency>
                     <groupId>com.h2database</groupId>
                     <artifactId>h2</artifactId>
@@ -182,32 +209,19 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
+                <myerp.database>TEST</myerp.database>
                 <activatedProperties>test-business</activatedProperties>
                 <activatedProperties>test-consumer</activatedProperties>
                 <activatedProperties>sonar</activatedProperties>
             </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.jacoco</groupId>
-                        <artifactId>jacoco-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>prepare-agent</id>
-                                <goals>
-                                    <goal>prepare-agent</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>report</id>
-                                <goals>
-                                    <goal>report</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
+            <dependencies>
+                <!-- ======================================================== H2 -->
+                <dependency>
+                    <groupId>com.h2database</groupId>
+                    <artifactId>h2</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
         </profile>
     </profiles>
 
@@ -610,12 +624,6 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>myerp-consumer/target/classes/ com/dummy/myerp/consumer/dao/impl/db/DBN.class</exclude>
-                        <exclude>myerp-consumer/target/classes/com/dummy/myerp/consumer/dao/impl/db/rowmapper</exclude>
-                    </excludes>
-                </configuration>
                 <executions>
                     <execution>
                         <id>prepare-and-report</id>
@@ -642,7 +650,7 @@
                 <artifactId>sonar-maven-plugin</artifactId>
             </plugin>
 
-            <!-- Ajout du répertoire src/test-consumer/java en tant que source de test du module -->
+            <!-- Ajout des répertoire src/test/java src/test-consumer/java src/test-business/java en tant que source de test du module -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
@@ -664,6 +672,12 @@
                 </executions>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <testResources>
             <testResource>
                 <directory>src/test/resources</directory>

@@ -3,6 +3,7 @@ package com.dummy.myerp.consumer.dao.impl.cache;
 import java.util.List;
 
 import com.dummy.myerp.consumer.ConsumerHelper;
+import com.dummy.myerp.consumer.db.AbstractDbConsumer;
 import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
 
 

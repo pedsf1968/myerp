@@ -70,7 +70,7 @@ class EcritureComptableDaoImplTest extends ConsumerTestCase {
    @Test
    @Tag("loadListLignEcriture")
    @DisplayName("Load all LigneEcriture of one EcritureComptable")
-   public void loadListLigneEcriture_returnListLigneEcriture_ofOneEcritureComptable(){
+   void loadListLigneEcriture_returnListLigneEcriture_ofOneEcritureComptable(){
 
       ligneEcritureComptables.forEach((ecritureId,list) -> {
          vEcritureComptable.setId(ecritureId);
@@ -83,7 +83,7 @@ class EcritureComptableDaoImplTest extends ConsumerTestCase {
    @Test
    @Tag("getListEcritureComptable")
    @DisplayName("Get all EcritureComptable")
-   public void getListEcritureComptable_returnAllEcritureComptable_ofComptabilité(){
+   void getListEcritureComptable_returnAllEcritureComptable_ofComptabilité(){
       List<EcritureComptable> list = getDaoProxy().getComptabiliteDao().getListEcritureComptable();
 
       assertThat(list.size()).isEqualTo(ecritureComptables.size());
@@ -93,7 +93,7 @@ class EcritureComptableDaoImplTest extends ConsumerTestCase {
    @Test
    @Tag("getEcritureComptable")
    @DisplayName("Get the right EcritureComptable by Id")
-   public void getEcritureComptable_returnEcritureComptable_byId(){
+   void getEcritureComptable_returnEcritureComptable_byId(){
       Integer ecritureId = null;
       try{
          for (EcritureComptable e: ecritureComptables) {
@@ -116,7 +116,7 @@ class EcritureComptableDaoImplTest extends ConsumerTestCase {
    @Test
    @Tag("getEcritureComptableByRef")
    @DisplayName("Get the right EcritureComptable by Reference")
-   public void getEcritureComptableByRef_returnEcritureComptable_byReference(){
+   void getEcritureComptableByRef_returnEcritureComptable_byReference(){
       String reference = null;
 
       try {
@@ -140,7 +140,7 @@ class EcritureComptableDaoImplTest extends ConsumerTestCase {
    @Test
    @Tag("insertEcritureComptable")
    @DisplayName("Verify that we can insert EcritureComptable")
-   public void insertEcritureComptable(){
+   void insertEcritureComptable(){
       newEC.setId(null);
       getDaoProxy().getComptabiliteDao().insertEcritureComptable(newEC);
 
@@ -165,7 +165,7 @@ class EcritureComptableDaoImplTest extends ConsumerTestCase {
    @Test
    @Tag("updateEcritureComptable")
    @DisplayName("Assume that we can update an EcritureComptable")
-   public void updateEcritureComptable() {
+   void updateEcritureComptable() {
       Integer ecritureId = ecritureComptables.get(1).getId();
       vEcritureComptable = newEC;
       vEcritureComptable.setId(ecritureId);
@@ -207,7 +207,7 @@ class EcritureComptableDaoImplTest extends ConsumerTestCase {
    @Test
    @Tag("deleteEcritureComptable")
    @DisplayName("Verify that we can delete an EcritureComptable")
-   public void deleteEcritureComptable(){
+   void deleteEcritureComptable(){
       newEC.setId(null);
       getDaoProxy().getComptabiliteDao().insertEcritureComptable(newEC);
       Integer ecritureId = newEC.getId();

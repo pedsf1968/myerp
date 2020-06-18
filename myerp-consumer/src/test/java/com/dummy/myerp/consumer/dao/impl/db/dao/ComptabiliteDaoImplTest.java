@@ -26,7 +26,7 @@ class ComptabiliteDaoImplTest extends ConsumerTestCase {
    @Test
    @Tag("getListCompteComptable")
    @DisplayName("Verify that we get all CompteComptable")
-   public void getListCompteComptable(){
+   void getListCompteComptable(){
       List<CompteComptable> compteComptables = getDaoProxy().getComptabiliteDao().getListCompteComptable();
 
       assertThat(compteComptables.size()).isEqualTo(mapCompteComptables.size());
@@ -38,7 +38,7 @@ class ComptabiliteDaoImplTest extends ConsumerTestCase {
    @Test
    @Tag("getListJournalComptable")
    @DisplayName("Verify that we get all JournalComptable")
-   public void getListJournalComptable(){
+   void getListJournalComptable(){
       List<JournalComptable> journalComptables = getDaoProxy().getComptabiliteDao().getListJournalComptable();
 
       assertThat(journalComptables.size()).isEqualTo(mapJournalComptable.size());

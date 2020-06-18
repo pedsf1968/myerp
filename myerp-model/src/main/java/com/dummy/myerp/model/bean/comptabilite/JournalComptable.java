@@ -91,7 +91,8 @@ public class JournalComptable {
         }
 
         for (JournalComptable vBean : pList) {
-            if (vBean != null && Objects.equals(vBean.getCode(), pCode)) {
+            if ( Objects.equals(vBean.getCode(), pCode)) {
+            //if (vBean != null && Objects.equals(vBean.getCode(), pCode)) {
                 vRetour = vBean;
                 break;
             }

@@ -23,7 +23,7 @@ class SequenceEcritureComptableDaoImplTest extends ConsumerTestCase {
    @Test
    @Tag("getLastSeqOfTheYear")
    @DisplayName("Verify that we get the last SequenceEcritureComptable")
-   public void getLastSeqOfTheYear(){
+   void getLastSeqOfTheYear(){
       annee = 2016;
       codeJournal = "AC";
       derniereValeur = 40;
@@ -39,7 +39,7 @@ class SequenceEcritureComptableDaoImplTest extends ConsumerTestCase {
    @Test
    @Tag("getLastSeqOfTheYear")
    @DisplayName("Verify that we get null if the sequence year doesn't exist")
-   public void getLastSeqOfTheYear_returnNull_ofNewSequenceYear(){
+   void getLastSeqOfTheYear_returnNull_ofNewSequenceYear(){
       annee = 2025;
       codeJournal = "AC";
 
@@ -51,7 +51,7 @@ class SequenceEcritureComptableDaoImplTest extends ConsumerTestCase {
    @Test
    @Tag("getLastSeqOfTheYear")
    @DisplayName("Verify that we get null if the journal doesn't exist")
-   public void getLastSeqOfTheYear_returnNull_ofNewSequenceJournal(){
+   void getLastSeqOfTheYear_returnNull_ofNewSequenceJournal(){
       annee = 2016;
       codeJournal = "ZZ";
 
@@ -62,7 +62,7 @@ class SequenceEcritureComptableDaoImplTest extends ConsumerTestCase {
 
    @Test
    @Tag("insertSequenceEcritureComptable")
-   public void insertSequenceEcritureComptable(){
+   void insertSequenceEcritureComptable(){
       try{
          annee = 2020;
          codeJournal = "AC";
@@ -91,7 +91,7 @@ class SequenceEcritureComptableDaoImplTest extends ConsumerTestCase {
    @Test
    @Tag("updateSequenceEcritureComptable")
    @DisplayName("Verify that we update the SequenceEcritureComptable")
-   public void updateSequenceEcritureComptable(){
+   void updateSequenceEcritureComptable(){
       annee = 2016;
       codeJournal = "AC";
       derniereValeur = 555;

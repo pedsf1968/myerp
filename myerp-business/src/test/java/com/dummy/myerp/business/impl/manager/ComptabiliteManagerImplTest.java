@@ -181,11 +181,10 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
         });
 
     }
-
-  /*  @Test
+/*
+    @Test
     @Tag("checkEcritureComptableRG6")
     @DisplayName("Reference duplication Year throw FunctionalException")
-    @Disabled
     void checkEcritureComptableRG6_throwFunctionalException_ofReferenceDuplication() throws Exception {
         vEcritureComptable.setReference("AC-2020/00001");
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
@@ -195,15 +194,14 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
               null, null,
               new BigDecimal(123)));
 
-        //logger.info("manager : {}", manager.getListEcritureComptable());
+        //Boolean reponse = manager.getListEcritureComptable().add(vEcritureComptable);
+        manager.insertEcritureComptable(vEcritureComptable);
 
-        manager.getListEcritureComptable().add(vEcritureComptable);
+    //    assertThrows(FunctionalException.class, () -> {
+     //       manager.checkEcritureComptableRG6(vEcritureComptable);
+     //   });
 
-
-        assertThrows(FunctionalException.class, () -> {
-            manager.getListEcritureComptable().add(vEcritureComptable);
-            manager.checkEcritureComptableRG6(vEcritureComptable);
-        });
+        logger.info("vEcritureComptable{}",vEcritureComptable.toString());
     }
 */
     /*

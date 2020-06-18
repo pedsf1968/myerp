@@ -53,10 +53,34 @@ class JournalComptableTest {
 
    @Test
    @Tag("getByCode")
+   @DisplayName("In a JournalComptable list we get null if Code is null")
+   void getByCode_returnsNull_ofListAndNullCode() {
+      assertThat(JournalComptable.getByCode(journalComptables,null)).isNull();
+   }
+
+   @Test
+   @Tag("getByCode")
    @DisplayName("In a JournalComptable list we get null if Code format doesn't match")
    void getByCode_returnsNull_ofListAndBadFormatCode() {
       assertThat(JournalComptable.getByCode(journalComptables,"sdfsd")).isNull();
    }
+
+   @Test
+   @Tag("getByCode")
+   @DisplayName("In a JournalComptable list we get null if list is null")
+   void getByCode_returnsNull_ofNullList() {
+      assertThat(JournalComptable.getByCode(null,"4")).isNull();
+   }
+
+   @Test
+   @Tag("getByCode")
+   @DisplayName("In a JournalComptable list we get null if list is empty")
+   void getByCode_returnsNull_ofEmptyList() {
+      List<JournalComptable> emptyList = new ArrayList<>();
+
+      assertThat(JournalComptable.getByCode(emptyList,"2")).isNull();
+   }
+
 
    @Test
    @Tag("getCode")

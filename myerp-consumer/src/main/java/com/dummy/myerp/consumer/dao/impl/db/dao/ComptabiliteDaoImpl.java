@@ -9,7 +9,6 @@ import com.dummy.myerp.consumer.db.DataSourcesEnum;
 import com.dummy.myerp.model.bean.comptabilite.*;
 import com.dummy.myerp.technical.exception.NotFoundException;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -173,6 +172,7 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
         vSqlParams.addValue(DBN.REFERENCE, pReference);
         EcritureComptableRM vRM = new EcritureComptableRM();
         EcritureComptable vBean;
+
         try {
             vBean = vJdbcTemplate.queryForObject(sqlGetEcritureComptableByRef, vSqlParams, vRM);
         } catch (EmptyResultDataAccessException vEx) {
@@ -373,7 +373,6 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
 
         vSqlParams.addValue(DBN.JOURNAL_CODE, codeJournal);
         vSqlParams.addValue(DBN.ANNEE, pSequenceEcritureComptable.getAnnee());
-        //vSqlParams.addValue(DBN.DERNIERE_VALEUR, pSequenceEcritureComptable.getDerniereValeur());
 
         vJdbcTemplate.update(sqlDeleteSequenceEcritureComptable, vSqlParams);
     }

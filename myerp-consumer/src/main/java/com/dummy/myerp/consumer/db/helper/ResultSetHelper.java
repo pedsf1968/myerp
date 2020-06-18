@@ -12,6 +12,7 @@ import org.apache.commons.lang3.time.DateUtils;
  * Classe utilitaire travaillant sur les ResultSet
  */
 public abstract class ResultSetHelper {
+    private static final String ERROR_MESSAGE = "ResulSet musts be not null";
 
     // ==================== Constructeurs ====================
     /**
@@ -34,6 +35,11 @@ public abstract class ResultSetHelper {
      */
     public static Integer getInteger(ResultSet pRS, String pColName) throws SQLException {
         Integer vRetour = null;
+
+        if (pRS==null || pColName==null) {
+            throw new SQLException(ERROR_MESSAGE);
+        }
+
         int vInt = pRS.getInt(pColName);
         if (!pRS.wasNull()) {
             vRetour = Integer.valueOf(vInt);
@@ -52,6 +58,11 @@ public abstract class ResultSetHelper {
      */
     public static Long getLong(ResultSet pRS, String pColName) throws SQLException {
         Long vRetour = null;
+
+        if (pRS==null || pColName==null) {
+            throw new SQLException(ERROR_MESSAGE);
+        }
+
         Long vLong = pRS.getLong(pColName);
         if (!pRS.wasNull()) {
             vRetour = vLong;
@@ -70,6 +81,10 @@ public abstract class ResultSetHelper {
      * @throws SQLException sur erreur SQL
      */
     public static Date getDate(ResultSet pRS, String pColName) throws SQLException {
+       if (pRS==null || pColName==null) {
+            throw new SQLException(ERROR_MESSAGE);
+        }
+
         Date vDate = pRS.getDate(pColName);
         if (vDate != null) {
             vDate = DateUtils.truncate(vDate, Calendar.DATE);

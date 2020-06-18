@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Classe de test de l'initialisation du contexte Spring
  */
-public class TestInitSpring extends ConsumerTestCase {
+class TestInitSpring extends ConsumerTestCase {
 
     /**
      * Constructeur.
@@ -25,7 +25,8 @@ public class TestInitSpring extends ConsumerTestCase {
     @Test
     @Tag("testInit")
     @DisplayName("Verify the initialisation of the context")
-    public void testInit() {
+    void testInit() {
+
         SpringRegistry.init();
         assertThat(SpringRegistry.getDaoProxy()).isNotNull();
     }

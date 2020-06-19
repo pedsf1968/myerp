@@ -2,6 +2,7 @@ package com.dummy.myerp.business.impl.manager;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
 import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
@@ -181,39 +182,56 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
         });
 
     }
-/*
+
     @Test
     @Tag("checkEcritureComptableRG6")
     @DisplayName("Reference duplication Year throw FunctionalException")
     void checkEcritureComptableRG6_throwFunctionalException_ofReferenceDuplication() throws Exception {
-        vEcritureComptable.setReference("AC-2020/00001");
+
+        // all EcritureComptable to try to insert them
+        List<EcritureComptable> ecritureComptables = manager.getListEcritureComptable();
+
+        for (EcritureComptable e : ecritureComptables) {
+            assertThrows(FunctionalException.class, () -> {
+                manager.checkEcritureComptableRG6(e);
+            });
+        }
+    }
+
+
+
+    @Test
+    @Tag("checkEcritureComptableRG7")
+    @DisplayName("The LigneEcritureComptable Debit amout can't exceed 2 decimals")
+    void checkEcritureComptableRG7_throwFunctionalException_ofLigneEcritureComptableWith3DecimalDebitAmount() throws Exception {
+        vEcritureComptable.setReference("AC-2018/00001");
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
-              null, new BigDecimal(123),
+              null, new BigDecimal(123.123),
               null));
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
               null, null,
-              new BigDecimal(123)));
+              new BigDecimal(123.12)));
 
-        //Boolean reponse = manager.getListEcritureComptable().add(vEcritureComptable);
-        manager.insertEcritureComptable(vEcritureComptable);
-
-    //    assertThrows(FunctionalException.class, () -> {
-     //       manager.checkEcritureComptableRG6(vEcritureComptable);
-     //   });
-
-        logger.info("vEcritureComptable{}",vEcritureComptable.toString());
+        assertThrows(FunctionalException.class, () -> {
+            manager.checkEcritureComptableRG7(vEcritureComptable);
+        });
     }
-*/
-    /*
+
     @Test
-    @Tag("checkEcritureComptableRG6")
-    @DisplayName("Reference of closed Year throw FunctionalException")
-    void checkEcritureComptableRG6_throwFunctionalException_ofReferenceYearClosed() throws Exception {
+    @Tag("checkEcritureComptableRG7")
+    @DisplayName("The LigneEcritureComptable Credit amout can't exceed 2 decimals")
+    void checkEcritureComptableRG7_throwFunctionalException_ofLigneEcritureComptableWith3DecimalCrebitAmount() throws Exception {
+        vEcritureComptable.setReference("AC-2018/00001");
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+              null, new BigDecimal(123.12),
+              null));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+              null, null,
+              new BigDecimal(-123.125)));
 
-            assertThrows(FunctionalException.class, () -> {
-                manager.checkEcritureComptableRG6(vEcritureComptable);
-            });
+        assertThrows(FunctionalException.class, () -> {
+            manager.checkEcritureComptableRG7(vEcritureComptable);
+        });
     }
-*/
 
 }

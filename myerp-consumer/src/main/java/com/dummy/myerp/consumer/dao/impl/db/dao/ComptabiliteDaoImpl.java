@@ -210,11 +210,7 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
 
         vJdbcTemplate.update(sqlInsertEcritureComptable, vSqlParams);
 
-        // ----- Récupération de l'id POSTGRESQL
-        //Integer vId = this.queryGetSequenceValuePostgreSQL(DataSourcesEnum.MYERP, "myerp.ecriture_comptable_id_seq", Integer.class);
-
-        // ----- Récupération de l'id H2
-        Integer vId = this.queryGetSequenceValueH2(DataSourcesEnum.MYERP, "myerp.ecriture_comptable_id_seq", Integer.class);
+        Integer vId = this.queryGetSequenceValue(DataSourcesEnum.MYERP, "myerp.ecriture_comptable_id_seq", Integer.class);
 
         pEcritureComptable.setId(vId);
 

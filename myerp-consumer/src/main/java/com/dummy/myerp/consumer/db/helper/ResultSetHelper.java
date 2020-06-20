@@ -40,10 +40,11 @@ public abstract class ResultSetHelper {
             throw new SQLException(ERROR_MESSAGE);
         }
 
-        int vInt = pRS.getInt(pColName);
+        Integer vInt = (Integer) pRS.getInt(pColName);
         if (!pRS.wasNull()) {
-            vRetour = Integer.valueOf(vInt);
+            vRetour = vInt;
         }
+
         return vRetour;
     }
 
@@ -63,7 +64,7 @@ public abstract class ResultSetHelper {
             throw new SQLException(ERROR_MESSAGE);
         }
 
-        Long vLong = pRS.getLong(pColName);
+        Long vLong = (Long) pRS.getLong(pColName);
         if (!pRS.wasNull()) {
             vRetour = vLong;
         }

@@ -138,6 +138,27 @@ class EcritureComptableDaoImplTest extends ConsumerTestCase {
    }
 
    @Test
+   @Tag("getEcritureComptableByRef")
+   @DisplayName("Throws NotFoundException if the Reference of EcritureComptable doesn't exist")
+   void getEcritureComptableByRef_throwsNotFoundException_OfUnknownReference(){
+
+      assertThrows(NotFoundException.class, () -> {
+         getDaoProxy().getComptabiliteDao().getEcritureComptableByRef("oaizz5");
+      });
+   }
+
+   @Test
+   @Tag("getEcritureComptableByRef")
+   @DisplayName("Throws NotFoundException if the Reference of EcritureComptable is null")
+   void getEcritureComptableByRef_throwsNotFoundException_OfNullReference(){
+
+      assertThrows(NotFoundException.class, () -> {
+         getDaoProxy().getComptabiliteDao().getEcritureComptableByRef(null);
+      });
+   }
+
+
+   @Test
    @Tag("insertEcritureComptable")
    @DisplayName("Verify that we can insert EcritureComptable")
    void insertEcritureComptable(){

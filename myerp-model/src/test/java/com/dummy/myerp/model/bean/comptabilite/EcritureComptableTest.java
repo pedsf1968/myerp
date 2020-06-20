@@ -1,62 +1,27 @@
 package com.dummy.myerp.model.bean.comptabilite;
 
-import com.dummy.myerp.technical.exception.FunctionalException;
 import org.apache.commons.lang3.ObjectUtils;
 import org.junit.jupiter.api.*;
 
 import java.math.BigDecimal;
-import java.text.DateFormat;
+import java.sql.Date;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class EcritureComptableTest {
+class EcritureComptableTest  {
+   private static final Integer id = 123;
+   private static final String reference = "BQ-2020/00011";
+   private static final Date date = Date.valueOf("2020-06-18");
+   private static final String libelle = "Equilibrée";
+   private static final BigDecimal[] debits = {new BigDecimal("200.50"), new BigDecimal("100.50"), null, new BigDecimal("40")};
+   private static final BigDecimal[] credits = {null, new BigDecimal("33"), new BigDecimal("301"), new BigDecimal("7")};
    private static EcritureComptable ecritureComptable;
-   private static Integer id = 123;
    private static JournalComptable journalComptable;
-   private static String reference = "BQ-2020/00011";
-   private static Date date = new Date();
-   private static String libelle = "Equilibrée";
-   private static BigDecimal[] debits = {new BigDecimal("200.50"), new BigDecimal("100.50"), null, new BigDecimal("40")};
-   private static BigDecimal[] credits = {null, new BigDecimal("33"), new BigDecimal("301"), new BigDecimal("7")};
    private static BigDecimal debitSum;
    private static BigDecimal creditSum;
 
-
-   /**
-    * removeNull : remove null item in BigDecimal list
-    *
-    * @param bigDecimals list of BigDecimal numbers
-    * @return list of BigDecimal numbers without null
-    */
-   private List<BigDecimal> removeNull(List<BigDecimal> bigDecimals) {
-      List<BigDecimal> result = new ArrayList<>();
-
-      for (BigDecimal b : bigDecimals) {
-         if (b != null) {
-            result.add(b);
-         }
-      }
-
-      return result;
-   }
-
-   /**
-    * sumBigDecimalList : sum all BigDecimal numbers
-    *
-    * @param bigDecimals list of BigDecimal numbers
-    * @return BigDecimal sum
-    */
-   private BigDecimal sumBigDecimalList(List<BigDecimal> bigDecimals) {
-
-      bigDecimals = removeNull(bigDecimals);
-      return bigDecimals.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
-   }
 
    private String getCodeJournalFromReference(String reference) {
       return reference.split("-")[0];
@@ -94,8 +59,8 @@ class EcritureComptableTest {
          ecritureComptable.getListLigneEcriture().add(this.createLigne(i < 2 ? 1 : 2, debitValue, creditValue));
       }
 
-      debitSum = sumBigDecimalList(Arrays.asList(debits));
-      creditSum = sumBigDecimalList(Arrays.asList(credits));
+      debitSum = UtilityClass.sumBigDecimalList(Arrays.asList(debits));
+      creditSum = UtilityClass.sumBigDecimalList(Arrays.asList(credits));
 
    }
 
@@ -201,8 +166,7 @@ class EcritureComptableTest {
    @Tag("setDate")
    @DisplayName("Change the Date of EcritureComptable")
    void setDate() throws ParseException {
-      DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);
-      Date newDate = df.parse("09/11/1988");
+      Date newDate = Date.valueOf("1988-11-09");
 
       ecritureComptable.setDate(newDate);
 
@@ -243,5 +207,33 @@ class EcritureComptableTest {
             "LigneEcritureComptable{compteComptable=CompteComptable{numero=2, libelle='null'}, libelle='33', debit=40, credit=7}\n" +
             "]}";
       assertThat(ecritureComptable.toString()).isEqualTo(output);
+   }
+
+   @Test
+   @Tag("equals")
+   @DisplayName("Verify that 2 identicals EcritureComptable are equals")
+   void testEquals_returnTrue_of2SameEcritureComptables() {
+      assertThat(ecritureComptable.equals(ecritureComptable)).isTrue();
+   }
+
+   @Test
+   @Tag("equals")
+   @DisplayName("Verify that 2 differents EcritureComptable are not equals")
+   void testEquals_returnFalse_of2DifferentsEcritureComptables() {
+      EcritureComptable reference = new EcritureComptable();
+      reference.setId(ecritureComptable.getId());
+      reference.setDate(ecritureComptable.getDate());
+      reference.setReference(ecritureComptable.getReference());
+      reference.setLibelle(ecritureComptable.getLibelle());
+      reference.setJournal(ecritureComptable.getJournal());
+
+      assertThat(ecritureComptable.equals(reference)).isFalse();
+   }
+
+   @Test
+   @Tag("hashCode")
+   @DisplayName("Verify hashCode calculation")
+   void testHashCode() {
+      assertThat(ecritureComptable.hashCode()).isEqualTo(-73216488);
    }
 }

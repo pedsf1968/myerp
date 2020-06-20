@@ -15,6 +15,9 @@ import com.dummy.myerp.consumer.dao.contrat.DaoProxy;
  * <p>Classe mère des classes de Consumer DB</p>
  */
 public abstract class AbstractDbConsumer {
+    private static final String POSTGRES_REQUEST = "SELECT last_value FROM %s";
+    private static final String H2_REQUEST = "SELECT %s.NEXTVAL-1 FROM DUAL";
+
 
 // ==================== Attributs Static ====================
     /** Logger Log4j pour la classe */
@@ -77,8 +80,8 @@ public abstract class AbstractDbConsumer {
 
         JdbcTemplate vJdbcTemplate = new JdbcTemplate(getDataSource(pDataSourcesId));
 
-        //String vSeqSQL = String.format("SELECT last_value FROM %s",  pSeqName);
-        String vSeqSQL = String.format("SELECT %s.NEXTVAL-1 FROM DUAL",  pSeqName);
+        //String vSeqSQL = String.format(POSTGRES_REQUEST,  pSeqName);
+        String vSeqSQL = String.format(H2_REQUEST,  pSeqName);
 
         return vJdbcTemplate.queryForObject(vSeqSQL, pSeqValueClass);
     }

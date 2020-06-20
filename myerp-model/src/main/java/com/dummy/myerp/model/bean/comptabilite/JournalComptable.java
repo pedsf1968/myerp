@@ -75,6 +75,19 @@ public class JournalComptable {
         return vStB.toString();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof JournalComptable)) return false;
+        JournalComptable that = (JournalComptable) o;
+        return getCode().equals(that.getCode()) &&
+              getLibelle().equals(that.getLibelle());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getCode(), getLibelle());
+    }
 
     // ==================== Méthodes STATIC ====================
     /**
@@ -87,12 +100,11 @@ public class JournalComptable {
     public static JournalComptable getByCode(List<? extends JournalComptable> pList, String pCode) {
         JournalComptable vRetour = null;
         if(pList == null || pList.isEmpty() || pCode == null){
-            return vRetour;
+            return null;
         }
 
         for (JournalComptable vBean : pList) {
             if ( Objects.equals(vBean.getCode(), pCode)) {
-            //if (vBean != null && Objects.equals(vBean.getCode(), pCode)) {
                 vRetour = vBean;
                 break;
             }

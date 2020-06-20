@@ -73,11 +73,22 @@ class CompteComptableTest {
    }
 
    @Test
+   @Tag("getByNumero")
+   @DisplayName("In a CompteComptable Empty list get null for Numero")
+   void getByNumero_returnsNull_ofEmptyListAndPositiveNumero() {
+      List<CompteComptable> emptyList = new ArrayList<>();
+
+      assertThat(CompteComptable.getByNumero(emptyList,numero1)).isNull();
+   }
+
+
+   @Test
    @Tag("getNumero")
    @DisplayName("In a CompteComptable we get the right Numero")
    void getNumero_returnTheNumero_ofCompteComptable() {
       assertThat(compte1.getNumero()).isEqualTo(numero1);
    }
+
 
    @Test
    @Tag("setNumero")
@@ -92,7 +103,7 @@ class CompteComptableTest {
    @Test
    @Tag("getLibelle")
    @DisplayName("In a CompteComptable we get the right Libelle")
-   void getLibellereturnTheLibelle_ofCompteComptable() {
+   void getLibelle_returnTheLibelle_ofCompteComptable() {
       assertThat(compte1.getLibelle()).isEqualTo(libelle1);
    }
 
@@ -108,12 +119,12 @@ class CompteComptableTest {
    }
 
    @Test
-   @Tag("testToString")
+   @Tag("toString")
    @DisplayName("Output the right string for CompteComptable")
    void toString_returnTheString_ofCompteComptable() {
-      String compteComptableString = "CompteComptable{numero=2, libelle='compte2'}";
+      String expected = "CompteComptable{numero=2, libelle='compte2'}";
 
-      assertThat(compte1.toString()).isEqualTo(compteComptableString);
+      assertThat(compte1.toString()).isEqualTo(expected);
    }
 
    @Test
@@ -122,5 +133,28 @@ class CompteComptableTest {
    void CompteComptable_returnTheCompteComptable_ofCompteComptableConstructor() {
       assertThat(compte1.getNumero()).isEqualTo(numero1);
       assertThat(compte1.getLibelle()).isEqualTo(libelle1);
+   }
+
+   @Test
+   @Tag("equals")
+   @DisplayName("Verify that 2 identicals CompteComptables are equals")
+   void testEquals_returnTrue_of2SameCompteComptables() {
+      assertThat(compte1.equals(compte1)).isTrue();
+   }
+
+   @Test
+   @Tag("equals")
+   @DisplayName("Verify that 2 differents CompteComptables are not equals")
+   void testEquals_returnFalse_of2DifferentsCompteComptables() {
+      assertThat(compte1.equals(compte2)).isFalse();
+   }
+
+   @Test
+   @Tag("hashCode")
+   @DisplayName("Verify hashCode calculation")
+   void testHashCode() {
+      assertThat(compte1.hashCode()).isEqualTo(950503025);
+      assertThat(compte2.hashCode()).isEqualTo(950503121);
+      assertThat(compte3.hashCode()).isEqualTo(-599207221);
    }
 }

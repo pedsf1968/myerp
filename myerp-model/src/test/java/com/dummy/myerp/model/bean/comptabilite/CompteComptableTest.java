@@ -151,10 +151,10 @@ class CompteComptableTest {
 
    @Test
    @Tag("hashCode")
-   @DisplayName("Verify hashCode calculation")
+   @DisplayName("Verify that hashCode is always the same")
    void testHashCode() {
-      assertThat(compte1.hashCode()).isEqualTo(950503025);
-      assertThat(compte2.hashCode()).isEqualTo(950503121);
-      assertThat(compte3.hashCode()).isEqualTo(-599207221);
+      assertThat(compte1.hashCode()).isEqualTo(compte1.hashCode());
+      assertThat(compte2.hashCode()).isEqualTo(compte2.hashCode());
+      assertThat(compte3.hashCode()).isEqualTo(compte3.hashCode());
    }
 }

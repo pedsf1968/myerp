@@ -232,8 +232,8 @@ class EcritureComptableTest  {
 
    @Test
    @Tag("hashCode")
-   @DisplayName("Verify hashCode calculation")
+   @DisplayName("Verify that hashCode is always the same")
    void testHashCode() {
-      assertThat(ecritureComptable.hashCode()).isEqualTo(-73216488);
+      assertThat(ecritureComptable.hashCode()).isEqualTo(ecritureComptable.hashCode());
    }
 }

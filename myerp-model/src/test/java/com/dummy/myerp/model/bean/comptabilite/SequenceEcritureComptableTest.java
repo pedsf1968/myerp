@@ -35,10 +35,9 @@ class SequenceEcritureComptableTest {
 
    @Test
    @Tag("hashCode")
-   @DisplayName("Verify hashCode calculation")
+   @DisplayName("Verify that hashCode is always the same")
    void testHashCode() {
-      assertThat(sequence1.hashCode()).isEqualTo(63636);
-      assertThat(sequence2.hashCode()).isEqualTo(60313);
-
+      assertThat(sequence1.hashCode()).isEqualTo(sequence1.hashCode());
+      assertThat(sequence2.hashCode()).isEqualTo(sequence2.hashCode());
    }
 }

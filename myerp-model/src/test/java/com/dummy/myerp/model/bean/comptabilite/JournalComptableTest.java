@@ -120,4 +120,11 @@ class JournalComptableTest {
 
       assertThat(journalComptables.get(1).toString()).isEqualTo(journalComptableString);
    }
+
+   @Test
+   @Tag("hashCode")
+   @DisplayName("Verify that hashCode is always the same")
+   void testHashCode() {
+      assertThat(journalComptable.hashCode()).isEqualTo(journalComptable.hashCode());
+   }
 }

@@ -80,8 +80,21 @@ public class CompteComptable {
         return vStB.toString();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CompteComptable)) return false;
+        CompteComptable that = (CompteComptable) o;
+        return getNumero().equals(that.getNumero()) &&
+              getLibelle().equals(that.getLibelle());
+    }
 
-    // ==================== Méthodes STATIC ====================
+    @Override
+    public int hashCode() {
+        return Objects.hash(getNumero(), getLibelle());
+    }
+
+// ==================== Méthodes STATIC ====================
     /**
      * Renvoie le {@link CompteComptable} de numéro {@code pNumero} s'il est présent dans la liste
      *
@@ -91,6 +104,7 @@ public class CompteComptable {
      */
     public static CompteComptable getByNumero(List<? extends CompteComptable> pList, Integer pNumero) {
         CompteComptable vRetour = null;
+
         if(pList == null || pList.isEmpty() || pNumero == null){
             return vRetour;
         }

@@ -2,9 +2,10 @@ package com.dummy.myerp.model.bean.comptabilite;
 
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -64,10 +65,10 @@ public class EcritureComptable {
     public void setReference(String pReference) {
         reference = pReference;
     }
-    public Date getDate() {
+    public java.sql.Date getDate() {
         return date;
     }
-    public void setDate(Date pDate) {
+    public void setDate(java.sql.Date pDate) {
         date = pDate;
     }
     public String getLibelle() {
@@ -138,5 +139,23 @@ public class EcritureComptable {
             .append(StringUtils.join(listLigneEcriture, "\n")).append("\n]")
             .append("}");
         return vStB.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof EcritureComptable)) return false;
+        EcritureComptable that = (EcritureComptable) o;
+        return getId().equals(that.getId()) &&
+              getJournal().equals(that.getJournal()) &&
+              getReference().equals(that.getReference()) &&
+              getDate().equals(that.getDate()) &&
+              Objects.equals(getLibelle(), that.getLibelle()) &&
+              Objects.equals(getListLigneEcriture(), that.getListLigneEcriture());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getJournal(), getReference(), getDate(), getLibelle(), getListLigneEcriture());
     }
 }

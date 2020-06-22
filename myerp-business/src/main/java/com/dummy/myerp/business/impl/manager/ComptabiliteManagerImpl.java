@@ -2,6 +2,7 @@ package com.dummy.myerp.business.impl.manager;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
@@ -23,7 +24,7 @@ import com.dummy.myerp.technical.exception.NotFoundException;
  * Comptabilite manager implementation.
  */
 public class ComptabiliteManagerImpl extends AbstractBusinessManager implements ComptabiliteManager {
-    private Logger logger = LoggerFactory.getLogger(ComptabiliteManagerImpl.class);
+    private Logger LOGGER = LoggerFactory.getLogger(ComptabiliteManagerImpl.class);
 
     // ==================== Attributs ====================
 
@@ -58,6 +59,18 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
     }
 
     /**
+     * Renvoie une écriture comptable suivant son ID.
+     *
+     * @param id identifiant de l'écriture comptable concernée
+     * @return {@link EcritureComptable}
+     */
+    @Override
+    public EcritureComptable getEcritureComptableById(Integer id) throws NotFoundException {
+        return getDaoProxy().getComptabiliteDao().getEcritureComptable(id);
+    }
+
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -77,7 +90,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         //    Sinon :
         //      Utiliser la dernière valeur + 1
         numeroSequence += (vLastSEC==null?0:vLastSEC.getDerniereValeur());
-        logger.info("Numero sequence : {}", numeroSequence);
+        LOGGER.info("Numero sequence : {}", numeroSequence);
         vSEC.setAnnee(annee);
         vSEC.setDerniereValeur(numeroSequence);
 
@@ -86,7 +99,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
               pEcritureComptable.getJournal().getCode(),
               annee,
               numeroSequence);
-        logger.info("Reference : {}",reference);
+        LOGGER.info("Reference : {}",reference);
         pEcritureComptable.setReference(reference);
 
         // Enregistrer (insert/update) la valeur de la séquence en persitance
@@ -167,8 +180,10 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         // ===== RG_Compta_3 : une écriture comptable doit avoir au moins 2 lignes d'écriture (1 au débit, 1 au crédit)
         Boolean hasCreditLine = Boolean.FALSE;
         Boolean hasDebitLine = Boolean.FALSE;
+        int lineCounter = 0;
 
         for (LigneEcritureComptable vLigneEcritureComptable : pEcritureComptable.getListLigneEcriture()) {
+            lineCounter++;
             if (BigDecimal.ZERO.compareTo(ObjectUtils.defaultIfNull(vLigneEcritureComptable.getCredit(),
                   BigDecimal.ZERO)) != 0) {
                 hasCreditLine = Boolean.TRUE;
@@ -180,7 +195,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         }
         // On test le nombre de lignes car si l'écriture à une seule ligne
         //      avec un montant au débit et un montant au crédit ce n'est pas valable
-        if (!hasCreditLine.booleanValue() || !hasDebitLine.booleanValue()) {
+        if (!hasCreditLine.booleanValue() || !hasDebitLine.booleanValue() || lineCounter<2) {
             throw new FunctionalException(
                   "L'écriture comptable doit avoir au moins deux lignes : une ligne au débit et une ligne au crédit.");
         }
@@ -203,16 +218,18 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
             String code = pEcritureComptable.getReference().split("-")[0];
 
             if (!code.equals(pEcritureComptable.getJournal().getCode())) {
-                logger.error("Pas le même Code de Journal Comptable : Code {} et Code dans Reference {}",pEcritureComptable.getJournal().getCode(),code);
+                LOGGER.error("Pas le même Code de Journal Comptable : Code {} et Code dans Reference {}",pEcritureComptable.getJournal().getCode(),code);
                 throw new FunctionalException(
                       "La référence de l'écriture comptable doit correspondre au journal.");
             }
 
             String year = pEcritureComptable.getReference().split("-|/")[1];
-            String dateYear = new SimpleDateFormat ("yyyy").format(pEcritureComptable.getDate());
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(pEcritureComptable.getDate());
+            String dateYear = String.valueOf(calendar.get(Calendar.YEAR));
 
             if (!year.equals(dateYear)) {
-                logger.error("Pas le même Date de Journal Comptable : Date {} et Année dans Reference {}",dateYear,year);
+                LOGGER.error("Pas le même Date de Journal Comptable : Date {} et Année dans Reference {}",dateYear,year);
                 throw new FunctionalException(
                       "La référence de l'écriture comptable doit correspondre au journal.");
             }
@@ -258,11 +275,11 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
     protected void checkEcritureComptableRG7(EcritureComptable pEcritureComptable) throws FunctionalException {
         List<LigneEcritureComptable> ligneEcritureComptables = pEcritureComptable.getListLigneEcriture();
 
-        for(LigneEcritureComptable LEC : ligneEcritureComptables) {
-            if(LEC.getCredit() != null && getNumberOfDecimalPlaces(LEC.getCredit()) > 2) {
+        for(LigneEcritureComptable ligneEcritureComptable : ligneEcritureComptables) {
+            if(ligneEcritureComptable.getCredit() != null && getNumberOfDecimalPlaces(ligneEcritureComptable.getCredit()) > 2) {
                 throw new FunctionalException("Un crédit ne peut pas avoir plus de deux chiffres après la virgule!");
             }
-            if(LEC.getDebit() != null && getNumberOfDecimalPlaces(LEC.getDebit()) > 2) {
+            if(ligneEcritureComptable.getDebit() != null && getNumberOfDecimalPlaces(ligneEcritureComptable.getDebit()) > 2) {
                 throw new FunctionalException("Un débit ne peut pas avoir plus de deux chiffres après la virgule!");
             }
         }

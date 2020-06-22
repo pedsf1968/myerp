@@ -6,6 +6,7 @@ import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
 import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
 import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
 import com.dummy.myerp.technical.exception.FunctionalException;
+import com.dummy.myerp.technical.exception.NotFoundException;
 
 
 /**
@@ -35,6 +36,16 @@ public interface ComptabiliteManager {
      * @return {@link List}
      */
     List<EcritureComptable> getListEcritureComptable();
+
+
+    /**
+     * Renvoie une écriture comptable suivant son ID.
+     *
+     * @param id identifiant de l'écriture comptable concernée
+     * @return {@link EcritureComptable}
+     */
+    EcritureComptable getEcritureComptableById(Integer id) throws NotFoundException;
+
 
     /**
      * Ajoute une référence à l'écriture comptable.

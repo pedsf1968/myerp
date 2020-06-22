@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 class EcritureComptableDaoImplTest extends ConsumerTestCase {
-   private Logger logger = LoggerFactory.getLogger(EcritureComptableDaoImplTest.class);
+   private Logger LOGGER = LoggerFactory.getLogger(EcritureComptableDaoImplTest.class);
 
    private static Date date;
    private static String annee;
@@ -42,16 +42,18 @@ class EcritureComptableDaoImplTest extends ConsumerTestCase {
       }
 
       // initialise a new EcritureComptable for tests
+      CompteComptable compteComptable1 = getDaoProxy().getComptabiliteDao().getListCompteComptable().get(1);
+      CompteComptable compteComptable2 = getDaoProxy().getComptabiliteDao().getListCompteComptable().get(2);
       JournalComptable journalComptable = ecritureComptables.get(1).getJournal();
       newEC.setJournal(ecritureComptables.get(1).getJournal());
 
       newEC.setDate(date);
       newEC.setReference(journalComptable.getCode() + "-" + annee + "/55555");
       newEC.setLibelle("EcritureComptable 55555");
-      newEC.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401),
+      newEC.getListLigneEcriture().add(new LigneEcritureComptable(compteComptable1,
             "First line EcritureComptable", new BigDecimal(11),
             null));
-      newEC.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(411),
+      newEC.getListLigneEcriture().add(new LigneEcritureComptable(compteComptable2,
             "Second ligne EcritureComptable", null,
             new BigDecimal(11)));
 
@@ -107,7 +109,7 @@ class EcritureComptableDaoImplTest extends ConsumerTestCase {
             assertThat(vEcritureComptable.getLibelle()).isEqualTo(e.getLibelle());
          }
       }catch(Exception ex){
-         logger.error("EcritureComptable not fount with this id : {}",ecritureId, ex);
+         LOGGER.error("EcritureComptable not fount with this id : {}",ecritureId, ex);
          fail();
       }
 
@@ -132,32 +134,53 @@ class EcritureComptableDaoImplTest extends ConsumerTestCase {
          }
 
       }catch (Exception exception){
-         logger.error("EcritureComptable not found with this Reference : {}", reference, exception);
+         LOGGER.error("EcritureComptable not found with this Reference : {}", reference, exception);
          fail();
       }
    }
 
    @Test
+   @Tag("getEcritureComptableByRef")
+   @DisplayName("Throws NotFoundException if the Reference of EcritureComptable doesn't exist")
+   void getEcritureComptableByRef_throwsNotFoundException_OfUnknownReference(){
+
+      assertThrows(NotFoundException.class, () -> {
+         getDaoProxy().getComptabiliteDao().getEcritureComptableByRef("oaizz5");
+      });
+   }
+
+   @Test
+   @Tag("getEcritureComptableByRef")
+   @DisplayName("Throws NotFoundException if the Reference of EcritureComptable is null")
+   void getEcritureComptableByRef_throwsNotFoundException_OfNullReference(){
+
+      assertThrows(NotFoundException.class, () -> {
+         getDaoProxy().getComptabiliteDao().getEcritureComptableByRef(null);
+      });
+   }
+
+
+   @Test
    @Tag("insertEcritureComptable")
    @DisplayName("Verify that we can insert EcritureComptable")
    void insertEcritureComptable(){
+      EcritureComptable found = null;
       newEC.setId(null);
       getDaoProxy().getComptabiliteDao().insertEcritureComptable(newEC);
 
       assertThat(newEC.getId()).isNotNull();
 
       try {
-         vEcritureComptable = getDaoProxy().getComptabiliteDao().getEcritureComptable(newEC.getId());
+         found = getDaoProxy().getComptabiliteDao().getEcritureComptable(newEC.getId());
       }catch (Exception exception){
-         logger.error("EcritureComptable inserted not found with Id : {}", newEC.getId(), exception);
+         LOGGER.error("EcritureComptable inserted not found with Id : {}", newEC.getId(), exception);
          fail();
       }
 
-      assertThat(vEcritureComptable.getId()).isEqualTo(newEC.getId());
-      assertThat(vEcritureComptable.getReference()).isEqualTo(newEC.getReference());
-      assertThat(vEcritureComptable.getJournal().getCode()).isEqualTo(newEC.getJournal().getCode());
-      assertThat(vEcritureComptable.getDate()).isEqualTo(newEC.getDate());
-      assertThat(vEcritureComptable.getLibelle()).isEqualTo(newEC.getLibelle());
+      assertThat(found.getReference()).isEqualTo(newEC.getReference());
+      assertThat(found.getJournal().getCode()).isEqualTo(newEC.getJournal().getCode());
+      assertThat(found.getDate()).isEqualTo(newEC.getDate());
+      assertThat(found.getLibelle()).isEqualTo(newEC.getLibelle());
 
       getDaoProxy().getComptabiliteDao().deleteEcritureComptable(newEC.getId());
    }
@@ -176,7 +199,7 @@ class EcritureComptableDaoImplTest extends ConsumerTestCase {
       try {
          vEcritureComptable = getDaoProxy().getComptabiliteDao().getEcritureComptable(ecritureId);
       } catch (Exception exception) {
-         logger.error("EcritureComptable inserted not found with Id : {}", newEC.getId(), exception);
+         LOGGER.error("EcritureComptable inserted not found with Id : {}", newEC.getId(), exception);
          fail();
       }
 
@@ -193,7 +216,7 @@ class EcritureComptableDaoImplTest extends ConsumerTestCase {
       try {
          vEcritureComptable = getDaoProxy().getComptabiliteDao().getEcritureComptable(ecritureId);
       } catch (Exception exception) {
-         logger.error("EcritureComptable inserted not found with Id : {}", newEC.getId(), exception);
+         LOGGER.error("EcritureComptable inserted not found with Id : {}", newEC.getId(), exception);
          fail();
       }
 

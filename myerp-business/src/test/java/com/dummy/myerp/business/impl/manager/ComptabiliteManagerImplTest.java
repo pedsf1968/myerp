@@ -1,7 +1,7 @@
 package com.dummy.myerp.business.impl.manager;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
@@ -10,32 +10,37 @@ import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
 import com.dummy.myerp.model.bean.comptabilite.LigneEcritureComptable;
 import com.dummy.myerp.technical.exception.FunctionalException;
 
+import com.dummy.myerp.technical.exception.NotFoundException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ComptabiliteManagerImplTest extends BusinessTestCase {
-    private Logger logger = LoggerFactory.getLogger(ComptabiliteManagerImplTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(ComptabiliteManagerImplTest.class);
     private static ComptabiliteManagerImpl manager;
+    private static CompteComptable compteComptable1;
+    private static CompteComptable compteComptable2;
     private  EcritureComptable vEcritureComptable;
     private static Date date;
 
 
     @BeforeAll
     private static void beforeAll() {
+        compteComptable1 = getBusinessProxy().getComptabiliteManager().getListCompteComptable().get(1);
+        compteComptable2 = getBusinessProxy().getComptabiliteManager().getListCompteComptable().get(2);
         manager = new ComptabiliteManagerImpl();
-        date = new Date();
+        date = Date.valueOf("2020-06-11");
     }
 
     @BeforeEach
     private void beforeEach() {
-
         vEcritureComptable = new EcritureComptable();
         vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
-        vEcritureComptable.setDate(new Date());
+        vEcritureComptable.setDate(date);
         vEcritureComptable.setLibelle("Libelle");
     }
 
@@ -45,10 +50,10 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
     @Tag("checkEcritureComptableUnit")
     @DisplayName("Verify that no exception is thrown if the EcritureComptable is correct")
     void checkEcritureComptableUnit() throws FunctionalException {
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(compteComptable1,
                                                                                  null, new BigDecimal(123),
                                                                                  null));
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(compteComptable2,
                                                                                  null, null,
                                                                                  new BigDecimal(123)));
 
@@ -71,10 +76,10 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
     @Tag("checkEcritureComptableRG2")
     @DisplayName("When total Debit is greater than total Credit checkEcritureComptableUnit thrown FunctionalException")
     void checkEcritureComptableRG2_throwFunctionalException_ofDebitGreaterThanCredit() throws Exception {
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(compteComptable1,
                                                                                  null, new BigDecimal(1234),
                                                                                  null));
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(compteComptable2,
                                                                                  null, null,
                                                                                  new BigDecimal(123)));
 
@@ -88,10 +93,10 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
     @Tag("checkEcritureComptableRG2")
     @DisplayName("When total Debit is less than total Credit checkEcritureComptableUnit thrown FunctionalException")
     void checkEcritureComptableRG2_throwFunctionalException_ofDebitLessThanCredit() throws Exception {
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(compteComptable1,
               null, new BigDecimal(123),
               null));
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(compteComptable2,
               null, null,
               new BigDecimal(1234)));
 
@@ -106,7 +111,7 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
     @DisplayName("When there are only one Debit LigneEcritureComptable checkEcritureComptableUnit thrown FunctionalException")
     void checkEcritureComptableRG3_returnFunctionalException_ofOnlyOneDebitLigneEcritureComptable() throws Exception {
         vEcritureComptable.getListLigneEcriture().add(
-              new LigneEcritureComptable(new CompteComptable(1),
+              new LigneEcritureComptable(compteComptable1,
                     null,
                     new BigDecimal(123),
                     null));
@@ -121,7 +126,7 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
     @DisplayName("When there are only one Credit LigneEcritureComptable checkEcritureComptableUnit throw FunctionalException")
     void checkEcritureComptableRG3_returnFunctionalException_ofOnlyOneCrediLigneEcritureComptable() throws Exception {
         vEcritureComptable.getListLigneEcriture().add(
-              new LigneEcritureComptable(new CompteComptable(1),
+              new LigneEcritureComptable(compteComptable1,
                     null,
                     null,
                     new BigDecimal(123)));
@@ -132,13 +137,28 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
     }
 
     @Test
+    @Tag("checkEcritureComptableRG3")
+    @DisplayName("When there are only one LigneEcritureComptable checkEcritureComptableUnit throw FunctionalException")
+    void checkEcritureComptableRG3_returnFunctionalException_ofOnlyOneLigneEcritureComptable() throws Exception {
+        vEcritureComptable.getListLigneEcriture().add(
+              new LigneEcritureComptable(compteComptable1,
+                    null,
+                    new BigDecimal(123),
+                    new BigDecimal(123)));
+
+        assertThrows(FunctionalException.class, () -> {
+            manager.checkEcritureComptableRG3(vEcritureComptable);
+        });
+    }
+
+    @Test
     @Tag("checkEcritureComptableUnitRG4")
     @DisplayName("Accept negative values")
-    void RG4_returnNoException_ofSameCreditAndDebitNegativeValues() throws Exception {
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+    void checkEcritureComptableRG4_returnNoException_ofSameCreditAndDebitNegativeValues() throws Exception {
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(compteComptable1,
               null, new BigDecimal(-123),
               null));
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(compteComptable2,
               null, null,
               new BigDecimal(-123)));
 
@@ -153,10 +173,10 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
     @DisplayName("Bad Reference Journal Code throw FunctionalException")
     void checkEcritureComptableRG5_throwFunctionalException_ofBadJournalCodeInReference() throws Exception {
         vEcritureComptable.setReference("BQ-2016/00001");
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(compteComptable1,
               null, new BigDecimal(123),
               null));
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(compteComptable2,
               null, null,
               new BigDecimal(123)));
 
@@ -170,10 +190,10 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
     @DisplayName("Bad Reference Journal Year throw FunctionalException")
     void checkEcritureComptableRG5_throwFunctionalException_ofBadJournalYearInReference() throws Exception {
         vEcritureComptable.setReference("AC-2018/00001");
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(compteComptable1,
               null, new BigDecimal(123),
               null));
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(compteComptable2,
               null, null,
               new BigDecimal(123)));
 
@@ -205,10 +225,10 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
     @DisplayName("The LigneEcritureComptable Debit amout can't exceed 2 decimals")
     void checkEcritureComptableRG7_throwFunctionalException_ofLigneEcritureComptableWith3DecimalDebitAmount() throws Exception {
         vEcritureComptable.setReference("AC-2018/00001");
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(compteComptable1,
               null, new BigDecimal(123.123),
               null));
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(compteComptable2,
               null, null,
               new BigDecimal(123.12)));
 
@@ -222,10 +242,10 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
     @DisplayName("The LigneEcritureComptable Credit amout can't exceed 2 decimals")
     void checkEcritureComptableRG7_throwFunctionalException_ofLigneEcritureComptableWith3DecimalCrebitAmount() throws Exception {
         vEcritureComptable.setReference("AC-2018/00001");
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(compteComptable1,
               null, new BigDecimal(123.12),
               null));
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(compteComptable2,
               null, null,
               new BigDecimal(-123.125)));
 
@@ -234,4 +254,149 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
         });
     }
 
+
+    @Test
+    @Tag("insertEcritureComptable")
+    @DisplayName("Verify tha Ecriture comptable is inserted with his LigneEcritureComptable")
+    void insertEcritureComptable_insertTheRightEcritureComptable_ofEcritureComptable() {
+        EcritureComptable found = null;
+
+        vEcritureComptable.setReference("AC-2016/00055");
+        vEcritureComptable.setDate(Date.valueOf("2016-7-11"));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(compteComptable1,
+              null, new BigDecimal(123),
+              null));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(compteComptable2,
+              null, null,
+              new BigDecimal(123)));
+
+        try {
+            manager.insertEcritureComptable(vEcritureComptable);
+            found = manager.getEcritureComptableById(vEcritureComptable.getId());
+
+        } catch (FunctionalException | NotFoundException exception) {
+            logger.error("Exception in insertEcritureComptable :", exception);
+        }
+
+        assertThat(found.equals(vEcritureComptable)).isTrue();
+
+        manager.deleteEcritureComptable(vEcritureComptable.getId());
+    }
+
+    @Test
+    @Tag("updateEcritureComptable")
+    @DisplayName("Verify that we can update the libelle of an Ecriture comptable")
+    void updateEcritureComptable_returnNewLibelle_ofLibelleUpdating() {
+        String newLibelle = "Nouveau libelle";
+
+        EcritureComptable ecritureComptable = getBusinessProxy().getComptabiliteManager().getListEcritureComptable().get(1);
+        Integer id = ecritureComptable.getId();
+        String oldLibelle = ecritureComptable.getLibelle();
+
+        ecritureComptable.setLibelle(newLibelle);
+        try {
+            manager.updateEcritureComptable(ecritureComptable);
+            ecritureComptable = manager.getEcritureComptableById(id);
+            assertThat(ecritureComptable.getLibelle()).isEqualTo(newLibelle);
+
+            ecritureComptable.setLibelle(oldLibelle);
+            manager.updateEcritureComptable(ecritureComptable);
+            ecritureComptable = manager.getEcritureComptableById(id);
+            assertThat(ecritureComptable.getLibelle()).isEqualTo(oldLibelle);
+        } catch (FunctionalException | NotFoundException exception) {
+            logger.error("Exception in updateEcritureComptable", exception);
+        }
+    }
+
+    @Test
+    @Tag("updateEcritureComptable")
+    @DisplayName("Verify that we can update the reference of an Ecriture comptable")
+    void updateEcritureComptable_returnNewReference_ofReferenceUpdating() {
+        String newLibelle = "Nouveau libelle";
+        String newReference = "AC-2016/00055";
+        Date newDate =Date.valueOf("2016-7-11");
+
+        EcritureComptable ecritureComptable = getBusinessProxy().getComptabiliteManager().getListEcritureComptable().get(1);
+        Integer id = ecritureComptable.getId();
+        String oldLibelle = ecritureComptable.getLibelle();
+        String oldReference = ecritureComptable.getReference();
+        Date oldDate = (java.sql.Date)ecritureComptable.getDate();
+
+        ecritureComptable.setLibelle(newLibelle);
+        ecritureComptable.setReference(newReference);
+        ecritureComptable.setDate(newDate);
+        try {
+            manager.updateEcritureComptable(ecritureComptable);
+            ecritureComptable = manager.getEcritureComptableById(id);
+            assertThat(ecritureComptable.getLibelle()).isEqualTo(newLibelle);
+            assertThat(ecritureComptable.getReference()).isEqualTo(newReference);
+            assertThat(ecritureComptable.getDate()).isEqualTo(newDate);
+
+            ecritureComptable.setLibelle(oldLibelle);
+            ecritureComptable.setReference(oldReference);
+            ecritureComptable.setDate(oldDate);
+            manager.updateEcritureComptable(ecritureComptable);
+            ecritureComptable = manager.getEcritureComptableById(id);
+            assertThat(ecritureComptable.getLibelle()).isEqualTo(oldLibelle);
+            assertThat(ecritureComptable.getReference()).isEqualTo(oldReference);
+            assertThat(ecritureComptable.getDate()).isEqualTo(oldDate);
+        } catch (FunctionalException | NotFoundException exception) {
+            logger.error("Exception in updateEcritureComptable", exception);
+        }
+    }
+
+    @Test
+    @Tag("updateEcritureComptable")
+    @DisplayName("Verify that we can update the Date of an Ecriture comptable")
+    void updateEcritureComptable_returnNewDate_ofDateUpdating() {
+        Date newDate =Date.valueOf("2016-7-11");
+
+        EcritureComptable ecritureComptable = getBusinessProxy().getComptabiliteManager().getListEcritureComptable().get(1);
+        Integer id = ecritureComptable.getId();
+        Date oldDate = (java.sql.Date) ecritureComptable.getDate();
+
+        ecritureComptable.setDate(newDate);
+        try {
+            manager.updateEcritureComptable(ecritureComptable);
+            ecritureComptable = manager.getEcritureComptableById(id);
+            assertThat(ecritureComptable.getDate()).isEqualTo(newDate);
+
+            ecritureComptable.setDate(oldDate);
+            manager.updateEcritureComptable(ecritureComptable);
+            ecritureComptable = manager.getEcritureComptableById(id);
+            assertThat(ecritureComptable.getDate()).isEqualTo(oldDate);
+        } catch (FunctionalException | NotFoundException exception) {
+            logger.error("Exception in updateEcritureComptable", exception);
+        }
+    }
+
+    @Test
+    @Tag("deleteEcritureComptable")
+    @DisplayName("Verify that we can delete ecriture comptable")
+    void deleteEcritureComptable_returnNotFoundException_ofDeletedEcritureComptable() {
+        Integer ecritureId;
+
+        vEcritureComptable.setReference("AC-2016/00055");
+        vEcritureComptable.setDate(Date.valueOf("2016-7-11"));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(compteComptable1,
+              null, new BigDecimal(123),
+              null));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(compteComptable2,
+              null, null,
+              new BigDecimal(123)));
+
+        try {
+            manager.insertEcritureComptable(vEcritureComptable);
+            ecritureId = vEcritureComptable.getId();
+            manager.deleteEcritureComptable(ecritureId);
+
+            assertThrows(NotFoundException.class, () -> {
+                manager.getEcritureComptableById(ecritureId);
+            });
+
+        } catch (FunctionalException exception) {
+            logger.error("Exception in insertEcritureComptable :", exception);
+        }
+
+    }
 }

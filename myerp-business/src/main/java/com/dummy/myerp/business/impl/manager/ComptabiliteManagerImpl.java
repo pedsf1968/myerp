@@ -134,7 +134,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 
     /**
      * Vérifie que l'Ecriture comptable respecte les règles de gestion unitaires,
-     * c'est à dire indépendemment du contexte (unicité de la référence, exercie comptable non cloturé...)
+     * c'est à dire indépendemment du contexte (unicité de la référence, exerce comptable non cloturé...)
      *
      * @param pEcritureComptable -
      * @throws FunctionalException Si l'Ecriture comptable ne respecte pas les règles de gestion
@@ -149,6 +149,16 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
                                               "L'écriture comptable ne respecte pas les contraintes de validation",
                                               vViolations));
         }
+
+        // verify that comptable year is no closed
+        // it's no closed if it's in sequence sequence_ecriture_comptable
+        Integer year = pEcritureComptable.getDate().toLocalDate().getYear();
+        SequenceEcritureComptable sequenceEcritureComptable =  getDaoProxy().getComptabiliteDao().getLastSeqOfTheYear(year, pEcritureComptable.getJournal().getCode());
+
+        if (sequenceEcritureComptable == null) {
+            throw new FunctionalException("Le Journal Comptable n'existe pas !");
+        }
+
 
     }
 

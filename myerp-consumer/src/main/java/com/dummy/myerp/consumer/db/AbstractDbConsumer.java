@@ -6,8 +6,7 @@ import javax.sql.DataSource;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import com.dummy.myerp.consumer.ConsumerHelper;
 import com.dummy.myerp.consumer.dao.contrat.DaoProxy;
@@ -81,6 +80,9 @@ public abstract class AbstractDbConsumer {
                                                    String pSeqName, Class<T> pSeqValueClass) {
 
         JdbcTemplate vJdbcTemplate = new JdbcTemplate(getDataSource(pDataSourcesId));
+
+        String found = System.getProperty("databaseType");
+        LOGGER.info("database {}",found);
 
         //String vSeqSQL = String.format(POSTGRES_REQUEST,  pSeqName);
         String vSeqSQL = String.format(H2_REQUEST,  pSeqName);

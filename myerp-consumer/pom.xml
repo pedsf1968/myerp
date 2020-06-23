@@ -124,6 +124,7 @@
         <profile>
             <id>test-consumer</id>
             <properties>
+                <spring.profiles.active>test-consumer</spring.profiles.active>
                 <myerp.database>MYERP</myerp.database>
             </properties>
             <build>
@@ -163,6 +164,7 @@
         <profile>
             <id>sonar</id>
             <properties>
+                <spring.profiles.active>sonar</spring.profiles.active>
                 <myerp.database>MYERP</myerp.database>
             </properties>
             <build>
@@ -188,6 +190,7 @@
                         </executions>
                     </plugin>
                 </plugins>
+
                 <testResources>
                     <testResource>
                         <directory>src/test/resources</directory>

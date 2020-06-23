@@ -156,7 +156,7 @@
         <profile>
             <id>production</id>
             <properties>
-                <activatedProperties>production</activatedProperties>
+                <spring.profiles.active>production</spring.profiles.active>
                 <myerp.database>MYERP</myerp.database>
             </properties>
             <dependencies>
@@ -173,7 +173,7 @@
         <profile>
             <id>test-business</id>
             <properties>
-                <activatedProperties>test-business</activatedProperties>
+                <spring.profiles.active>test-business</spring.profiles.active>
                 <myerp.database>TEST</myerp.database>
             </properties>
             <dependencies>
@@ -190,7 +190,7 @@
         <profile>
             <id>test-consumer</id>
             <properties>
-                <activatedProperties>test-consumer</activatedProperties>
+                <spring.profiles.active>test-consumer</spring.profiles.active>
                 <myerp.database>TEST</myerp.database>
             </properties>
             <dependencies>
@@ -210,9 +210,7 @@
             </activation>
             <properties>
                 <myerp.database>TEST</myerp.database>
-                <activatedProperties>test-business</activatedProperties>
-                <activatedProperties>test-consumer</activatedProperties>
-                <activatedProperties>sonar</activatedProperties>
+                <spring.profiles.active>sonar</spring.profiles.active>
             </properties>
             <dependencies>
                 <!-- ======================================================== H2 -->

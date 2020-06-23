@@ -3,7 +3,6 @@
        xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
-
     <!-- Transaction Manager -->
     <bean id="TransactionManager"
           class="com.dummy.myerp.business.impl.TransactionManager"
@@ -18,3 +17,4 @@
         <property name="dataSource" ref="dataSourceMYERP"/>
     </bean>
 </beans>
+

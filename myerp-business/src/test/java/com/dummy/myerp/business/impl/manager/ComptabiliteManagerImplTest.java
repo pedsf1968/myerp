@@ -33,7 +33,7 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
         compteComptable1 = getBusinessProxy().getComptabiliteManager().getListCompteComptable().get(1);
         compteComptable2 = getBusinessProxy().getComptabiliteManager().getListCompteComptable().get(2);
         manager = new ComptabiliteManagerImpl();
-        date = Date.valueOf("2020-06-11");
+        date = Date.valueOf("2016-06-11");
     }
 
     @BeforeEach
@@ -69,6 +69,19 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
         assertThrows(FunctionalException.class, () -> {
             manager.checkEcritureComptableUnit(vEcritureComptable);
         });
+    }
+
+    @Test
+    @Tag("checkEcritureComptableUnitViolation")
+    @DisplayName("Verify that  checkEcritureComptableUnit thrown FunctionalException if year Comptable is closed")
+    void checkEcritureComptableUnitViolation_throwsFunctionalException_ofBadYearJournalComptable()  {
+        vEcritureComptable.setDate(Date.valueOf("2020-07-11"));
+
+        assertThrows(FunctionalException.class, () -> {
+            manager.checkEcritureComptableUnit(vEcritureComptable);
+        });
+
+        vEcritureComptable.setDate(date);
     }
 
 

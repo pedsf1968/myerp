@@ -40,7 +40,7 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
     private void beforeEach() {
         vEcritureComptable = new EcritureComptable();
         vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
-        vEcritureComptable.setDate(date);
+        vEcritureComptable.setDate( date);
         vEcritureComptable.setLibelle("Libelle");
     }
 
@@ -275,7 +275,7 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
         EcritureComptable found = null;
 
         vEcritureComptable.setReference("AC-2016/00055");
-        vEcritureComptable.setDate(Date.valueOf("2016-7-11"));
+        vEcritureComptable.setDate(date);
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(compteComptable1,
               null, new BigDecimal(123),
               null));

@@ -1,8 +1,8 @@
 package com.dummy.myerp.business.impl.manager;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
@@ -152,7 +152,8 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 
         // verify that comptable year is no closed
         // it's no closed if it's in sequence sequence_ecriture_comptable
-        Integer year = pEcritureComptable.getDate().toLocalDate().getYear();
+        java.sql.Date dateComptable =  pEcritureComptable.getDate();
+        Integer year = dateComptable.toLocalDate().getYear();
         SequenceEcritureComptable sequenceEcritureComptable =  getDaoProxy().getComptabiliteDao().getLastSeqOfTheYear(year, pEcritureComptable.getJournal().getCode());
 
         if (sequenceEcritureComptable == null) {
@@ -233,10 +234,10 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
                       "La référence de l'écriture comptable doit correspondre au journal.");
             }
 
+
             String year = pEcritureComptable.getReference().split("-|/")[1];
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(pEcritureComptable.getDate());
-            String dateYear = String.valueOf(calendar.get(Calendar.YEAR));
+            java.sql.Date dateComptable =  (java.sql.Date)pEcritureComptable.getDate();
+            String dateYear = String.valueOf(dateComptable.toLocalDate().getYear());
 
             if (!year.equals(dateYear)) {
                 LOGGER.error("Pas le même Date de Journal Comptable : Date {} et Année dans Reference {}",dateYear,year);

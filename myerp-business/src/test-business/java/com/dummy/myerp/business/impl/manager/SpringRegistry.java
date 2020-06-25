@@ -1,5 +1,6 @@
 package com.dummy.myerp.business.impl.manager;
 
+import com.dummy.myerp.consumer.db.DataSourcesEnum;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationContext;
@@ -24,8 +25,11 @@ public final class SpringRegistry {
 
 
     /** Nom des fichiers de contexte de l'application */
-    private static final String CONTEXT_APPLI_LOCATION
-       = "classpath:/com/dummy/myerp/testbusiness/business/bootstrapContext.xml";
+    private static final String CONTEXT_PROD_APPLI_LOCATION
+          = "classpath:/com/dummy/myerp/business/bootstrapContext.xml";
+    private static final String CONTEXT_TEST_APPLI_LOCATION
+          = "classpath:/com/dummy/myerp/testbusiness/business/bootstrapContext.xml";
+
 
     /** Le context spring de l'application */
     private ApplicationContext contextAppli;
@@ -39,9 +43,16 @@ public final class SpringRegistry {
      */
     private SpringRegistry() {
         super();
+        DataSourcesEnum database = DataSourcesEnum.valueOf(System.getProperty("databaseType"));
+
         SpringRegistry.LOGGER.debug("[DEBUT] SpringRegistry() - Initialisation du contexte Spring");
-        this.contextAppli = new ClassPathXmlApplicationContext(SpringRegistry.CONTEXT_APPLI_LOCATION);
-        SpringRegistry.LOGGER.debug("[FIN] SpringRegistry() - Initialisation du contexte Spring");
+        if (database.equals(DataSourcesEnum.MYERP)) {
+            this.contextAppli = new ClassPathXmlApplicationContext(SpringRegistry.CONTEXT_PROD_APPLI_LOCATION);
+        } else {
+            this.contextAppli = new ClassPathXmlApplicationContext(SpringRegistry.CONTEXT_TEST_APPLI_LOCATION);
+        }
+
+        SpringRegistry.LOGGER.debug("[FIN] SpringRegistry() - Initialisation du contexte Spring : {}", database);
     }
 
     /**

@@ -156,7 +156,6 @@
         <profile>
             <id>production</id>
             <properties>
-                <spring.profiles.active>production</spring.profiles.active>
                 <myerp.database>MYERP</myerp.database>
             </properties>
             <dependencies>
@@ -209,8 +208,8 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <myerp.database>TEST</myerp.database>
                 <spring.profiles.active>sonar</spring.profiles.active>
+                <myerp.database>TEST</myerp.database>
             </properties>
             <dependencies>
                 <!-- ======================================================== H2 -->
@@ -618,6 +617,20 @@
         <!--                                                         plugins -->
         <!-- =============================================================== -->
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-help-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>show-profiles</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>active-profiles</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <!-- ==================================================== Jacoco -->
             <plugin>
                 <groupId>org.jacoco</groupId>

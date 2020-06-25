@@ -37,6 +37,8 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
     private static String sqlUpdateSequenceEcritureComptable;
     private static String sqlDeleteSequenceEcritureComptable;
 
+    private DataSourcesEnum databaseType;
+
     // ==================== Constructeurs ====================
     /** Instance unique de la classe (design pattern Singleton) */
     private static final ComptabiliteDaoImpl INSTANCE = new ComptabiliteDaoImpl();
@@ -55,6 +57,12 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
      */
     protected ComptabiliteDaoImpl() {
         super();
+        String database = System.getProperty("databaseType");
+        if(database.equals("POSTGRESQL")) {
+            databaseType = DataSourcesEnum.MYERP;
+        } else {
+            databaseType = DataSourcesEnum.TEST;
+        }
     }
 
     // ==================== SETTERS ====================
@@ -122,7 +130,7 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
     /** SQLgetListCompteComptable */
     @Override
     public List<CompteComptable> getListCompteComptable() {
-        JdbcTemplate vJdbcTemplate = new JdbcTemplate(this.getDataSource(DataSourcesEnum.MYERP));
+        JdbcTemplate vJdbcTemplate = new JdbcTemplate(this.getDataSource(databaseType));
         CompteComptableRM vRM = new CompteComptableRM();
         return vJdbcTemplate.query(sqlGetListCompteComptable, vRM);
     }
@@ -131,7 +139,7 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
     /** SQLgetListJournalComptable */
     @Override
     public List<JournalComptable> getListJournalComptable() {
-        JdbcTemplate vJdbcTemplate = new JdbcTemplate(this.getDataSource(DataSourcesEnum.MYERP));
+        JdbcTemplate vJdbcTemplate = new JdbcTemplate(this.getDataSource(databaseType));
         JournalComptableRM vRM = new JournalComptableRM();
         return vJdbcTemplate.query(sqlGetListJournalComptable, vRM);
     }
@@ -141,7 +149,7 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
     /** SQLgetListEcritureComptable */
     @Override
     public List<EcritureComptable> getListEcritureComptable() {
-        JdbcTemplate vJdbcTemplate = new JdbcTemplate(this.getDataSource(DataSourcesEnum.MYERP));
+        JdbcTemplate vJdbcTemplate = new JdbcTemplate(this.getDataSource(databaseType));
         EcritureComptableRM vRM = new EcritureComptableRM();
         return vJdbcTemplate.query(sqlGetListEcritureComptable, vRM);
     }
@@ -150,7 +158,7 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
     /** SQLgetEcritureComptable */
     @Override
     public EcritureComptable getEcritureComptable(Integer pId) throws NotFoundException {
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(DataSourcesEnum.MYERP));
+        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(databaseType));
         MapSqlParameterSource vSqlParams = new MapSqlParameterSource();
         vSqlParams.addValue(DBN.ID, pId);
         EcritureComptableRM vRM = new EcritureComptableRM();
@@ -167,7 +175,7 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
     /** SQLgetEcritureComptableByRef */
     @Override
     public EcritureComptable getEcritureComptableByRef(String pReference) throws NotFoundException {
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(DataSourcesEnum.MYERP));
+        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(databaseType));
         MapSqlParameterSource vSqlParams = new MapSqlParameterSource();
         vSqlParams.addValue(DBN.REFERENCE, pReference);
         EcritureComptableRM vRM = new EcritureComptableRM();
@@ -185,7 +193,7 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
     /** SQLloadListLigneEcriture */
     @Override
     public void loadListLigneEcriture(EcritureComptable pEcritureComptable) {
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(DataSourcesEnum.MYERP));
+        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(databaseType));
         MapSqlParameterSource vSqlParams = new MapSqlParameterSource();
         vSqlParams.addValue(DBN.ECRITURE_ID, pEcritureComptable.getId());
         LigneEcritureComptableRM vRM = new LigneEcritureComptableRM();
@@ -201,16 +209,16 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
     @Override
     public void insertEcritureComptable(EcritureComptable pEcritureComptable) {
         // ===== Ecriture Comptable
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(DataSourcesEnum.MYERP));
+        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(databaseType));
         MapSqlParameterSource vSqlParams = new MapSqlParameterSource();
         vSqlParams.addValue(DBN.JOURNAL_CODE, pEcritureComptable.getJournal().getCode());
         vSqlParams.addValue(DBN.REFERENCE, pEcritureComptable.getReference());
-        vSqlParams.addValue(DBN.DATE, pEcritureComptable.getDate(), Types.DATE);
+        vSqlParams.addValue(DBN.DATE, (java.sql.Date) pEcritureComptable.getDate());
         vSqlParams.addValue(DBN.LIBELLE, pEcritureComptable.getLibelle());
 
         vJdbcTemplate.update(sqlInsertEcritureComptable, vSqlParams);
 
-        Integer vId = this.queryGetSequenceValue(DataSourcesEnum.MYERP, "myerp.ecriture_comptable_id_seq", Integer.class);
+        Integer vId = this.queryGetSequenceValue(databaseType, "myerp.ecriture_comptable_id_seq", Integer.class);
 
         pEcritureComptable.setId(vId);
 
@@ -224,7 +232,7 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
      * @param pEcritureComptable l'écriture comptable
      */
     protected void insertListLigneEcritureComptable(EcritureComptable pEcritureComptable) {
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(DataSourcesEnum.MYERP));
+        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(databaseType));
         MapSqlParameterSource vSqlParams = new MapSqlParameterSource();
         vSqlParams.addValue(DBN.ECRITURE_ID, pEcritureComptable.getId());
 
@@ -249,7 +257,7 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
     @Override
     public void updateEcritureComptable(EcritureComptable pEcritureComptable) {
         // ===== Ecriture Comptable
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(DataSourcesEnum.MYERP));
+        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(databaseType));
         MapSqlParameterSource vSqlParams = new MapSqlParameterSource();
         vSqlParams.addValue(DBN.ID, pEcritureComptable.getId());
         vSqlParams.addValue(DBN.JOURNAL_CODE, pEcritureComptable.getJournal().getCode());
@@ -278,7 +286,7 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
         this.deleteListLigneEcritureComptable(pId);
 
         // ===== Suppression de l'écriture
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(DataSourcesEnum.MYERP));
+        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(databaseType));
         MapSqlParameterSource vSqlParams = new MapSqlParameterSource();
         vSqlParams.addValue(DBN.ID, pId);
         vJdbcTemplate.update(sqlDeleteEcritureComptable, vSqlParams);
@@ -291,7 +299,7 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
      */
     @Override
     public void deleteListLigneEcritureComptable(Integer pEcritureId) {
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(DataSourcesEnum.MYERP));
+        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(databaseType));
         MapSqlParameterSource vSqlParams = new MapSqlParameterSource();
         vSqlParams.addValue(DBN.ECRITURE_ID, pEcritureId);
         vJdbcTemplate.update(sqlDeleteListLigneEcritureComptable, vSqlParams);
@@ -307,7 +315,7 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
     @Override
     public SequenceEcritureComptable getLastSeqOfTheYear(Integer pAnneeJournal, String pCodeJournal) {
         SequenceEcritureComptableRM vRM = new SequenceEcritureComptableRM();
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(DataSourcesEnum.MYERP));
+        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(databaseType));
         MapSqlParameterSource vSqlParams = new MapSqlParameterSource();
 
         vSqlParams.addValue(DBN.ANNEE, pAnneeJournal);
@@ -328,7 +336,7 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
      */
     @Override
     public void insertSequenceEcritureComptable(SequenceEcritureComptable pSequenceEcritureComptable, String codeJournal) {
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(DataSourcesEnum.MYERP));
+        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(databaseType));
         MapSqlParameterSource vSqlParams = new MapSqlParameterSource();
 
         vSqlParams.addValue(DBN.JOURNAL_CODE, codeJournal);
@@ -346,7 +354,7 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
      */
     @Override
     public void updateSequenceEcritureComptable(SequenceEcritureComptable pSequenceEcritureComptable, String codeJournal) {
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(DataSourcesEnum.MYERP));
+        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(databaseType));
         MapSqlParameterSource vSqlParams = new MapSqlParameterSource();
 
         vSqlParams.addValue(DBN.JOURNAL_CODE, codeJournal);
@@ -364,7 +372,7 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
      */
     @Override
     public void deleteSequenceEcritureComptable(SequenceEcritureComptable pSequenceEcritureComptable, String codeJournal) {
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(DataSourcesEnum.MYERP));
+        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(databaseType));
         MapSqlParameterSource vSqlParams = new MapSqlParameterSource();
 
         vSqlParams.addValue(DBN.JOURNAL_CODE, codeJournal);

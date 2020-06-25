@@ -78,18 +78,19 @@ public abstract class AbstractDbConsumer {
      */
     protected <T> T queryGetSequenceValue(DataSourcesEnum pDataSourcesId,
                                                    String pSeqName, Class<T> pSeqValueClass) {
-
+        String vSeqSQL;
         JdbcTemplate vJdbcTemplate = new JdbcTemplate(getDataSource(pDataSourcesId));
 
-        String found = System.getProperty("databaseType");
-        LOGGER.info("database {}",found);
+        DataSourcesEnum database = DataSourcesEnum.valueOf(System.getProperty("databaseType"));
 
-        //String vSeqSQL = String.format(POSTGRES_REQUEST,  pSeqName);
-        String vSeqSQL = String.format(H2_REQUEST,  pSeqName);
+        if(database.equals(DataSourcesEnum.MYERP)) {
+            vSeqSQL = String.format(POSTGRES_REQUEST,  pSeqName);
+        } else {
+            vSeqSQL = String.format(H2_REQUEST,  pSeqName);
+        }
 
         return vJdbcTemplate.queryForObject(vSeqSQL, pSeqValueClass);
     }
-
 
 
 

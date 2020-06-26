@@ -57,8 +57,9 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
      */
     protected ComptabiliteDaoImpl() {
         super();
-        String database = System.getProperty("databaseType");
-        if(database.equals("POSTGRESQL")) {
+        DataSourcesEnum database = DataSourcesEnum.valueOf(System.getProperty("databaseType"));
+
+        if(database.equals(DataSourcesEnum.MYERP)){
             databaseType = DataSourcesEnum.MYERP;
         } else {
             databaseType = DataSourcesEnum.TEST;

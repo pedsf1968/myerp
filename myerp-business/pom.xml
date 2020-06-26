@@ -241,6 +241,9 @@
 
         <profile>
             <id>sonar</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <build>
                 <plugins>
                     <!-- Pour avour le type de base de données-->

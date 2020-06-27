@@ -1,9 +1,9 @@
 package com.dummy.myerp.business.impl.manager;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -24,7 +24,7 @@ import com.dummy.myerp.technical.exception.NotFoundException;
  * Comptabilite manager implementation.
  */
 public class ComptabiliteManagerImpl extends AbstractBusinessManager implements ComptabiliteManager {
-    private Logger LOGGER = LoggerFactory.getLogger(ComptabiliteManagerImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ComptabiliteManagerImpl.class);
 
     // ==================== Attributs ====================
 
@@ -189,8 +189,8 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
      */
     protected void checkEcritureComptableRG3(EcritureComptable pEcritureComptable) throws FunctionalException {
         // ===== RG_Compta_3 : une écriture comptable doit avoir au moins 2 lignes d'écriture (1 au débit, 1 au crédit)
-        Boolean hasCreditLine = Boolean.FALSE;
-        Boolean hasDebitLine = Boolean.FALSE;
+        boolean hasCreditLine = Boolean.FALSE;
+        boolean hasDebitLine = Boolean.FALSE;
         int lineCounter = 0;
 
         for (LigneEcritureComptable vLigneEcritureComptable : pEcritureComptable.getListLigneEcriture()) {
@@ -206,7 +206,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         }
         // On test le nombre de lignes car si l'écriture à une seule ligne
         //      avec un montant au débit et un montant au crédit ce n'est pas valable
-        if (!hasCreditLine.booleanValue() || !hasDebitLine.booleanValue() || lineCounter<2) {
+        if (Boolean.FALSE.equals(hasCreditLine) || Boolean.FALSE.equals(hasDebitLine) || lineCounter<2) {
             throw new FunctionalException(
                   "L'écriture comptable doit avoir au moins deux lignes : une ligne au débit et une ligne au crédit.");
         }
@@ -235,8 +235,8 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
             }
 
 
-            String year = pEcritureComptable.getReference().split("-|/")[1];
-            java.sql.Date dateComptable =  (java.sql.Date)pEcritureComptable.getDate();
+            String year = pEcritureComptable.getReference().split("[-/]")[1];
+            java.sql.Date dateComptable =  pEcritureComptable.getDate();
             String dateYear = String.valueOf(dateComptable.toLocalDate().getYear());
 
             if (!year.equals(dateYear)) {
@@ -266,7 +266,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
                 // ou si elle ne correspond pas à l'écriture trouvée (id != idECRef),
                 // c'est qu'il y a déjà une autre écriture avec la même référence
                 if (pEcritureComptable.getId() != null
-                    || pEcritureComptable.getId().equals(vECRef.getId())) {
+                    || Objects.equals(pEcritureComptable.getId(), vECRef.getId())) {
                     // id n'est pas null ou la même référence existe
                     throw new FunctionalException("Une autre écriture comptable existe déjà avec la même référence.");
                 }
@@ -299,7 +299,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 
     int getNumberOfDecimalPlaces(BigDecimal bigDecimal) {
         String string = bigDecimal.stripTrailingZeros().toPlainString();
-        int index = string.indexOf(".");
+        int index = string.indexOf('.');
         return index < 0 ? 0 : string.length() - index - 1;
     }
 
@@ -323,7 +323,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
      * {@inheritDoc}
      */
     @Override
-    public void updateEcritureComptable(EcritureComptable pEcritureComptable) throws FunctionalException {
+    public void updateEcritureComptable(EcritureComptable pEcritureComptable) {
         TransactionStatus vTS = getTransactionManager().beginTransactionMyERP();
         try {
             getDaoProxy().getComptabiliteDao().updateEcritureComptable(pEcritureComptable);

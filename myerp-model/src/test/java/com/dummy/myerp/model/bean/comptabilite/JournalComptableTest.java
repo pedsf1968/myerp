@@ -116,15 +116,13 @@ class JournalComptableTest {
    @Tag("toString")
    @DisplayName("testTostring")
    void testToStringreturnTheString_ofJournalComptable() {
-      String journalComptableString = "JournalComptable{code='45', libelle='Journal Comptable 45'}";
-
-      assertThat(journalComptables.get(1).toString()).isEqualTo(journalComptableString);
+      assertThat(journalComptables.get(1)).hasToString("JournalComptable{code='45', libelle='Journal Comptable 45'}");
    }
 
    @Test
    @Tag("hashCode")
    @DisplayName("Verify that hashCode is always the same")
    void testHashCode() {
-      assertThat(journalComptable.hashCode()).isEqualTo(journalComptable.hashCode());
+      assertThat(journalComptable).hasSameHashCodeAs(journalComptable);
    }
 }

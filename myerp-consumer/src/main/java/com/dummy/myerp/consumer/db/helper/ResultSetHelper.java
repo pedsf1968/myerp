@@ -3,10 +3,6 @@ package com.dummy.myerp.consumer.db.helper;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Calendar;
-
-import org.apache.commons.lang3.time.DateUtils;
-
 
 /**
  * Classe utilitaire travaillant sur les ResultSet
@@ -40,9 +36,8 @@ public abstract class ResultSetHelper {
             throw new SQLException(ERROR_MESSAGE);
         }
 
-        Integer vInt = (Integer) pRS.getInt(pColName);
         if (!pRS.wasNull()) {
-            vRetour = vInt;
+            vRetour = pRS.getInt(pColName);
         }
 
         return vRetour;
@@ -64,9 +59,8 @@ public abstract class ResultSetHelper {
             throw new SQLException(ERROR_MESSAGE);
         }
 
-        Long vLong = (Long) pRS.getLong(pColName);
         if (!pRS.wasNull()) {
-            vRetour = vLong;
+            vRetour = pRS.getLong(pColName);
         }
         return vRetour;
     }
@@ -86,10 +80,6 @@ public abstract class ResultSetHelper {
             throw new SQLException(ERROR_MESSAGE);
         }
 
-        Date vDate = pRS.getDate(pColName);
-        if (vDate != null) {
-            //vDate = DateUtils.truncate(vDate, Calendar.DATE);
-        }
-        return vDate;
+        return pRS.getDate(pColName);
     }
 }

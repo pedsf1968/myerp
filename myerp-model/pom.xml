@@ -90,6 +90,23 @@
 
     </dependencies>
 
+    <!-- =============================================================== -->
+    <!-- Profiles -->
+    <!-- =============================================================== -->
+    <profiles>
+        <profile>
+            <id>test-business</id>
+            <properties>
+                <maven.test.skip>true</maven.test.skip>
+            </properties>
+        </profile>
+        <profile>
+            <id>test-consumer</id>
+            <properties>
+                <maven.test.skip>true</maven.test.skip>
+            </properties>
+        </profile>
+    </profiles>
 
     <!-- =============================================================== -->
     <!-- Build -->

@@ -1,0 +1,74 @@
+version: "3.7"
+
+services:
+  myerp.db:
+    container_name: myerp_db
+    image: postgres:alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=db_myerp
+      - POSTGRES_USER=usr_myerp
+      - POSTGRES_PASSWORD=myerp
+    volumes:
+#     - "./data/db:/var/lib/postgresql/data"
+      - "./init/db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d"
+    ports:
+      #- "127.0.0.1:9032:5432"
+      - "9032:5432"
+    networks:
+      net:
+        ipv4_address: 10.5.0.2
+      
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    depends_on:
+      - "myerp.db"
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+      - "./pgadmin:/var/lib/pgadmin"
+       #- pgadmin:/root/.pgadmin
+    ports:
+      - "5050:80"
+    networks:
+      net:
+        ipv4_address: 10.5.0.3
+
+
+  jenkins:
+    container_name: jenkins
+    image: jenkins/jenkins:lts
+    privileged: true
+    user: root
+    restart: unless-stopped
+    volumes:
+      - "./jenkins/lib:/var/lib/jenkins"
+      - "./jenkins/log:/var/log/jenkins"
+      #- "./jenkins:/var/jenkins_home"
+      - "//f/dev/javaee/myerp/src:/home/project"
+      #- "./jenkins/config:/var/jenkins_config"
+    ports:
+      - "5000:8080"
+      - "50000:50000"
+    networks:
+      net:
+        ipv4_address: 10.5.0.4
+    
+
+networks:
+  net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.5.0.0/16
+
+volumes:
+    myerp.db:
+    pgadmin:
+    jenkins:
+      driver: local
+    config:
+      driver: local

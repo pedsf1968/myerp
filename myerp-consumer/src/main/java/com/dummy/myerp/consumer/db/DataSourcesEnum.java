@@ -7,5 +7,5 @@ public enum DataSourcesEnum {
     /** MYERP POSTGRESQL */
     MYERP,
     /** TEST H2 */
-    TEST,
+    TEST
 }

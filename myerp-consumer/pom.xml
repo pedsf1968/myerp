@@ -168,6 +168,13 @@
             </build>
         </profile>
 
+        <profile>
+            <id>test-business</id>
+            <properties>
+                <maven.test.skip>true</maven.test.skip>
+            </properties>
+        </profile>
+
         <!-- Profile utilisé pour lancer les tests d'intégration de la couche Consumer -->
         <profile>
             <id>test-consumer</id>

@@ -122,9 +122,7 @@ class CompteComptableTest {
    @Tag("toString")
    @DisplayName("Output the right string for CompteComptable")
    void toString_returnTheString_ofCompteComptable() {
-      String expected = "CompteComptable{numero=2, libelle='compte2'}";
-
-      assertThat(compte1.toString()).isEqualTo(expected);
+      assertThat(compte1).hasToString("CompteComptable{numero=2, libelle='compte2'}");
    }
 
    @Test
@@ -139,22 +137,22 @@ class CompteComptableTest {
    @Tag("equals")
    @DisplayName("Verify that 2 identicals CompteComptables are equals")
    void testEquals_returnTrue_of2SameCompteComptables() {
-      assertThat(compte1.equals(compte1)).isTrue();
+      assertThat(compte1).isEqualTo(compte1);
    }
 
    @Test
    @Tag("equals")
    @DisplayName("Verify that 2 differents CompteComptables are not equals")
    void testEquals_returnFalse_of2DifferentsCompteComptables() {
-      assertThat(compte1.equals(compte2)).isFalse();
+      assertThat(compte1).isNotEqualTo(compte2);
    }
 
    @Test
    @Tag("hashCode")
    @DisplayName("Verify that hashCode is always the same")
    void testHashCode() {
-      assertThat(compte1.hashCode()).isEqualTo(compte1.hashCode());
-      assertThat(compte2.hashCode()).isEqualTo(compte2.hashCode());
-      assertThat(compte3.hashCode()).isEqualTo(compte3.hashCode());
+      assertThat(compte1).hasSameHashCodeAs(compte1);
+      assertThat(compte2).hasSameHashCodeAs(compte2);
+      assertThat(compte3).hasSameHashCodeAs(compte3);
    }
 }

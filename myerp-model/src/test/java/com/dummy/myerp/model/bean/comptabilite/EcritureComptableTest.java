@@ -165,7 +165,7 @@ class EcritureComptableTest  {
    @Test
    @Tag("setDate")
    @DisplayName("Change the Date of EcritureComptable")
-   void setDate() throws ParseException {
+   void setDate() {
       Date newDate = Date.valueOf("1988-11-09");
 
       ecritureComptable.setDate(newDate);
@@ -196,7 +196,7 @@ class EcritureComptableTest  {
    @DisplayName("Verify that the class output is well formated")
    void toStringTest() {
 
-      String output = "EcritureComptable{id=123, journal=JournalComptable{code='BQ', libelle='Journal comptable 11'}, " +
+      String expectedToString = "EcritureComptable{id=123, journal=JournalComptable{code='BQ', libelle='Journal comptable 11'}, " +
             "reference='BQ-2020/00011', date=" +
             ecritureComptable.getDate() +
             ", libelle='Equilibrée', totalDebit=341.00, totalCredit=341, " +
@@ -206,14 +206,14 @@ class EcritureComptableTest  {
             "LigneEcritureComptable{compteComptable=CompteComptable{numero=2, libelle='null'}, libelle='-301', debit=null, credit=301}\n" +
             "LigneEcritureComptable{compteComptable=CompteComptable{numero=2, libelle='null'}, libelle='33', debit=40, credit=7}\n" +
             "]}";
-      assertThat(ecritureComptable.toString()).isEqualTo(output);
+      assertThat(ecritureComptable).hasToString(expectedToString);
    }
 
    @Test
    @Tag("equals")
    @DisplayName("Verify that 2 identicals EcritureComptable are equals")
    void testEquals_returnTrue_of2SameEcritureComptables() {
-      assertThat(ecritureComptable.equals(ecritureComptable)).isTrue();
+      assertThat(ecritureComptable).isEqualTo(ecritureComptable);
    }
 
    @Test
@@ -227,13 +227,13 @@ class EcritureComptableTest  {
       reference.setLibelle(ecritureComptable.getLibelle());
       reference.setJournal(ecritureComptable.getJournal());
 
-      assertThat(ecritureComptable.equals(reference)).isFalse();
+      assertThat(ecritureComptable).isNotEqualTo(reference);
    }
 
    @Test
    @Tag("hashCode")
    @DisplayName("Verify that hashCode is always the same")
    void testHashCode() {
-      assertThat(ecritureComptable.hashCode()).isEqualTo(ecritureComptable.hashCode());
+      assertThat(ecritureComptable).hasSameHashCodeAs(ecritureComptable);
    }
 }

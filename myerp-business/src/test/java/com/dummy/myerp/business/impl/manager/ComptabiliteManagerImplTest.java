@@ -292,7 +292,7 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
             manager.updateEcritureComptable(ecritureComptable);
             ecritureComptable = manager.getEcritureComptableById(id);
             assertThat(ecritureComptable.getLibelle()).isEqualTo(oldLibelle);
-        } catch ( NotFoundException exception) {
+        } catch (NotFoundException | FunctionalException exception) {
             logger.error("Exception in updateEcritureComptable", exception);
         }
     }
@@ -329,7 +329,7 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
             assertThat(ecritureComptable.getLibelle()).isEqualTo(oldLibelle);
             assertThat(ecritureComptable.getReference()).isEqualTo(oldReference);
             assertThat(ecritureComptable.getDate()).isEqualTo(oldDate);
-        } catch ( NotFoundException exception) {
+        } catch (NotFoundException | FunctionalException exception) {
             logger.error("Exception in updateEcritureComptable", exception);
         }
     }
@@ -354,7 +354,7 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
             manager.updateEcritureComptable(ecritureComptable);
             ecritureComptable = manager.getEcritureComptableById(id);
             assertThat(ecritureComptable.getDate()).isEqualTo(oldDate);
-        } catch ( NotFoundException exception) {
+        } catch (NotFoundException | FunctionalException exception) {
             logger.error("Exception in updateEcritureComptable", exception);
         }
     }

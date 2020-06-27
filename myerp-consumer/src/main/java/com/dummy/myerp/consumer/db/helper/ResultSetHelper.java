@@ -1,9 +1,9 @@
 package com.dummy.myerp.consumer.db.helper;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.Date;
 
 import org.apache.commons.lang3.time.DateUtils;
 
@@ -88,7 +88,7 @@ public abstract class ResultSetHelper {
 
         Date vDate = pRS.getDate(pColName);
         if (vDate != null) {
-            vDate = DateUtils.truncate(vDate, Calendar.DATE);
+            //vDate = DateUtils.truncate(vDate, Calendar.DATE);
         }
         return vDate;
     }

@@ -156,7 +156,6 @@
         <profile>
             <id>production</id>
             <properties>
-                <activatedProperties>production</activatedProperties>
                 <myerp.database>MYERP</myerp.database>
             </properties>
             <dependencies>
@@ -173,7 +172,7 @@
         <profile>
             <id>test-business</id>
             <properties>
-                <activatedProperties>test-business</activatedProperties>
+                <spring.profiles.active>test-business</spring.profiles.active>
                 <myerp.database>TEST</myerp.database>
             </properties>
             <dependencies>
@@ -190,7 +189,7 @@
         <profile>
             <id>test-consumer</id>
             <properties>
-                <activatedProperties>test-consumer</activatedProperties>
+                <spring.profiles.active>test-consumer</spring.profiles.active>
                 <myerp.database>TEST</myerp.database>
             </properties>
             <dependencies>
@@ -209,10 +208,8 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
+                <spring.profiles.active>sonar</spring.profiles.active>
                 <myerp.database>TEST</myerp.database>
-                <activatedProperties>test-business</activatedProperties>
-                <activatedProperties>test-consumer</activatedProperties>
-                <activatedProperties>sonar</activatedProperties>
             </properties>
             <dependencies>
                 <!-- ======================================================== H2 -->
@@ -620,6 +617,20 @@
         <!--                                                         plugins -->
         <!-- =============================================================== -->
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-help-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>show-profiles</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>active-profiles</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <!-- ==================================================== Jacoco -->
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -672,12 +683,6 @@
                 </executions>
             </plugin>
         </plugins>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
         <testResources>
             <testResource>
                 <directory>src/test/resources</directory>

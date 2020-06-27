@@ -33,7 +33,8 @@ public class EcritureComptable {
     @Pattern(regexp = REFERENCE_PATTERN)
     private String reference;
     /** The Date. */
-    @NotNull private Date date;
+    @NotNull
+    private java.sql.Date date;
 
     /** The Libelle. */
     @NotNull
@@ -68,7 +69,7 @@ public class EcritureComptable {
     public java.sql.Date getDate() {
         return date;
     }
-    public void setDate(java.sql.Date pDate) {
+    public void setDate(java.sql.Date  pDate) {
         date = pDate;
     }
     public String getLibelle() {

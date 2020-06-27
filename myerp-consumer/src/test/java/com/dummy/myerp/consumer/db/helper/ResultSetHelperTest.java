@@ -89,7 +89,7 @@ class ResultSetHelperTest {
    void getDate_returnDateValue_ofDateColumn()throws SQLException {
       DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
-      assertThat(ResultSetHelper.getDate(resultSet,LABEL_DATE)).isEqualTo(formatter.format(valueDate));
+      assertThat(ResultSetHelper.getDate(resultSet,LABEL_DATE)).isEqualTo(valueDate);
    }
 
    @Test

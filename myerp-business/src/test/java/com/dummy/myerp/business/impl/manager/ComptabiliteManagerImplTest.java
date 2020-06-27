@@ -33,14 +33,14 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
         compteComptable1 = getBusinessProxy().getComptabiliteManager().getListCompteComptable().get(1);
         compteComptable2 = getBusinessProxy().getComptabiliteManager().getListCompteComptable().get(2);
         manager = new ComptabiliteManagerImpl();
-        date = Date.valueOf("2020-06-11");
+        date = Date.valueOf("2016-06-11");
     }
 
     @BeforeEach
     private void beforeEach() {
         vEcritureComptable = new EcritureComptable();
         vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
-        vEcritureComptable.setDate(date);
+        vEcritureComptable.setDate( date);
         vEcritureComptable.setLibelle("Libelle");
     }
 
@@ -69,6 +69,19 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
         assertThrows(FunctionalException.class, () -> {
             manager.checkEcritureComptableUnit(vEcritureComptable);
         });
+    }
+
+    @Test
+    @Tag("checkEcritureComptableUnitViolation")
+    @DisplayName("Verify that  checkEcritureComptableUnit thrown FunctionalException if year Comptable is closed")
+    void checkEcritureComptableUnitViolation_throwsFunctionalException_ofBadYearJournalComptable()  {
+        vEcritureComptable.setDate(Date.valueOf("2020-07-11"));
+
+        assertThrows(FunctionalException.class, () -> {
+            manager.checkEcritureComptableUnit(vEcritureComptable);
+        });
+
+        vEcritureComptable.setDate(date);
     }
 
 
@@ -262,7 +275,7 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
         EcritureComptable found = null;
 
         vEcritureComptable.setReference("AC-2016/00055");
-        vEcritureComptable.setDate(Date.valueOf("2016-7-11"));
+        vEcritureComptable.setDate(date);
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(compteComptable1,
               null, new BigDecimal(123),
               null));

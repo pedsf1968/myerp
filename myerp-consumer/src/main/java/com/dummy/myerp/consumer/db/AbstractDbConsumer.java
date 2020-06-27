@@ -6,6 +6,7 @@ import javax.sql.DataSource;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import com.dummy.myerp.consumer.ConsumerHelper;
 import com.dummy.myerp.consumer.dao.contrat.DaoProxy;
@@ -77,15 +78,19 @@ public abstract class AbstractDbConsumer {
      */
     protected <T> T queryGetSequenceValue(DataSourcesEnum pDataSourcesId,
                                                    String pSeqName, Class<T> pSeqValueClass) {
-
+        String vSeqSQL;
         JdbcTemplate vJdbcTemplate = new JdbcTemplate(getDataSource(pDataSourcesId));
 
-        //String vSeqSQL = String.format(POSTGRES_REQUEST,  pSeqName);
-        String vSeqSQL = String.format(H2_REQUEST,  pSeqName);
+        DataSourcesEnum database = DataSourcesEnum.valueOf(System.getProperty("databaseType"));
+
+        if(database.equals(DataSourcesEnum.MYERP)) {
+            vSeqSQL = String.format(POSTGRES_REQUEST,  pSeqName);
+        } else {
+            vSeqSQL = String.format(H2_REQUEST,  pSeqName);
+        }
 
         return vJdbcTemplate.queryForObject(vSeqSQL, pSeqValueClass);
     }
-
 
 
 

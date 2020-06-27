@@ -1,8 +1,8 @@
 package com.dummy.myerp.business.impl.manager;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
@@ -134,7 +134,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 
     /**
      * Vérifie que l'Ecriture comptable respecte les règles de gestion unitaires,
-     * c'est à dire indépendemment du contexte (unicité de la référence, exercie comptable non cloturé...)
+     * c'est à dire indépendemment du contexte (unicité de la référence, exerce comptable non cloturé...)
      *
      * @param pEcritureComptable -
      * @throws FunctionalException Si l'Ecriture comptable ne respecte pas les règles de gestion
@@ -149,6 +149,17 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
                                               "L'écriture comptable ne respecte pas les contraintes de validation",
                                               vViolations));
         }
+
+        // verify that comptable year is no closed
+        // it's no closed if it's in sequence sequence_ecriture_comptable
+        java.sql.Date dateComptable =  pEcritureComptable.getDate();
+        Integer year = dateComptable.toLocalDate().getYear();
+        SequenceEcritureComptable sequenceEcritureComptable =  getDaoProxy().getComptabiliteDao().getLastSeqOfTheYear(year, pEcritureComptable.getJournal().getCode());
+
+        if (sequenceEcritureComptable == null) {
+            throw new FunctionalException("Le Journal Comptable n'existe pas !");
+        }
+
 
     }
 
@@ -223,10 +234,10 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
                       "La référence de l'écriture comptable doit correspondre au journal.");
             }
 
+
             String year = pEcritureComptable.getReference().split("-|/")[1];
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(pEcritureComptable.getDate());
-            String dateYear = String.valueOf(calendar.get(Calendar.YEAR));
+            java.sql.Date dateComptable =  (java.sql.Date)pEcritureComptable.getDate();
+            String dateYear = String.valueOf(dateComptable.toLocalDate().getYear());
 
             if (!year.equals(dateYear)) {
                 LOGGER.error("Pas le même Date de Journal Comptable : Date {} et Année dans Reference {}",dateYear,year);

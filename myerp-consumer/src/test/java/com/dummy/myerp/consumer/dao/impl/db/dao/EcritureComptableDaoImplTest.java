@@ -29,10 +29,8 @@ class EcritureComptableDaoImplTest extends ConsumerTestCase {
    @BeforeAll
    public static void beforeAll(){
       newEC = new EcritureComptable();
-      date = Date.valueOf(LocalDate.now());
-
-      SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
-      annee = sdf.format(date);
+      date = Date.valueOf("2020-06-11");
+      annee = "2020";
 
       ecritureComptables = getDaoProxy().getComptabiliteDao().getListEcritureComptable();
       ligneEcritureComptables = new HashMap<>();

@@ -17,6 +17,11 @@
                         <value type="com.dummy.myerp.consumer.db.DataSourcesEnum">MYERP</value>
                     </key>
                 </entry>
+                <entry value-ref="dataSourceTEST">
+                    <key>
+                        <value type="com.dummy.myerp.consumer.db.DataSourcesEnum">TEST</value>
+                    </key>
+                </entry>
             </map>
         </property>
     </bean>
@@ -44,6 +49,11 @@
         <constructor-arg value="javax.sql.DataSource"/>
     </bean>
 
+    <bean id="dataSourceTEST" class="com.dummy.myerp.technical.util.spring.NullFactoryBean">
+        <constructor-arg value="javax.sql.DataSource"/>
+    </bean>
+
     <!-- ========== SQL ========== -->
-    <import resource="sqlContext.xml"/>
+    <import resource="classpath:/com/dummy/myerp/consumer/sqlContext.xml"/>
 </beans>
+

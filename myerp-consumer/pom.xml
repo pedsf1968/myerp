@@ -120,14 +120,70 @@
     <!-- Profiles -->
     <!-- =============================================================== -->
     <profiles>
+        <profile>
+            <id>production</id>
+            <build>
+                <plugins>
+                    <!-- Pour avour le type de base de données-->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <systemPropertyVariables>
+                                <databaseType>${myerp.database}</databaseType>
+                            </systemPropertyVariables>
+                        </configuration>
+                    </plugin>
+
+                    <!-- Ajout du répertoire src/test-consumer/java en tant que source de test du module -->
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>build-helper-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>add-test-source</id>
+                                <phase>generate-test-sources</phase>
+                                <goals>
+                                    <goal>add-test-source</goal>
+                                </goals>
+                                <configuration>
+                                    <sources>
+                                        <source>src/test/java</source>
+                                        <source>src/test-consumer/java</source>
+                                    </sources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+
+                <testResources>
+                    <testResource>
+                        <directory>src/test/resources</directory>
+                    </testResource>
+                    <testResource>
+                        <directory>src/test-consumer/resources</directory>
+                    </testResource>
+                </testResources>
+            </build>
+        </profile>
+
         <!-- Profile utilisé pour lancer les tests d'intégration de la couche Consumer -->
         <profile>
             <id>test-consumer</id>
-            <properties>
-                <myerp.database>MYERP</myerp.database>
-            </properties>
             <build>
                 <plugins>
+                    <!-- Pour avour le type de base de données-->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <systemPropertyVariables>
+                                <databaseType>${myerp.database}</databaseType>
+                            </systemPropertyVariables>
+                        </configuration>
+                    </plugin>
+
                     <!-- Ajout du répertoire src/test-consumer/java en tant que source de test du module -->
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
@@ -162,11 +218,22 @@
 
         <profile>
             <id>sonar</id>
-            <properties>
-                <myerp.database>MYERP</myerp.database>
-            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <build>
                 <plugins>
+                    <!-- Pour avour le type de base de données-->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <systemPropertyVariables>
+                                <databaseType>${myerp.database}</databaseType>
+                            </systemPropertyVariables>
+                        </configuration>
+                    </plugin>
+
                     <!-- Ajout du répertoire src/test-consumer/java en tant que source de test du module -->
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
@@ -188,6 +255,7 @@
                         </executions>
                     </plugin>
                 </plugins>
+
                 <testResources>
                     <testResource>
                         <directory>src/test/resources</directory>
@@ -205,5 +273,6 @@
     <!-- Build -->
     <!-- =============================================================== -->
     <build>
+
     </build>
 </project>

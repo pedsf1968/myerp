@@ -15,9 +15,15 @@ The code analyse is made by Sonar.
 The result can be see in the link below :
 https://sonarcloud.io/dashboard?id=pedsf1968_myerp
  
+#Bugs found 
+
+
 
 
 #Profiles
+A production profile was added to separate production PostgreSQL database from test environment.
+A sonar profile was added also for testing everything and launch Sonar analyse with sonar:sonar parameter in command line.
+
 ##Profile production
 Production profile use a PostgreSQL Docker database. 
 Launch containers with docker-compose command below :

@@ -323,16 +323,27 @@ mvn clean test -P production
 Using Maven command verify with the tag -P to specify the profile and sonar:sonar to start sonar analyse. 
 mvn clean verify sonar:sonar  -P production
 
-
 ## Profile test-consumer
 Use in memory H2 database
 
 ### Launch test 
 Using Maven command test with the tag -P to specify the profile. 
-mvn clean test -P test-consumer
+mvn clean test -pl myerp-consumer -P myerp-consumer --also-make
+
+### Launch sonar analyse
+Using Maven command verify with the tag -P to specify the profile and sonar:sonar to start sonar analyse. 
+mvn clean verify sonar:sonar -pl myerp-consumer -P myerp-consumer --also-make
 
 ## Profile test-business
 Use in memory H2 database
+
+### Launch test 
+Using Maven command test with the tag -P to specify the profile. 
+mvn clean test -pl myerp-business -P myerp-business --also-make
+
+### Launch sonar analyse
+Using Maven command verify with the tag -P to specify the profile and sonar:sonar to start sonar analyse. 
+mvn clean verify sonar:sonar-pl myerp-business -P myerp-business --also-make
 
 ## Profile sonar
 Use in memory H2 database and run all tests.

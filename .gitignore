@@ -11,3 +11,5 @@
 
 /.idea
 *.iml
+
+/docker/dev/jenkins

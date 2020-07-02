@@ -45,11 +45,11 @@ services:
     user: root
     restart: unless-stopped
     volumes:
-      - "./jenkins:/var/jenkins_home"
-      #- "./jenkins/lib:/var/lib/jenkins"
-      #- "./jenkins/log:/var/log/jenkins"
+      - "./jenkins/lib:/var/lib/jenkins"
+      - "./jenkins/log:/var/log/jenkins"
+      #- "./jenkins:/var/jenkins_home"
+      - "//f/dev/javaee/myerp/src:/home/project"
       #- "./jenkins/config:/var/jenkins_config"
-      - ../../src:/home/project"
     ports:
       - "5000:8080"
       - "50000:50000"

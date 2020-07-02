@@ -1,0 +1,4 @@
+Repository sur GitHub
+Branche Master
+Utiliser /src comme racine du projet Maven multimodule
+https://github.com/pedsf1968/myerp.git

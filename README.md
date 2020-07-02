@@ -17,6 +17,11 @@ The result can be see in the link below :
 https://sonarcloud.io/dashboard?id=pedsf1968_myerp
 
 ***
+# Clone project
+The head of the Maven project is in src directory!!
+https://github.com/pedsf1968/myerp.git
+
+***
 # Run test
 ## Test environment
 - Go to myerp/src directory
@@ -26,6 +31,25 @@ https://sonarcloud.io/dashboard?id=pedsf1968_myerp
 ## Production environment
 - Go to myerp/docker/dev directory
 - Execute : docker-compose up -d
+
+### Access PostgreSQL database
+- Open browser on http://localhost:5050
+- Enter login : admin@pgadmin.org
+- Enter password : admin
+- Server address : 10.5.0.2
+- Server port : 5432
+- Database : db_myerp
+- User : usr_myerp
+- Password : myerp
+
+### Access Jenkins 
+- Open browser on http://localhost:5000
+- Enter login : jenkins
+- Enter password : admin
+- Launch pipeline Myerp
+
+
+- Open browser on : https://sonarcloud.io/dashboard?id=pedsf1968_myerp
 
 
 ***
@@ -323,16 +347,27 @@ mvn clean test -P production
 Using Maven command verify with the tag -P to specify the profile and sonar:sonar to start sonar analyse. 
 mvn clean verify sonar:sonar  -P production
 
-
 ## Profile test-consumer
 Use in memory H2 database
 
 ### Launch test 
 Using Maven command test with the tag -P to specify the profile. 
-mvn clean test -P test-consumer
+mvn clean test -pl myerp-consumer -P myerp-consumer --also-make
+
+### Launch sonar analyse
+Using Maven command verify with the tag -P to specify the profile and sonar:sonar to start sonar analyse. 
+mvn clean verify sonar:sonar -pl myerp-consumer -P myerp-consumer --also-make
 
 ## Profile test-business
 Use in memory H2 database
+
+### Launch test 
+Using Maven command test with the tag -P to specify the profile. 
+mvn clean test -pl myerp-business -P myerp-business --also-make
+
+### Launch sonar analyse
+Using Maven command verify with the tag -P to specify the profile and sonar:sonar to start sonar analyse. 
+mvn clean verify sonar:sonar-pl myerp-business -P myerp-business --also-make
 
 ## Profile sonar
 Use in memory H2 database and run all tests.
@@ -344,4 +379,3 @@ mvn clean test -P sonar
 ### Launch sonar analyse
 Using Maven command verify with the tag -P to specify the profile and sonar:sonar to start sonar analyse. 
 mvn clean verify sonar:sonar  -P sonar
-

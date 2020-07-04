@@ -44,8 +44,6 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
         vEcritureComptable.setLibelle("Libelle");
     }
 
-
-
     @Test
     @Tag("checkEcritureComptableUnit")
     @DisplayName("Verify that no exception is thrown if the EcritureComptable is correct")

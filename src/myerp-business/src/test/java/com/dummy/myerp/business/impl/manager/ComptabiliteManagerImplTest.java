@@ -21,11 +21,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ComptabiliteManagerImplTest extends BusinessTestCase {
     private static final Logger logger = LoggerFactory.getLogger(ComptabiliteManagerImplTest.class);
+    private static final JournalComptable journalComptable = new JournalComptable("AC", "Achat");
     private static ComptabiliteManagerImpl manager;
     private static CompteComptable compteComptable1;
     private static CompteComptable compteComptable2;
     private  EcritureComptable vEcritureComptable;
-    private static Date date;
+    private static java.sql.Date date;
 
 
     @BeforeAll
@@ -39,7 +40,7 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
     @BeforeEach
     private void beforeEach() {
         vEcritureComptable = new EcritureComptable();
-        vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
+        vEcritureComptable.setJournal(journalComptable);
         vEcritureComptable.setDate( date);
         vEcritureComptable.setLibelle("Libelle");
     }
@@ -308,10 +309,12 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
         EcritureComptable ecritureComptable = getBusinessProxy().getComptabiliteManager().getListEcritureComptable().get(1);
         Integer id = ecritureComptable.getId();
         String oldLibelle = ecritureComptable.getLibelle();
+        JournalComptable oldJournalComptable = ecritureComptable.getJournal();
         String oldReference = ecritureComptable.getReference();
-        Date oldDate = ecritureComptable.getDate();
+        Date oldDate =  (java.sql.Date) ecritureComptable.getDate();
 
         ecritureComptable.setLibelle(newLibelle);
+        ecritureComptable.setJournal(journalComptable);
         ecritureComptable.setReference(newReference);
         ecritureComptable.setDate(newDate);
         try {
@@ -322,6 +325,7 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
             assertThat(ecritureComptable.getDate()).isEqualTo(newDate);
 
             ecritureComptable.setLibelle(oldLibelle);
+            ecritureComptable.setJournal(oldJournalComptable);
             ecritureComptable.setReference(oldReference);
             ecritureComptable.setDate(oldDate);
             manager.updateEcritureComptable(ecritureComptable);
@@ -342,7 +346,7 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
 
         EcritureComptable ecritureComptable = getBusinessProxy().getComptabiliteManager().getListEcritureComptable().get(1);
         Integer id = ecritureComptable.getId();
-        Date oldDate = ecritureComptable.getDate();
+        Date oldDate =  (java.sql.Date) ecritureComptable.getDate();
 
         ecritureComptable.setDate(newDate);
         try {

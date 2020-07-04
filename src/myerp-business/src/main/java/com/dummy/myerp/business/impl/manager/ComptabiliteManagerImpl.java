@@ -131,6 +131,20 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         this.checkEcritureComptableRG7(pEcritureComptable);
     }
 
+    /**
+     * Méthode générale qui appelle les méthodes de vérification des règles de EcritureComptable
+     *
+     * {@inheritDoc}
+     * @param pEcritureComptable -
+     */
+    public void checkEcritureComptableUpdate(EcritureComptable pEcritureComptable) throws FunctionalException {
+         this.checkEcritureComptableUnit(pEcritureComptable);
+         this.checkEcritureComptableRG2(pEcritureComptable);
+         this.checkEcritureComptableRG3(pEcritureComptable);
+         this.checkEcritureComptableRG5(pEcritureComptable);
+         this.checkEcritureComptableRG7(pEcritureComptable);
+    }
+
 
     /**
      * Vérifie que l'Ecriture comptable respecte les règles de gestion unitaires,
@@ -152,7 +166,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 
         // verify that comptable year is no closed
         // it's no closed if it's in sequence sequence_ecriture_comptable
-        java.sql.Date dateComptable =  pEcritureComptable.getDate();
+        java.sql.Date dateComptable =  new java.sql.Date(pEcritureComptable.getDate().getTime());
         Integer year = dateComptable.toLocalDate().getYear();
         SequenceEcritureComptable sequenceEcritureComptable =  getDaoProxy().getComptabiliteDao().getLastSeqOfTheYear(year, pEcritureComptable.getJournal().getCode());
 
@@ -236,7 +250,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 
 
             String year = pEcritureComptable.getReference().split("[-/]")[1];
-            java.sql.Date dateComptable =  pEcritureComptable.getDate();
+            java.sql.Date dateComptable =  new java.sql.Date(pEcritureComptable.getDate().getTime());
             String dateYear = String.valueOf(dateComptable.toLocalDate().getYear());
 
             if (!year.equals(dateYear)) {
@@ -268,6 +282,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
                 if (pEcritureComptable.getId() != null
                     || Objects.equals(pEcritureComptable.getId(), vECRef.getId())) {
                     // id n'est pas null ou la même référence existe
+                    LOGGER.error("Une autre écriture comptable existe déjà avec la même référence : {}",pEcritureComptable.getReference());
                     throw new FunctionalException("Une autre écriture comptable existe déjà avec la même référence.");
                 }
             } catch (NotFoundException vEx) {
@@ -288,9 +303,11 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 
         for(LigneEcritureComptable ligneEcritureComptable : ligneEcritureComptables) {
             if(ligneEcritureComptable.getCredit() != null && getNumberOfDecimalPlaces(ligneEcritureComptable.getCredit()) > 2) {
+                LOGGER.error("Un crédit ne peut pas avoir plus de deux chiffres après la virgule : {}",getNumberOfDecimalPlaces(ligneEcritureComptable.getCredit()));
                 throw new FunctionalException("Un crédit ne peut pas avoir plus de deux chiffres après la virgule!");
             }
             if(ligneEcritureComptable.getDebit() != null && getNumberOfDecimalPlaces(ligneEcritureComptable.getDebit()) > 2) {
+                LOGGER.error("Un débit ne peut pas avoir plus de deux chiffres après la virgule : {}",getNumberOfDecimalPlaces(ligneEcritureComptable.getDebit()));
                 throw new FunctionalException("Un débit ne peut pas avoir plus de deux chiffres après la virgule!");
             }
         }
@@ -324,7 +341,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
      */
     @Override
     public void updateEcritureComptable(EcritureComptable pEcritureComptable) throws FunctionalException {
-        this.checkEcritureComptable(pEcritureComptable);
+        this.checkEcritureComptableUpdate(pEcritureComptable);
         TransactionStatus vTS = getTransactionManager().beginTransactionMyERP();
         try {
             getDaoProxy().getComptabiliteDao().updateEcritureComptable(pEcritureComptable);

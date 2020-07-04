@@ -13,6 +13,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+
+import java.sql.Date;
 import java.sql.Types;
 import java.util.List;
 
@@ -214,7 +216,8 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
         MapSqlParameterSource vSqlParams = new MapSqlParameterSource();
         vSqlParams.addValue(DBN.JOURNAL_CODE, pEcritureComptable.getJournal().getCode());
         vSqlParams.addValue(DBN.REFERENCE, pEcritureComptable.getReference());
-        vSqlParams.addValue(DBN.DATE, pEcritureComptable.getDate());
+        Date dateSQL = new java.sql.Date(pEcritureComptable.getDate().getTime());
+        vSqlParams.addValue(DBN.DATE, dateSQL);
         vSqlParams.addValue(DBN.LIBELLE, pEcritureComptable.getLibelle());
 
         vJdbcTemplate.update(sqlInsertEcritureComptable, vSqlParams);

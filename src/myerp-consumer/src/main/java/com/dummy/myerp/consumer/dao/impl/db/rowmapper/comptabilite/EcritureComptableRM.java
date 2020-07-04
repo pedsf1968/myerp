@@ -1,5 +1,6 @@
 package com.dummy.myerp.consumer.dao.impl.db.rowmapper.comptabilite;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -25,7 +26,8 @@ public class EcritureComptableRM implements RowMapper<EcritureComptable> {
         vBean.setId(pRS.getInt(DBN.ID));
         vBean.setJournal(journalComptableDaoCache.getByCode(pRS.getString(DBN.JOURNAL_CODE)));
         vBean.setReference(pRS.getString(DBN.REFERENCE));
-        vBean.setDate(pRS.getDate(DBN.DATE));
+        Date dateSQL = new java.sql.Date(pRS.getDate(DBN.DATE).getTime());
+        vBean.setDate(dateSQL);
         vBean.setLibelle(pRS.getString(DBN.LIBELLE));
 
         // Chargement des lignes d'écriture

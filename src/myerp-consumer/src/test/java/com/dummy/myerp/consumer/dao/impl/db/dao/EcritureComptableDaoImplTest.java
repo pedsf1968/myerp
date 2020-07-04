@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class EcritureComptableDaoImplTest extends ConsumerTestCase {
    private Logger LOGGER = LoggerFactory.getLogger(EcritureComptableDaoImplTest.class);
 
-   private static Date date;
+   private static java.sql.Date date;
    private static String annee;
    private static EcritureComptable vEcritureComptable, newEC;
    private static List<EcritureComptable> ecritureComptables;

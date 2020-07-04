@@ -28,7 +28,6 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
     private  EcritureComptable vEcritureComptable;
     private static java.sql.Date date;
 
-
     @BeforeAll
     private static void beforeAll() {
         compteComptable1 = getBusinessProxy().getComptabiliteManager().getListCompteComptable().get(1);
@@ -247,7 +246,7 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
 
     @Test
     @Tag("insertEcritureComptable")
-    @DisplayName("Verify tha Ecriture comptable is inserted with his LigneEcritureComptable")
+    @DisplayName("Verify that Ecriture comptable is inserted with his LigneEcritureComptable")
     void insertEcritureComptable_insertTheRightEcritureComptable_ofEcritureComptable() {
         EcritureComptable found = null;
 

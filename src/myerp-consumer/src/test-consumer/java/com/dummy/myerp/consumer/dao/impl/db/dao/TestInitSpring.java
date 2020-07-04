@@ -26,7 +26,7 @@ class TestInitSpring extends ConsumerTestCase {
     @Tag("testInit")
     @DisplayName("Verify the initialisation of the context")
     void testInit() {
-        SpringRegistry.init();
+        assertThat(SpringRegistry.init()).isNotNull();
         assertThat(SpringRegistry.getDaoProxy()).isNotNull();
     }
 }

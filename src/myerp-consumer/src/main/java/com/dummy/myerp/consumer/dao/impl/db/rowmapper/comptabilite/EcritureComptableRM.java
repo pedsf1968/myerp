@@ -26,8 +26,7 @@ public class EcritureComptableRM implements RowMapper<EcritureComptable> {
         vBean.setId(pRS.getInt(DBN.ID));
         vBean.setJournal(journalComptableDaoCache.getByCode(pRS.getString(DBN.JOURNAL_CODE)));
         vBean.setReference(pRS.getString(DBN.REFERENCE));
-        Date dateSQL = new java.sql.Date(pRS.getDate(DBN.DATE).getTime());
-        vBean.setDate(dateSQL);
+        vBean.setDate(pRS.getDate(DBN.DATE));
         vBean.setLibelle(pRS.getString(DBN.LIBELLE));
 
         // Chargement des lignes d'écriture

@@ -1,7 +1,9 @@
 package com.dummy.myerp.business.impl.manager;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -166,8 +168,8 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 
         // verify that comptable year is no closed
         // it's no closed if it's in sequence sequence_ecriture_comptable
-        java.sql.Date dateComptable =  new java.sql.Date(pEcritureComptable.getDate().getTime());
-        Integer year = dateComptable.toLocalDate().getYear();
+        SimpleDateFormat formatNowYear = new SimpleDateFormat("YYYY");
+        Integer year = Integer.valueOf(formatNowYear.format(pEcritureComptable.getDate()));
         SequenceEcritureComptable sequenceEcritureComptable =  getDaoProxy().getComptabiliteDao().getLastSeqOfTheYear(year, pEcritureComptable.getJournal().getCode());
 
         if (sequenceEcritureComptable == null) {
@@ -243,7 +245,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
             String code = pEcritureComptable.getReference().split("-")[0];
 
             if (!code.equals(pEcritureComptable.getJournal().getCode())) {
-                LOGGER.error("Pas le même Code de Journal Comptable : Code {} et Code dans Reference {}",pEcritureComptable.getJournal().getCode(),code);
+                LOGGER.debug("Pas le même Code de Journal Comptable : Code {} et Code dans Reference {}",pEcritureComptable.getJournal().getCode(),code);
                 throw new FunctionalException(
                       "La référence de l'écriture comptable doit correspondre au journal.");
             }
@@ -254,7 +256,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
             String dateYear = String.valueOf(dateComptable.toLocalDate().getYear());
 
             if (!year.equals(dateYear)) {
-                LOGGER.error("Pas le même Date de Journal Comptable : Date {} et Année dans Reference {}",dateYear,year);
+                LOGGER.debug("Pas le même Date de Journal Comptable : Date {} et Année dans Reference {}",dateYear,year);
                 throw new FunctionalException(
                       "La référence de l'écriture comptable doit correspondre au journal.");
             }
@@ -282,7 +284,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
                 if (pEcritureComptable.getId() != null
                     || Objects.equals(pEcritureComptable.getId(), vECRef.getId())) {
                     // id n'est pas null ou la même référence existe
-                    LOGGER.error("Une autre écriture comptable existe déjà avec la même référence : {}",pEcritureComptable.getReference());
+                    LOGGER.debug("Une autre écriture comptable existe déjà avec la même référence : {}",pEcritureComptable.getReference());
                     throw new FunctionalException("Une autre écriture comptable existe déjà avec la même référence.");
                 }
             } catch (NotFoundException vEx) {
@@ -303,11 +305,11 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 
         for(LigneEcritureComptable ligneEcritureComptable : ligneEcritureComptables) {
             if(ligneEcritureComptable.getCredit() != null && getNumberOfDecimalPlaces(ligneEcritureComptable.getCredit()) > 2) {
-                LOGGER.error("Un crédit ne peut pas avoir plus de deux chiffres après la virgule : {}",getNumberOfDecimalPlaces(ligneEcritureComptable.getCredit()));
+                LOGGER.debug("Un crédit ne peut pas avoir plus de deux chiffres après la virgule : {}",getNumberOfDecimalPlaces(ligneEcritureComptable.getCredit()));
                 throw new FunctionalException("Un crédit ne peut pas avoir plus de deux chiffres après la virgule!");
             }
             if(ligneEcritureComptable.getDebit() != null && getNumberOfDecimalPlaces(ligneEcritureComptable.getDebit()) > 2) {
-                LOGGER.error("Un débit ne peut pas avoir plus de deux chiffres après la virgule : {}",getNumberOfDecimalPlaces(ligneEcritureComptable.getDebit()));
+                LOGGER.debug("Un débit ne peut pas avoir plus de deux chiffres après la virgule : {}",getNumberOfDecimalPlaces(ligneEcritureComptable.getDebit()));
                 throw new FunctionalException("Un débit ne peut pas avoir plus de deux chiffres après la virgule!");
             }
         }

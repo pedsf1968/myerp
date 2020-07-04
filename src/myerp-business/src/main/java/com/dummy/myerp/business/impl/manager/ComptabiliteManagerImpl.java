@@ -1,9 +1,7 @@
 package com.dummy.myerp.business.impl.manager;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -168,7 +166,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 
         // verify that comptable year is no closed
         // it's no closed if it's in sequence sequence_ecriture_comptable
-        SimpleDateFormat formatNowYear = new SimpleDateFormat("YYYY");
+        SimpleDateFormat formatNowYear = new SimpleDateFormat("yyyy");
         Integer year = Integer.valueOf(formatNowYear.format(pEcritureComptable.getDate()));
         SequenceEcritureComptable sequenceEcritureComptable =  getDaoProxy().getComptabiliteDao().getLastSeqOfTheYear(year, pEcritureComptable.getJournal().getCode());
 

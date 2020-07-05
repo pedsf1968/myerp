@@ -2,15 +2,10 @@ package com.dummy.myerp.business.impl.manager;
 
 import java.math.BigDecimal;
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
-import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
-import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
-import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
-import com.dummy.myerp.model.bean.comptabilite.LigneEcritureComptable;
+import com.dummy.myerp.model.bean.comptabilite.*;
 import com.dummy.myerp.technical.exception.FunctionalException;
-
 import com.dummy.myerp.technical.exception.NotFoundException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
@@ -280,7 +275,16 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
         assertThat(found.getLibelle()).isEqualTo(vEcritureComptable.getLibelle());
         int index = 0;
         for(LigneEcritureComptable l: found.getListLigneEcriture()) {
-            assertThat(l.equals(vEcritureComptable.getListLigneEcriture().get(index++))).isTrue();
+            LigneEcritureComptable ligne = vEcritureComptable.getListLigneEcriture().get(index++);
+            assertThat(l.getLibelle()).isEqualTo(ligne.getLibelle());
+            assertThat(l.getCompteComptable()).hasToString(ligne.getCompteComptable().toString());
+            if(l.getDebit()!=null) {
+                assertThat(l.getDebit()).isEqualByComparingTo(ligne.getDebit());
+            }
+            if(l.getCredit()!=null) {
+                assertThat(l.getCredit()).isEqualByComparingTo(ligne.getCredit());
+            }
+
         }
 
     }

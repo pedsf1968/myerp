@@ -280,7 +280,7 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
         assertThat(found.getLibelle()).isEqualTo(vEcritureComptable.getLibelle());
         int index = 0;
         for(LigneEcritureComptable l: found.getListLigneEcriture()) {
-            assertThat(l.equals(vEcritureComptable.getListLigneEcriture().get(index++)));
+            assertThat(l.equals(vEcritureComptable.getListLigneEcriture().get(index++))).isTrue();
         }
 
     }

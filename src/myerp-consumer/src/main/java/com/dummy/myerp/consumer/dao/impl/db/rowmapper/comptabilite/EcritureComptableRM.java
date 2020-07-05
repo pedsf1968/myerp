@@ -1,5 +1,6 @@
 package com.dummy.myerp.consumer.dao.impl.db.rowmapper.comptabilite;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 

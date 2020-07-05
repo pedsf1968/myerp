@@ -13,3 +13,4 @@
 *.iml
 
 /docker/dev/jenkins
+/docker/dev/pgadmin

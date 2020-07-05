@@ -8,8 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.math.BigDecimal;
 import java.sql.Date;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class EcritureComptableDaoImplTest extends ConsumerTestCase {
    private Logger LOGGER = LoggerFactory.getLogger(EcritureComptableDaoImplTest.class);
 
-   private static Date date;
+   private static java.sql.Date date;
    private static String annee;
    private static EcritureComptable vEcritureComptable, newEC;
    private static List<EcritureComptable> ecritureComptables;

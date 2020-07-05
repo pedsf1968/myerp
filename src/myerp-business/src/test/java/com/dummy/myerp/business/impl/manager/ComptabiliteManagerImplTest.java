@@ -2,6 +2,7 @@ package com.dummy.myerp.business.impl.manager;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
@@ -20,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ComptabiliteManagerImplTest extends BusinessTestCase {
-    private static final Logger logger = LoggerFactory.getLogger(ComptabiliteManagerImplTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ComptabiliteManagerImplTest.class);
     private static final JournalComptable journalComptable = new JournalComptable("AC", "Achat");
     private static ComptabiliteManagerImpl manager;
     private static CompteComptable compteComptable1;
@@ -30,10 +31,11 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
 
     @BeforeAll
     private static void beforeAll() {
-        compteComptable1 = getBusinessProxy().getComptabiliteManager().getListCompteComptable().get(1);
-        compteComptable2 = getBusinessProxy().getComptabiliteManager().getListCompteComptable().get(2);
-        manager = new ComptabiliteManagerImpl();
-        date = Date.valueOf("2016-06-11");
+            List<CompteComptable> compteComptables = getBusinessProxy().getComptabiliteManager().getListCompteComptable();
+            compteComptable1 = compteComptables.get(1);
+            compteComptable2 = compteComptables.get(2);
+            manager = new ComptabiliteManagerImpl();
+            date = Date.valueOf("2016-06-11");
     }
 
     @BeforeEach
@@ -264,12 +266,23 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
             found = manager.getEcritureComptableById(vEcritureComptable.getId());
 
         } catch (FunctionalException | NotFoundException exception) {
-            logger.error("Exception in insertEcritureComptable :", exception);
+            LOGGER.error("Exception in insertEcritureComptable :", exception);
         }
 
-        assertThat(found).isEqualTo(vEcritureComptable);
+        Integer id = found.getId();
+        manager.deleteEcritureComptable(id);
 
-        manager.deleteEcritureComptable(vEcritureComptable.getId());
+        found.setId(vEcritureComptable.getId());
+        assertThat(found.getJournal().getLibelle()).isEqualTo(vEcritureComptable.getJournal().getLibelle());
+        assertThat(found.getJournal().getCode()).isEqualTo(vEcritureComptable.getJournal().getCode());
+        assertThat(found.getReference()).isEqualTo(vEcritureComptable.getReference());
+        assertThat(found.getDate()).isEqualTo(vEcritureComptable.getDate());
+        assertThat(found.getLibelle()).isEqualTo(vEcritureComptable.getLibelle());
+        int index = 0;
+        for(LigneEcritureComptable l: found.getListLigneEcriture()) {
+            assertThat(l.equals(vEcritureComptable.getListLigneEcriture().get(index++)));
+        }
+
     }
 
     @Test
@@ -293,7 +306,7 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
             ecritureComptable = manager.getEcritureComptableById(id);
             assertThat(ecritureComptable.getLibelle()).isEqualTo(oldLibelle);
         } catch (NotFoundException | FunctionalException exception) {
-            logger.error("Exception in updateEcritureComptable", exception);
+            LOGGER.error("Exception in updateEcritureComptable", exception);
         }
     }
 
@@ -333,7 +346,7 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
             assertThat(ecritureComptable.getReference()).isEqualTo(oldReference);
             assertThat(ecritureComptable.getDate()).isEqualTo(oldDate);
         } catch (NotFoundException | FunctionalException exception) {
-            logger.error("Exception in updateEcritureComptable", exception);
+            LOGGER.error("Exception in updateEcritureComptable", exception);
         }
     }
 
@@ -358,7 +371,7 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
             ecritureComptable = manager.getEcritureComptableById(id);
             assertThat(ecritureComptable.getDate()).isEqualTo(oldDate);
         } catch (NotFoundException | FunctionalException exception) {
-            logger.error("Exception in updateEcritureComptable", exception);
+            LOGGER.error("Exception in updateEcritureComptable", exception);
         }
     }
 
@@ -385,7 +398,7 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
             assertThrows(NotFoundException.class, () -> manager.getEcritureComptableById(ecritureId));
 
         } catch (FunctionalException exception) {
-            logger.error("Exception in insertEcritureComptable :", exception);
+            LOGGER.error("Exception in insertEcritureComptable :", exception);
         }
 
     }

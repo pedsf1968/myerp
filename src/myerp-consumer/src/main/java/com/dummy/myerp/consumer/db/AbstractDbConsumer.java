@@ -117,6 +117,7 @@ public abstract class AbstractDbConsumer {
                 }
             } else {
                 vMapDataSource.put(vDataSourceId, vDataSource);
+                LOGGER.info("La DataSource {} a été initialisée !", vDataSourceId);
             }
         }
         mapDataSource = vMapDataSource;

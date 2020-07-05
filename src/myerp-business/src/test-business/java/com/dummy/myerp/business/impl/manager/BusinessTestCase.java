@@ -13,7 +13,9 @@ public abstract class BusinessTestCase {
 
 
     static {
+        LOGGER.debug("[DEBUT] static");
         SpringRegistry.init();
+        LOGGER.debug("[FIN] static");
     }
 
     /** {@link BusinessProxy} */

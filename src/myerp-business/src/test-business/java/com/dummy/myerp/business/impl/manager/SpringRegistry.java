@@ -39,16 +39,26 @@ public final class SpringRegistry {
      */
     private SpringRegistry() {
         super();
-        DataSourcesEnum database = DataSourcesEnum.valueOf(System.getProperty("databaseType"));
+        SpringRegistry.LOGGER.debug("[DEBUT] constructor");
 
-        SpringRegistry.LOGGER.debug("[DEBUT] SpringRegistry() - Initialisation du contexte Spring: {}", database);
-        if (database.equals(DataSourcesEnum.MYERP)) {
+        String databaseType = "TEST";
+        SpringRegistry.LOGGER.debug("[DEBUT] getProperty : {}", databaseType);
+        try {
+            databaseType = System.getProperty("databaseType");
+        } catch (Exception exception) {
+            LOGGER.info("getProperty Exception",exception);
+        }
+        SpringRegistry.LOGGER.debug("[FIN] getProperty : {}", databaseType);
+
+        SpringRegistry.LOGGER.debug("[DEBUT] Initialisation du contexte Spring: {}", databaseType);
+        if (databaseType.equals(DataSourcesEnum.MYERP.name())) {
             this.contextAppli = new ClassPathXmlApplicationContext(SpringRegistry.CONTEXT_PROD_APPLI_LOCATION);
         } else {
             this.contextAppli = new ClassPathXmlApplicationContext(SpringRegistry.CONTEXT_TEST_APPLI_LOCATION);
         }
 
-        SpringRegistry.LOGGER.debug("[FIN] SpringRegistry() - Initialisation du contexte Spring : {}", database);
+        SpringRegistry.LOGGER.debug("[FIN] Initialisation du contexte Spring : {}", databaseType);
+        SpringRegistry.LOGGER.debug("[FIN] constructor");
     }
 
     /**
@@ -66,8 +76,18 @@ public final class SpringRegistry {
      * @return ApplicationContext
      */
     public static final ApplicationContext init() {
+        LOGGER.debug("[DEBUT] init");
+
+        ApplicationContext applicationContext = null;
         // le fait d'appeler cette méthode, déclanche l'appel des initialisation static et donc le chargement du context
-        return getInstance().contextAppli;
+        try {
+            applicationContext = getInstance().contextAppli;
+        } catch (Exception exception) {
+            LOGGER.info("init Exception : ", exception);
+        }
+
+        LOGGER.debug("[FIN] init");
+        return applicationContext;
     }
 
     /**

@@ -341,16 +341,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
      */
     @Override
     public void updateEcritureComptable(EcritureComptable pEcritureComptable) throws FunctionalException {
-<<<<<<< HEAD
-        this.checkEcritureComptableUnit(pEcritureComptable);
-        this.checkEcritureComptableRG2(pEcritureComptable);
-        this.checkEcritureComptableRG3(pEcritureComptable);
-        this.checkEcritureComptableRG7(pEcritureComptable);
-
-
-=======
         this.checkEcritureComptableUpdate(pEcritureComptable);
->>>>>>> develop
         TransactionStatus vTS = getTransactionManager().beginTransactionMyERP();
         try {
             getDaoProxy().getComptabiliteDao().updateEcritureComptable(pEcritureComptable);

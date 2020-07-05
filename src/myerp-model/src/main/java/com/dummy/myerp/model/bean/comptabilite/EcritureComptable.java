@@ -2,10 +2,10 @@ package com.dummy.myerp.model.bean.comptabilite;
 
 
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.sql.Date;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -66,10 +66,10 @@ public class EcritureComptable {
     public void setReference(String pReference) {
         reference = pReference;
     }
-    public java.sql.Date getDate() {
+    public Date getDate() {
         return date;
     }
-    public void setDate(java.sql.Date  pDate) {
+    public void setDate(Date  pDate) {
         date = pDate;
     }
     public String getLibelle() {

@@ -24,6 +24,12 @@ mvn clean verify sonar:sonar
 
 Le résultat est consultable sur les liens ci-dessus.
 
+## Tests du module test-consumer
+mvn clean test -pl myerp-consumer -P test-consumer
+
+## Tests du module test-business
+mvn clean test -pl myerp-business -P test-business
+
 
 # Maven lifecycle avec base de données PostgreSQL Docker
 ## Préalable
@@ -40,6 +46,12 @@ mvn clean test -P production
 mvn clean verify sonar:sonar -P production
 
 Le résultat est consultable sur les liens ci-dessus.
+
+## Tests du module test-consumer
+mvn clean test -pl myerp-consumer -P production
+
+## Tests du module test-business
+mvn clean test -pl myerp-business -P production
 
 # Docker Jenkins 
 ## Accès

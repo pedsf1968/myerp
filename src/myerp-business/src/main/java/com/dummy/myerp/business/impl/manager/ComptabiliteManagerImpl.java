@@ -131,6 +131,20 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         this.checkEcritureComptableRG7(pEcritureComptable);
     }
 
+    /**
+     * Méthode générale qui appelle les méthodes de vérification des règles de EcritureComptable
+     *
+     * {@inheritDoc}
+     * @param pEcritureComptable -
+     */
+    public void checkEcritureComptableUpdate(EcritureComptable pEcritureComptable) throws FunctionalException {
+         this.checkEcritureComptableUnit(pEcritureComptable);
+         this.checkEcritureComptableRG2(pEcritureComptable);
+         this.checkEcritureComptableRG3(pEcritureComptable);
+         this.checkEcritureComptableRG5(pEcritureComptable);
+         this.checkEcritureComptableRG7(pEcritureComptable);
+    }
+
 
     /**
      * Vérifie que l'Ecriture comptable respecte les règles de gestion unitaires,
@@ -152,8 +166,8 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 
         // verify that comptable year is no closed
         // it's no closed if it's in sequence sequence_ecriture_comptable
-        java.sql.Date dateComptable =  pEcritureComptable.getDate();
-        Integer year = dateComptable.toLocalDate().getYear();
+        SimpleDateFormat formatNowYear = new SimpleDateFormat("yyyy");
+        Integer year = Integer.valueOf(formatNowYear.format(pEcritureComptable.getDate()));
         SequenceEcritureComptable sequenceEcritureComptable =  getDaoProxy().getComptabiliteDao().getLastSeqOfTheYear(year, pEcritureComptable.getJournal().getCode());
 
         if (sequenceEcritureComptable == null) {
@@ -229,18 +243,18 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
             String code = pEcritureComptable.getReference().split("-")[0];
 
             if (!code.equals(pEcritureComptable.getJournal().getCode())) {
-                LOGGER.error("Pas le même Code de Journal Comptable : Code {} et Code dans Reference {}",pEcritureComptable.getJournal().getCode(),code);
+                LOGGER.debug("Pas le même Code de Journal Comptable : Code {} et Code dans Reference {}",pEcritureComptable.getJournal().getCode(),code);
                 throw new FunctionalException(
                       "La référence de l'écriture comptable doit correspondre au journal.");
             }
 
 
             String year = pEcritureComptable.getReference().split("[-/]")[1];
-            java.sql.Date dateComptable =  pEcritureComptable.getDate();
+            java.sql.Date dateComptable =  new java.sql.Date(pEcritureComptable.getDate().getTime());
             String dateYear = String.valueOf(dateComptable.toLocalDate().getYear());
 
             if (!year.equals(dateYear)) {
-                LOGGER.error("Pas le même Date de Journal Comptable : Date {} et Année dans Reference {}",dateYear,year);
+                LOGGER.debug("Pas le même Date de Journal Comptable : Date {} et Année dans Reference {}",dateYear,year);
                 throw new FunctionalException(
                       "La référence de l'écriture comptable doit correspondre au journal.");
             }
@@ -268,6 +282,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
                 if (pEcritureComptable.getId() != null
                     || Objects.equals(pEcritureComptable.getId(), vECRef.getId())) {
                     // id n'est pas null ou la même référence existe
+                    LOGGER.debug("Une autre écriture comptable existe déjà avec la même référence : {}",pEcritureComptable.getReference());
                     throw new FunctionalException("Une autre écriture comptable existe déjà avec la même référence.");
                 }
             } catch (NotFoundException vEx) {
@@ -288,9 +303,11 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 
         for(LigneEcritureComptable ligneEcritureComptable : ligneEcritureComptables) {
             if(ligneEcritureComptable.getCredit() != null && getNumberOfDecimalPlaces(ligneEcritureComptable.getCredit()) > 2) {
+                LOGGER.debug("Un crédit ne peut pas avoir plus de deux chiffres après la virgule : {}",getNumberOfDecimalPlaces(ligneEcritureComptable.getCredit()));
                 throw new FunctionalException("Un crédit ne peut pas avoir plus de deux chiffres après la virgule!");
             }
             if(ligneEcritureComptable.getDebit() != null && getNumberOfDecimalPlaces(ligneEcritureComptable.getDebit()) > 2) {
+                LOGGER.debug("Un débit ne peut pas avoir plus de deux chiffres après la virgule : {}",getNumberOfDecimalPlaces(ligneEcritureComptable.getDebit()));
                 throw new FunctionalException("Un débit ne peut pas avoir plus de deux chiffres après la virgule!");
             }
         }
@@ -324,7 +341,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
      */
     @Override
     public void updateEcritureComptable(EcritureComptable pEcritureComptable) throws FunctionalException {
-        this.checkEcritureComptable(pEcritureComptable);
+        this.checkEcritureComptableUpdate(pEcritureComptable);
         TransactionStatus vTS = getTransactionManager().beginTransactionMyERP();
         try {
             getDaoProxy().getComptabiliteDao().updateEcritureComptable(pEcritureComptable);

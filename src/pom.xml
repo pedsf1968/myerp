@@ -99,7 +99,7 @@
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version><!-- OLD 2.20 -->
         <maven-war-plugin.version>3.2.3</maven-war-plugin.version><!-- OLD 3.0.0 -->
         <mockito-junit-jupiter.version>3.3.3</mockito-junit-jupiter.version>
-        <postgresql.version>42.2.12</postgresql.version><!-- OLD 9.4.1212 -->
+        <postgresql.version>42.3.3</postgresql.version><!-- OLD 9.4.1212 -->
         <spring.version>5.2.6.RELEASE</spring.version><!-- OLD 4.3.7.RELEASE -->
         <validation-api.version>2.0.1.Final</validation-api.version><!-- OLD 1.1.0.Final -->
         <!-- =================================================================== -->
